@@ -105,7 +105,7 @@ public class MatrixAdditionResource extends Resource
         try
         {
             // parse the power parameters from the entity body
-            GLMMPowerParameters params = ParameterResourceHelper.glmmPowerParametersFromDomNode(rep.getDocument().getDocumentElement());
+            GLMMPowerParameters params = MatrixParamParser.glmmPowerParametersFromDomNode(rep.getDocument().getDocumentElement());
 
             // create the appropriate power calculator for this model
             GLMMPowerCalculator calculator = new GLMMPowerCalculator();
