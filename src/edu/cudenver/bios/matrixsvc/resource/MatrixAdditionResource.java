@@ -21,8 +21,12 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import java.io.IOException;
-import java.util.List;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.power.GLMMPowerCalculator;
+import edu.cudenver.bios.power.Power;
+import edu.cudenver.bios.power.parameters.GLMMPowerParameters;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -35,11 +39,8 @@ import org.restlet.resource.Resource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.power.GLMMPowerCalculator;
-import edu.cudenver.bios.power.Power;
-import edu.cudenver.bios.power.parameters.GLMMPowerParameters;
-import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -104,18 +105,41 @@ public class MatrixAdditionResource extends Resource
 
         try
         {
-            // parse the power parameters from the entity body
-            GLMMPowerParameters params = MatrixParamParser.glmmPowerParametersFromDomNode(rep.getDocument().getDocumentElement());
+        	/**
+        	 * 1.2.	XML Request:
+<matrixList>
+<matrix name='A' rows='r' columns='c'>
+	    <r><c>a1,1</c><c>a1,2</c>...<c>a1,c</c></r>
+...
+<r><c>ar,1</c><c>ar,2</c>...<c>ar,c</c></r>
+</matrix>
+<matrix name='B' rows='r' columns='c'>
+<r><c>b1,1</c><c>b1,2</c>...<c>b1,c</c></r>
+...
+<r><c>br,1</c><c>br,2</c>...<c>br,c</c></r>
+</matrix>
+</matrixList>
+
+1.3.	XML Response:
+<matrix name=’sum’ rows='r' columns='c'>
+	<r><c>s1,1</c><c>s1,2</c>...<c>s1,c</c></r>
+	...
+	<r><c>sr,1</c><c>sr,2</c>...<c>sr,c</c></r>
+</matrix>
+        	 */
+            // parse the parameters from the entity body
+            MatrixServiceParameters params = MatrixParamParser.
+              getMatrixParametersFromDomNode(rep.getDocument().getDocumentElement());
 
             // create the appropriate power calculator for this model
-            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
+//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
             // calculate the detecable difference results
-            List<Power> results = calculator.getPower(params);
+//            List<Power> results = calculator.getPower(params);
            
             // build the response xml
-            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-            getResponse().setEntity(response); 
-            getResponse().setStatus(Status.SUCCESS_CREATED);
+//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
+//            getResponse().setEntity(response); 
+//            getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (IOException ioe)
         {
