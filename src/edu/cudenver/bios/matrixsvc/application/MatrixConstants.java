@@ -17,14 +17,17 @@ public class MatrixConstants {
     public static final String TAG_RANK = "rank";
     public static final String TAG_TRACE = "trace";
     public static final String TAG_POSITIVE_DEFINITE = "positiveDefinite";
-
+    public static final String TAG_ROW = "r";
+    public static final String TAG_COLUMN = "c";
+    
+    // XML attribute names
+    public static final String ATTR_ROWS = "rows";
+    public static final String ATTR_COLUMNS = "columns";
 //    public static final String TAG_GLMM_POWER = "glmmPower";
 //    public static final String TAG_GLMM_POWER_PARAMETERS = "glmmPowerParameters";
     
 //    public static final String TAG_FIXED_RANDOM_MATRIX = "fixedRandomMatrix";
-//    public static final String TAG_MATRIX = "matrix";
-//    public static final String TAG_ROW = "r";
-//    public static final String TAG_COLUMN = "c";
+    
 //    public static final String TAG_TEST_LIST = "testList";
 //    public static final String TAG_ALPHA_LIST = "alphaList";
 //    public static final String TAG_POWER_LIST = "powerList";
@@ -35,7 +38,7 @@ public class MatrixConstants {
 //    public static final String TAG_QUANTILE_LIST = "quantileList";
 //    public static final String TAG_CONFIDENCE_INTERVAL = "confidenceInterval";
     
-    // XML attribute names
+    
 //    public static final String ATTR_COUNT = "count";
 //    public static final String ATTR_NAME = "name";
 //    public static final String ATTR_POWER = "power";
@@ -49,8 +52,7 @@ public class MatrixConstants {
 //    public static final String ATTR_TYPE = "type";
 //    public static final String ATTR_MEAN = "mean";
 //    public static final String ATTR_VARIANCE = "variance";
-//    public static final String ATTR_ROWS = "rows";
-//    public static final String ATTR_COLUMNS = "columns";
+
 //    public static final String ATTR_RANDOM_SEED = "seed";
 //    public static final String ATTR_UNIREP_CDF = "unirepCdf";
 //    public static final String ATTR_MOMENT_METHOD = "momentMethod";
