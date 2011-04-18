@@ -75,12 +75,12 @@ public class TestMatrixParamParsing extends TestCase
     private void initXML(){
     	//a valid matrix list
 	    validMatrixList.append("<matrixList>")
-	    .append("<matrix name='A' rows='r' columns='c'>")
+	    .append("<matrix name='A' rows='3' columns='3'>")
 	    .append("<r><c>1,1</c><c>1,2</c><c>1,3</c></r>")
 	    .append("<r><c>2,1</c><c>2,2</c><c>2,3</c></r>")
 	    .append("<r><c>3,1</c><c>3,2</c><c>3,3</c></r>")
 	    .append("</matrix>")
-	    .append("<matrix name='B' rows='r' columns='c'>")
+	    .append("<matrix name='B' rows='3' columns='3'>")
 	    .append("<r><c>1,1</c><c>1,2</c><c>1,3</c></r>")
 	    .append("<r><c>2,1</c><c>2,2</c><c>2,3</c></r>")
 	    .append("<r><c>3,1</c><c>3,2</c><c>3,3</c></r>")
@@ -89,7 +89,7 @@ public class TestMatrixParamParsing extends TestCase
 	    
 	    //invalid matrix list (only 1 matrix)
 	    invalidMatrixList.append("<matrixList>")
-	    .append("<matrix name='A' rows='r' columns='c'>")
+	    .append("<matrix name='A' rows='3' columns='3'>")
 	    .append("<r><c>1,1</c><c>1,2</c><c>1,3</c></r>")
 	    .append("<r><c>2,1</c><c>2,2</c><c>2,3</c></r>")
 	    .append("<r><c>3,1</c><c>3,2</c><c>3,3</c></r>")
@@ -106,6 +106,8 @@ public class TestMatrixParamParsing extends TestCase
     {
         try
         {
+        	initXML();
+        	
             DocumentBuilderFactory factory =  DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             validMatrixListDoc = builder.parse(new InputSource(new StringReader(validMatrixList.toString())));
@@ -129,9 +131,14 @@ public class TestMatrixParamParsing extends TestCase
         try
         {
             MatrixServiceParameters params = 
-                MatrixParamParser.getMatrixParametersFromDomNode(validMatrixListDoc.getDocumentElement());
-            System.out.println("Valid matrixList inputs parsed successfully");
-            assertTrue(true);
+                MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc.getDocumentElement());
+            assertNotNull( params.getA() );
+            assertNotNull( params.getB() );
+            if(params.getA() != null && params.getB() != null){
+            	System.out.println("Valid matrixList inputs parsed successfully.");
+            	assertTrue(true);
+            }
+            
         }
         catch(Exception e)
         {
@@ -149,7 +156,7 @@ public class TestMatrixParamParsing extends TestCase
         try
         {
         	MatrixServiceParameters params = 
-        		MatrixParamParser.getMatrixParametersFromDomNode(invalidMatrixListDoc.getDocumentElement());
+        		MatrixParamParser.getAdditionParamsFromDomNode(invalidMatrixListDoc.getDocumentElement());
             System.out.println("Invalid matrixList inputs parsed successfully!  BAD!");
             fail();
         }
