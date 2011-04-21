@@ -122,16 +122,16 @@
     </target>
     
     <target name="test" depends="compress">
-        <junit printsummary="yes" haltonfailure="yes" showoutput="true" fork="true">
+        <junit printsummary="yes" haltonfailure="no" showoutput="true" fork="true">
             <classpath>
               <path refid="libraries" />
               <pathelement location="${wardir}/WEB-INF/classes"/>
             </classpath>
             <formatter type="plain" />
-  		  <test name="edu.cudenver.bios.powersvc.test.TestParsing" haltonfailure="no">
+  		  <test name="edu.cudenver.bios.matrixsvc.test.MatrixParserTestCase" haltonfailure="no">
   		  </test>
-  		  <test name="edu.cudenver.bios.powersvc.test.TestRepresentation" haltonfailure="no">
-  		  </test>
+  		  <!--<test name="edu.cudenver.bios.powersvc.test.TestRepresentation" haltonfailure="no">
+  		  </test>-->
         </junit>
     </target>
 	<target name="deploy" description="This target moves the ${svcname}.war 
