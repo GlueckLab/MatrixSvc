@@ -21,13 +21,12 @@
  */
 package edu.cudenver.bios.matrixsvc.application;
 
+import edu.cudenver.bios.matrixsvc.resource.*;
+
 import org.restlet.Application;
 import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.Router;
-
-import edu.cudenver.bios.matrixsvc.resource.*;
-import edu.cudenver.bios.matrixsvc.resource.test.FTestResource;
 
 
 /**
@@ -110,9 +109,6 @@ public class MatrixApplication extends Application
         //Matrix Vech resource
         router.attach("/matrix/vech", MatrixVechResource.class);
         
-        
-        // unit test resource - easier to collaborate with remote testers this way
-        router.attach("/testf", FTestResource.class);
         
         return router;
     }
