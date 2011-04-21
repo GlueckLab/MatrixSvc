@@ -1,3 +1,24 @@
+/*
+ * Power Service for the GLIMMPSE Software System.  Processes
+ * incoming HTTP requests for power, sample size, and detectable
+ * difference
+ * 
+ * Copyright (C) 2010 Regents of the University of Colorado.  
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
@@ -7,30 +28,22 @@ import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 
+/**
+ * This is a utility class to parse an XML DOM Node containing the request XML
+ * or "Entity Body" in RESTful terminology.
+ * @author Jonathan Cohen
+ *
+ */
 public class MatrixParamParser {
 
 	/**
-	 * 
-	 * @param node containing 
-	 * <p>
-	 * &lt;matrixList&gt;
-     * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
-     * <br>&lt;r&gt;&lt;c&gt;number&lt;/c&gt;&lt;c&gt;number&lt;/c&gt;...&lt;/r&gt;
-     * <br>...
-     * <br>&lt;/matrix&gt;
-     * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
-     * <br>&lt;r&gt;&lt;c&gt;number&lt;/c&gt;&lt;c&gt;number&lt;/c&gt;...&lt;/r&gt;
-     * <br>...
-     * <br>&lt;/matrix&gt;
-	 * <br>&lt;/matrixList&gt;
-	 * 
+	 * @param Node node
 	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
@@ -42,8 +55,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getSubtractionParamsFromDomNode(Node node)
@@ -54,8 +67,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getScalarMultiplicationParamsFromDomNode(Node node)
@@ -66,8 +79,8 @@ public class MatrixParamParser {
 
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getElementWiseMultiplicationParamsFromDomNode(Node node)
@@ -78,8 +91,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixMultiplicationParamsFromDomNode(Node node)
@@ -90,8 +103,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getHorizontalDirectProductParamsFromDomNode(Node node)
@@ -102,8 +115,8 @@ public class MatrixParamParser {
 
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getKroneckerProductParamsFromDomNode(Node node)
@@ -114,8 +127,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixInversionParamsFromDomNode(Node node)
@@ -132,8 +145,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixRankParamsFromDomNode(Node node)
@@ -150,8 +163,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixTraceParamsFromDomNode(Node node)
@@ -168,8 +181,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getPositiveDefiniteParamsFromDomNode(Node node)
@@ -186,8 +199,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getDecompCholeskyParamsFromDomNode(Node node)
@@ -204,8 +217,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixVecParamsFromDomNode(Node node)
@@ -222,8 +235,8 @@ public class MatrixParamParser {
 	
 	/**
 	 * 
-	 * @param node
-	 * @return
+	 * @param node Node
+	 * @return MatrixServiceParameters
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixVechParamsFromDomNode(Node node)
@@ -237,18 +250,19 @@ public class MatrixParamParser {
         
         return params;
 	}
+	
 	/**
 	 * This is a convenience method to throw a ResourceException if the
 	 * request XML's root node is incorrect.
-	 * @param nodeName is the one that was found in the XML
+	 * @param nodeName is the name that was found in the XML for the root node.
 	 * @param expectedNodeName is the expected root node name for this service.
 	 */
 	private static void notifyClientBadRequest(String nodeName, String expectedNodeName)
 	throws ResourceException
 	{
 		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
-        		"Invalid root node '" + nodeName + 
-        		"' when parsing matrix parameter object.  " +
+        		"Invalid node '" + nodeName + 
+        		"' when parsing parameter object.  " +
         		"It must be " + expectedNodeName + " for this service.");
 	}
 	
@@ -267,9 +281,9 @@ public class MatrixParamParser {
     private static RealMatrix extractMatrixFromDomNode(Node node) throws ResourceException
     {   
     	//make sure we have a matrix
-    	if (!node.getNodeName().equals(MatrixConstants.TAG_MATRIX))
+    	if (!MatrixConstants.TAG_MATRIX.equals(node.getNodeName().trim()))
         {
-            notifyClientBadRequest(node.getNodeName(), MatrixConstants.TAG_MATRIX);
+            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_MATRIX);
         }
     	
         // parse the rows / columns from the attribute list
@@ -280,11 +294,14 @@ public class MatrixParamParser {
         int numCols;
 		try 
 		{
-			if (numRowsStr != null) numRows = Integer.parseInt(numRowsStr.getNodeValue());
-
+			if (numRowsStr != null){
+				numRows = Integer.parseInt(numRowsStr.getNodeValue());
+			}
 			Node numColsStr = attrs.getNamedItem(MatrixConstants.ATTR_COLUMNS);
 			numCols = 0;
-			if (numColsStr != null) numCols = Integer.parseInt(numColsStr.getNodeValue());
+			if (numColsStr != null){
+				numCols = Integer.parseInt(numColsStr.getNodeValue());
+			}
 		} catch (NumberFormatException e) 
 		{
 			e.printStackTrace();
@@ -299,10 +316,11 @@ public class MatrixParamParser {
             		"specified - must be positive integer");
         }
         
-        // create a placeholder matrix for storing the rows/columns
+        // create a place holder matrix for storing the rows/columns
         Array2DRowRealMatrix matrix = new Array2DRowRealMatrix(numRows, numCols);
         
-        // parse the children: should contain multiple row objects with col objects as children
+        // parse the children: should contain multiple row objects with 
+        // column objects as children
         NodeList rows = node.getChildNodes();
         if (rows != null && rows.getLength() > 0)
         {
@@ -310,9 +328,9 @@ public class MatrixParamParser {
             	rowIndex < numRows; rowIndex++)
             {
                 Node row = rows.item(rowIndex);
-                if (!MatrixConstants.TAG_ROW.equals(row.getNodeName()))
+                if (!MatrixConstants.TAG_ROW.equals(row.getNodeName())){
                     notifyClientBadRequest(row.getNodeName(), MatrixConstants.TAG_ROW);
-                
+                }
                 // get all of the columns for the current row and insert into a matrix
                 NodeList columns = row.getChildNodes();
                 if (columns != null && columns.getLength() > 0)
@@ -341,20 +359,18 @@ public class MatrixParamParser {
     /**
      * 
      * @param node
-     * @return int representing the scalar multiplier for this service
+     * @return double representing the scalar multiplier for the 
+     * scalar multiplication service.
      * @throws IllegalArgumentException
      */
     private static double extractScalarFromDomNode(Node node)
-    throws IllegalArgumentException
+    throws IllegalArgumentException,ResourceException
     {
-    	if( !MatrixConstants.TAG_SCALAR_MULTIPLIER.equals( node.getNodeName() ) )
+    	if( !MatrixConstants.ATTR_VALUE.equals( node.getNodeName().trim() ) )
     	{
-    		throw new IllegalArgumentException("Expecting " + 
-    		MatrixConstants.TAG_SCALAR_MULTIPLIER + " but received " +
-    		node.getNodeName() + " instead.");
+    		notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.ATTR_VALUE);
     	}
-    	String valStr = node.getFirstChild().getNodeValue();
-    	System.out.println("scalar multiplier node name="+valStr);
+    	String valStr = node.getNodeValue();
     	Double val = null;
     	if( valStr != null && !valStr.isEmpty() )
     	{
@@ -362,15 +378,33 @@ public class MatrixParamParser {
 				val = Double.parseDouble(valStr);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				throw new IllegalArgumentException("Scalar multiplier is null or empty.");
+				throw new IllegalArgumentException("Scalar multiplier value doesn't " +
+						"parse to a double. Its String value is "+valStr);
 			}
+    	}
+    	else
+    	{
+    		throw new IllegalArgumentException("Scalar multiplier is null or empty.");
     	}
     	return val.doubleValue();
     }
     
     /**
-     * 
-     * @param node
+     * Since this method expects to operate on a list of matrices, the 
+     * list must contain at least one matrix.  If the list is empty, it will
+     * throw an exception.
+     * @param node containing 
+	 * <p>
+	 * &lt;matrixList&gt;
+     * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
+     * <br>&lt;r&gt;&lt;c&gt;number&lt;/c&gt;&lt;c&gt;number&lt;/c&gt;...&lt;/r&gt;
+     * <br>...
+     * <br>&lt;/matrix&gt;
+     * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
+     * <br>&lt;r&gt;&lt;c&gt;number&lt;/c&gt;&lt;c&gt;number&lt;/c&gt;...&lt;/r&gt;
+     * <br>...
+     * <br>&lt;/matrix&gt;
+	 * <br>&lt;/matrixList&gt;
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
@@ -378,28 +412,26 @@ public class MatrixParamParser {
     throws ResourceException
     {
     	// make sure the root node is a matrixList
-        if (!node.getNodeName().equals(MatrixConstants.TAG_MATRIX_LIST))
+        if ( !MatrixConstants.TAG_MATRIX_LIST.equals(node.getNodeName().trim() ) )
         {
-            notifyClientBadRequest(node.getNodeName(), MatrixConstants.TAG_MATRIX_LIST);
+            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_MATRIX_LIST);
         }
         
-        //initialize our return obj. and the list of matrices it will contain
+        //initialize our return object and the list of matrices it will contain
     	MatrixServiceParameters params = new MatrixServiceParameters();
     	ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
     	
     	//iterate over the child nodes (matrices)
     	NodeList nodeList = node.getChildNodes();
-    	Node tmpNode = null;
+    	if( nodeList.getLength() == 0) {
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+    		"The matrixList did not contain any matrices.  " +
+    		"It must contain at least one.");
+    	}
     	for(int i = 0; i < nodeList.getLength(); i++)
     	{
-    		tmpNode = nodeList.item(i);
-    		
-    		//make sure the node is a matrix
-        	if(!tmpNode.equals(MatrixConstants.TAG_MATRIX) )
-        	{
-                notifyClientBadRequest(tmpNode.getNodeName(), MatrixConstants.TAG_MATRIX);
-            }
-    		matrixList.add( extractMatrixFromDomNode(node) );
+    		//extract the matrix from the DOM, and add to our list
+    		matrixList.add( extractMatrixFromDomNode(nodeList.item(i)) );
     	}
     	params.setMatrixListFromRequest(matrixList);
         return params;	
@@ -407,45 +439,76 @@ public class MatrixParamParser {
     
     /**
      * 
-     * @param node
+     * @param node containing 
+	 * <p>
+	 * &lt;parameterList&gt;
+     * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
+     * <br>&lt;r&gt;&lt;c&gt;number&lt;/c&gt;&lt;c&gt;number&lt;/c&gt;...&lt;/r&gt;
+     * <br>...
+     * <br>&lt;/matrix&gt;
+     * <br>&lt;scalarMultiplier&gt;
+     * <br>number
+     * <br>&lt;/scalarMultiplier&gt;
+     * <br>&lt;/parameterList&gt;
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
     private static MatrixServiceParameters processParametersFromParameterList(Node node)
     throws ResourceException
     {
-    	// make sure the root node is a proper input to an addition service
-        if (!node.getNodeName().equals(MatrixConstants.TAG_PARAMETER_LIST))
+    	// make sure the root node is parameterList
+        if (!MatrixConstants.TAG_PARAMETER_LIST.equals(node.getNodeName().trim()))
         {
-            notifyClientBadRequest(node.getNodeName(), MatrixConstants.TAG_PARAMETER_LIST);
+            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_PARAMETER_LIST);
         }
+        boolean matrixFound = false;
+        boolean scalarFound = false;
         
-        //initialize our list of matrices, and the return obj.
+        //initialize our list of matrices, and the return object.
         MatrixServiceParameters params = new MatrixServiceParameters();
         ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+        Node scalarValue  = null;
         
-        //get our matrix
-    	Node matrix = node.getFirstChild();
-    	
-    	//make sure the first node is a matrix
-    	if(!matrix.getNodeName().equals(MatrixConstants.TAG_MATRIX) )
+        //iterate over the child nodes to find the matrix
+    	NodeList nodeList = node.getChildNodes();
+    	if(nodeList.getLength() < 2)
     	{
-            notifyClientBadRequest(matrix.getNodeName(), MatrixConstants.TAG_MATRIX);
-        }
-        
-    	//add to our matrix list, and set on the param object
-    	matrixList.add( extractMatrixFromDomNode(matrix) );
-        params.setMatrixListFromRequest(matrixList);
-        
-        //get our scalar
-        Node tmpScalar = matrix.getNextSibling();
-        
-        //make sure the node is a scalar
-    	if(!tmpScalar.getNodeName().equals(MatrixConstants.TAG_SCALAR_MULTIPLIER) )
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+    				"The parameterList doesn't contain proper number of elements - 2." +
+    				" It only contains "+ nodeList.getLength());
+    	}
+    	for(int i = 0; i < nodeList.getLength(); i++)
     	{
-            notifyClientBadRequest(tmpScalar.getNodeName(), MatrixConstants.TAG_SCALAR_MULTIPLIER);
-        }
-        params.setScalarMultiplier( extractScalarFromDomNode(tmpScalar));
+    		//get our matrix
+        	Node tmpNode = nodeList.item(i);
+        	if( MatrixConstants.TAG_MATRIX.equals(tmpNode.getNodeName().trim()))
+        	{
+        		//parse the matrix, and add to our matrix list.
+            	matrixList.add( extractMatrixFromDomNode(tmpNode) );
+            	matrixFound = true;
+            }
+        	else if( MatrixConstants.TAG_SCALAR_MULTIPLIER.equals(tmpNode.getNodeName().trim()))
+        	{
+        		//get our scalar
+        		NamedNodeMap attrs = tmpNode.getAttributes();
+                scalarValue  = attrs.getNamedItem("value");
+                scalarFound = true;
+        	}
+    	}
+        
+    	if(!matrixFound){
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+			"The parameterList doesn't contain a <matrix> element.");
+    	}
+    	if(!scalarFound){
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+			"The parameterList doesn't contain a <scalarMultiplier> element.");
+    	}
+    	//set matrix on the parameter object.
+    	params.setMatrixListFromRequest(matrixList);
+        
+        //extract scalar and set on parameter object
+        params.setScalarMultiplier( extractScalarFromDomNode(scalarValue));
         return params;	
     }
 }

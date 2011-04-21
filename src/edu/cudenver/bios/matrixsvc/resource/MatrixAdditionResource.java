@@ -105,31 +105,9 @@ public class MatrixAdditionResource extends Resource
 
         try
         {
-        	/**
-        	 * 1.2.	XML Request:
-<matrixList>
-<matrix name='A' rows='r' columns='c'>
-	    <r><c>a1,1</c><c>a1,2</c>...<c>a1,c</c></r>
-...
-<r><c>ar,1</c><c>ar,2</c>...<c>ar,c</c></r>
-</matrix>
-<matrix name='B' rows='r' columns='c'>
-<r><c>b1,1</c><c>b1,2</c>...<c>b1,c</c></r>
-...
-<r><c>br,1</c><c>br,2</c>...<c>br,c</c></r>
-</matrix>
-</matrixList>
-
-1.3.	XML Response:
-<matrix name=’sum’ rows='r' columns='c'>
-	<r><c>s1,1</c><c>s1,2</c>...<c>s1,c</c></r>
-	...
-	<r><c>sr,1</c><c>sr,2</c>...<c>sr,c</c></r>
-</matrix>
-        	 */
-            // parse the parameters from the entity body
+        	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
-              getMatrixParametersFromDomNode(rep.getDocument().getDocumentElement());
+              getAdditionParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
             // create the appropriate power calculator for this model
 //            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
@@ -139,21 +117,7 @@ public class MatrixAdditionResource extends Resource
             // build the response xml
 //            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
 //            getResponse().setEntity(response); 
-//            getResponse().setStatus(Status.SUCCESS_CREATED);
-        }
-        catch (IOException ioe)
-        {
-            MatrixLogger.getInstance().error(ioe.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(ioe.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-        }
-        catch (IllegalArgumentException iae)
-        {
-            MatrixLogger.getInstance().error(iae.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(iae.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+            getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
         {
@@ -161,6 +125,13 @@ public class MatrixAdditionResource extends Resource
             try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
             catch (IOException e) {}
             getResponse().setStatus(re.getStatus());
+        }
+        catch (Exception e)
+        {
+        	 MatrixLogger.getInstance().error(e.getMessage());
+             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
+             catch (IOException ioe) {}
+             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
         }
     }
 

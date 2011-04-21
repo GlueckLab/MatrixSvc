@@ -21,8 +21,9 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import java.io.IOException;
-import java.util.List;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -35,12 +36,7 @@ import org.restlet.resource.Resource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
-import edu.cudenver.bios.power.GLMMPowerCalculator;
-import edu.cudenver.bios.power.Power;
-import edu.cudenver.bios.power.parameters.GLMMPowerParameters;
-import edu.cudenver.bios.powersvc.application.PowerLogger;
-import edu.cudenver.bios.powersvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.powersvc.representation.GLMMPowerListXMLRepresentation;
+import java.io.IOException;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -105,32 +101,19 @@ public class MatrixHorizontalDirectMultiplicationResource extends Resource
 
         try
         {
-            // parse the power parameters from the entity body
-            GLMMPowerParameters params = ParameterResourceHelper.glmmPowerParametersFromDomNode(rep.getDocument().getDocumentElement());
+        	// parse the parameters from the entity body
+            MatrixServiceParameters params = MatrixParamParser.
+              getHorizontalDirectProductParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
             // create the appropriate power calculator for this model
-            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
+//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
             // calculate the detecable difference results
-            List<Power> results = calculator.getPower(params);
+//            List<Power> results = calculator.getPower(params);
            
             // build the response xml
-            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-            getResponse().setEntity(response); 
+//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
+//            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
-        }
-        catch (IOException ioe)
-        {
-            MatrixLogger.getInstance().error(ioe.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(ioe.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-        }
-        catch (IllegalArgumentException iae)
-        {
-            MatrixLogger.getInstance().error(iae.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(iae.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
         }
         catch (ResourceException re)
         {
@@ -139,6 +122,12 @@ public class MatrixHorizontalDirectMultiplicationResource extends Resource
             catch (IOException e) {}
             getResponse().setStatus(re.getStatus());
         }
+        catch (Exception e)
+        {
+        	 MatrixLogger.getInstance().error(e.getMessage());
+             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
+             catch (IOException ioe) {}
+             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        }
     }
-
 }
