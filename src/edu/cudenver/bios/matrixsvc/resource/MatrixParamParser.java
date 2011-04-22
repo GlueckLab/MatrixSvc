@@ -132,7 +132,7 @@ public class MatrixParamParser {
 	 * @throws ResourceException
 	 */
 	public static MatrixServiceParameters getMatrixInversionParamsFromDomNode(Node node)
-	throws ResourceException
+	throws ResourceException, IllegalArgumentException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
 		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
@@ -278,7 +278,8 @@ public class MatrixParamParser {
      * @return matrix object
      * @throws ResourceException
      */
-    private static RealMatrix extractMatrixFromDomNode(Node node) throws ResourceException
+    private static RealMatrix extractMatrixFromDomNode(Node node) 
+    throws ResourceException,IllegalArgumentException
     {   
     	//make sure we have a matrix
     	if (!MatrixConstants.TAG_MATRIX.equals(node.getNodeName().trim()))
@@ -297,15 +298,22 @@ public class MatrixParamParser {
 			if (numRowsStr != null){
 				numRows = Integer.parseInt(numRowsStr.getNodeValue());
 			}
+			else{
+				throw new IllegalArgumentException("Cannot find attribute 'rows' in this matrix.");
+			}
 			Node numColsStr = attrs.getNamedItem(MatrixConstants.ATTR_COLUMNS);
 			numCols = 0;
 			if (numColsStr != null){
 				numCols = Integer.parseInt(numColsStr.getNodeValue());
 			}
-		} catch (NumberFormatException e) 
+			else{
+				throw new IllegalArgumentException("Cannot find attribute 'columns' in this matrix.");
+			}
+		} 
+		catch (NumberFormatException e) 
 		{
 			e.printStackTrace();
-			throw new IllegalArgumentException("Rows or Columns couldn't be converted " +
+			throw new IllegalArgumentException("'rows' or 'columns' attributes couldn't be converted " +
 					"from a String to a number.");
 		} 
         
@@ -341,7 +349,14 @@ public class MatrixParamParser {
                         String valStr = colEntry.getFirstChild().getNodeValue();
                         if (colEntry.hasChildNodes() && valStr != null && !valStr.isEmpty())
                         {
-                            double val = Double.parseDouble(valStr);
+                            double val;
+							try {
+								val = Double.parseDouble(valStr);
+							} catch (NumberFormatException e) {
+								throw new IllegalArgumentException("Caught exception parsing the value of element (" 
+										+ rowIndex + "," + colIndex + ").  This position contained the following: "
+										+ valStr);
+							}
                             matrix.setEntry(rowIndex, colIndex, val);
                         }
                         else
@@ -475,7 +490,7 @@ public class MatrixParamParser {
     	{
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
     				"The parameterList doesn't contain proper number of elements - 2." +
-    				" It only contains "+ nodeList.getLength());
+    				" It only contains "+ nodeList.getLength() + ".");
     	}
     	for(int i = 0; i < nodeList.getLength(); i++)
     	{
