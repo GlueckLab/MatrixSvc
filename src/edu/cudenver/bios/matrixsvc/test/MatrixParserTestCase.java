@@ -361,7 +361,127 @@ public class MatrixParserTestCase extends TestCase
             fail("Exception during testCorrectMatrixElement(): " + e.getMessage());
         }
     }
-        
+    
+    /**
+     * This tests the parsing of a matrix element that contains an <rc> element
+     * for one of the row tags.
+     */
+    public void testInvalidMatrixBadRow()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc2.getDocumentElement());
+            
+            fail("INVALID matrix inputs (<rc> instead of <r>) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrixBadRow():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
+    /**
+     * This tests the parsing of a matrix element that contains a misspelled
+     * </matrix> element.
+     */
+    public void testInvalidMatrixBadMatrixTag()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc3.getDocumentElement());
+            
+            fail("INVALID matrix inputs (<matrix> misspelled) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrixBadMatrixTag():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
+    /**
+     * This tests the parsing of a matrix element that contains a misspelled
+     * 'rows' attribute.
+     */
+    public void testInvalidMatrixRows()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc4.getDocumentElement());
+            
+            fail("INVALID matrix inputs ('rows' misspelled) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrixRows():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
+    /**
+     * This tests the parsing of a matrix element that contains a misspelled
+     * 'rows' attribute.
+     */
+    public void testInvalidMatrix2Numbers()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc5.getDocumentElement());
+            
+            fail("INVALID matrix inputs (2 numbers in 1 column position) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrix2Numbers():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
+    /**
+     * This tests the parsing of a matrix element that contains a non-digit for
+     * one of the matrix elements.
+     */
+    public void testInvalidMatrixNonDigit()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc1.getDocumentElement());
+            
+            fail("INVALID matrix inputs (char instead of digit) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrixNonDigit():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
     /**
      * This tests the parsing of a valid matrixList parameter set 
      * (the happy path).
@@ -374,6 +494,7 @@ public class MatrixParserTestCase extends TestCase
                 MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc.getDocumentElement());
             
             ArrayList<RealMatrix> list = params.getMatrixListFromRequest();
+            assertNotNull(list.get(0));
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
