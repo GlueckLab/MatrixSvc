@@ -23,7 +23,6 @@ package edu.cudenver.bios.matrixsvc.test;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
-import edu.cudenver.bios.power.parameters.GLMMPowerParameters;
 
 import org.apache.commons.math.linear.RealMatrix;
 import org.w3c.dom.Document;
@@ -57,7 +56,6 @@ public class MatrixParserTestCase extends TestCase
         try {
 			 builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -75,6 +73,7 @@ public class MatrixParserTestCase extends TestCase
 	static Document invalidMatrixDoc3 = null;
 	static Document invalidMatrixDoc4 = null;
 	static Document invalidMatrixDoc5 = null;
+    static Document invalidMatrixDoc6 = null;
     
     //Test Case 3: request contains a parameterList as the root
 	static Document validParameterListDoc = null;
@@ -113,6 +112,9 @@ public class MatrixParserTestCase extends TestCase
     
     //Invalid XML for an entity body with a matrix element
     static StringBuffer invalidMatrix5 = new StringBuffer();
+    
+  //Invalid XML for an entity body with a matrix element
+    static StringBuffer invalidMatrix6 = new StringBuffer();
     
     //Valid XML for an entity body with a parameterList element
     static StringBuffer validParameterList = new StringBuffer();
@@ -167,6 +169,13 @@ public class MatrixParserTestCase extends TestCase
 	    .append("<r><c>3</c><c>3</c><c>3</c></r>")
 	    .append("</matrix>");
 	    
+	    //invalid matrix (malformed XML - "columns" misspelled)
+	    invalidMatrix6.append("<matrix name='A' rows='3' coluns='3'>")
+	    .append("<r><c>1</c><c>3</c><c>1</c></r>")
+	    .append("<r><c>2</c><c>2</c><c>2</c></r>")
+	    .append("<r><c>3</c><c>3</c><c>3</c></r>")
+	    .append("</matrix>");
+    	
 	    //a valid matrix list
 	    validMatrixList.append("<matrixList>")
 	    .append("<matrix name='A' rows='3' columns='3'>")
@@ -244,6 +253,7 @@ public class MatrixParserTestCase extends TestCase
 			invalidMatrixDoc3 = builder.parse(new InputSource(new StringReader(invalidMatrix3.toString())));
 			invalidMatrixDoc4 = builder.parse(new InputSource(new StringReader(invalidMatrix4.toString())));
 			invalidMatrixDoc5 = builder.parse(new InputSource(new StringReader(invalidMatrix5.toString())));
+			invalidMatrixDoc6 = builder.parse(new InputSource(new StringReader(invalidMatrix6.toString())));
 			validMatrixListDoc = builder.parse(new InputSource(new StringReader(validMatrixList.toString())));
 			validMatrixListDoc1 = builder.parse(new InputSource(new StringReader(validMatrixList.toString())));
 			invalidMatrixListDoc = builder.parse(new InputSource(new StringReader(invalidMatrixList.toString())));
@@ -252,10 +262,8 @@ public class MatrixParserTestCase extends TestCase
 			invalidParameterListDoc = builder.parse(new InputSource(new StringReader(invalidParameterList.toString())));
 			invalidParameterListDoc1 = builder.parse(new InputSource(new StringReader(invalidParameterList1.toString())));
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
@@ -290,7 +298,7 @@ public class MatrixParserTestCase extends TestCase
     }
     
     /**
-     * This tests whether the List<RealMatrix> in the MatrixServiceParameters
+     * This tests whether the List<@see RealMatrix> in the @see MatrixServiceParameters
      * object for the entity body (request) is not null.  (It should be NOT NULL.) 
      */
     public void testNotNullList()
@@ -351,6 +359,7 @@ public class MatrixParserTestCase extends TestCase
                 		validMatrixDoc.getDocumentElement());
             
             //assert that our matrix contains the number 1 in the (0,0) position
+            //and 3 in the (2,2) position
             RealMatrix matrix = params.getMatrixListFromRequest().get(0);
             assertEquals(1.0, matrix.getEntry(0, 0), 1E-10);
             assertEquals(3.0, matrix.getEntry(2, 2), 1E-10);
@@ -429,6 +438,30 @@ public class MatrixParserTestCase extends TestCase
         catch(Exception e)
         {
         	System.out.println("Exception caught as expected in testInvalidMatrixRows():" +
+            		e.getMessage());
+            assertTrue(true);
+        }
+    }
+    
+    /**
+     * This tests the parsing of a matrix element that contains a misspelled
+     * 'columns' attribute.
+     */
+    public void testInvalidMatrixColumns()
+    {
+        try
+        {
+        	// this parser method expects the node to contain a matrix as the
+        	// root element
+            MatrixServiceParameters params = 
+                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
+                		invalidMatrixDoc6.getDocumentElement());
+            
+            fail("INVALID matrix inputs ('columns' misspelled) parsed successfully!  BAD!");
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Exception caught as expected in testInvalidMatrixColumns():" +
             		e.getMessage());
             assertTrue(true);
         }
