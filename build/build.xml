@@ -29,6 +29,7 @@
 	<property name="javastatsdir" value="${basedir}/../../JavaStatistics/bin" />
 	<property name="thirdpartydir" value="${basedir}/../../thirdparty" />
 	<property name="javadocdir" value="${basedir}/javadoc" />
+	<property name="test.data.dir" value="${basedir}/TestData" />
 	
 	<fileset id="thirdpartylibs" dir="${thirdpartydir}">
 		<include name="ApacheCommonsMath/2.1/lib/commons-math-2.1.jar" />
@@ -128,10 +129,10 @@
               <pathelement location="${wardir}/WEB-INF/classes"/>
             </classpath>
             <formatter type="plain" />
-  		  <test name="edu.cudenver.bios.matrixsvc.test.MatrixParserTestCase" haltonfailure="no">
+  		  <test name="edu.cudenver.bios.matrixsvc.test.MatrixParserTestCase" 
+  		  	    haltonfailure="no"
+  		  	    todir="${test.data.dir}">
   		  </test>
-  		  <!--<test name="edu.cudenver.bios.powersvc.test.TestRepresentation" haltonfailure="no">
-  		  </test>-->
         </junit>
     </target>
 	<target name="deploy" description="This target moves the ${svcname}.war 
