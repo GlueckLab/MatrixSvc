@@ -24,10 +24,9 @@ package edu.cudenver.bios.matrixsvc.resource;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.power.GLMMPowerCalculator;
-import edu.cudenver.bios.power.Power;
-import edu.cudenver.bios.power.parameters.GLMMPowerParameters;
+import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
+import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -38,9 +37,10 @@ import org.restlet.resource.Representation;
 import org.restlet.resource.Resource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
+import org.restlet.resource.XmlRepresentation;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -102,21 +102,33 @@ public class MatrixAdditionResource extends Resource
     public void acceptRepresentation(Representation entity)
     {
         DomRepresentation rep = new DomRepresentation(entity);
-
+        RealMatrix matrixA = null;
+        RealMatrix matrixB = null;
+        ArrayList<RealMatrix> matrixList = null;
+        
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getAdditionParamsFromDomNode( rep.getDocument().getDocumentElement() );
-
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            
+            // get the list of matrices for the response
+            matrixList = params.getMatrixListForResponse();
+             
+            // get the 2 matrices to add from the list
+            matrixA = matrixList.get(0);
+            matrixB = matrixList.get(1);
+            if(matrixA == null || matrixB == null){
+            	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+            			"Couldn't retrieve the matrices to add."); 
+            }
+            
+            //add them
+            RealMatrix retMatrix = matrixA.add(matrixB);
+            
+            //TODO build the response xml
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(retMatrix);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
