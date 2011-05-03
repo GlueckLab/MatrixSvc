@@ -98,7 +98,19 @@ public class MatrixParamParser {
 	public static MatrixServiceParameters getMatrixMultiplicationParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		return processParametersFromMatrixList(node);
+		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		//The columns of A must match the rows of B for this operation.
+		int rowsB, colsA;
+		ArrayList<RealMatrix> matrixList = params.getMatrixListForResponse();
+		colsA = matrixList.get(0).getColumnDimension();
+		rowsB = matrixList.get(1).getRowDimension();
+		if( colsA != rowsB){
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+					"The number of columns in matrix A (" +colsA+ ") must equal "
+					+ " the number of rows in matrix B (" + rowsB + ").  " +
+					"They are not equal.");
+		}
+		return params;
 	}
 	
 	/**
@@ -210,6 +222,12 @@ public class MatrixParamParser {
 		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
+        
+        // the incoming matrix must be square in order to proceed...
+        if( !matrixList.get(0).isSquare()){
+        	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
+        			"This operation requires a square matrix.");
+        }
         params.setMatrixListFromRequest(matrixList);
         
         return params;
@@ -287,12 +305,12 @@ public class MatrixParamParser {
             notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_MATRIX);
         }
     	
+    	//TODO do we need to extract the 'name' attribute?
         // parse the rows / columns from the attribute list
         NamedNodeMap attrs = node.getAttributes();
         Node numRowsStr = attrs.getNamedItem(MatrixConstants.ATTR_ROWS);
         int numRows = 0;
-        
-        int numCols;
+        int numCols = 0;
 		try 
 		{
 			if (numRowsStr != null){
@@ -302,7 +320,6 @@ public class MatrixParamParser {
 				throw new IllegalArgumentException("Cannot find attribute 'rows' in this matrix.");
 			}
 			Node numColsStr = attrs.getNamedItem(MatrixConstants.ATTR_COLUMNS);
-			numCols = 0;
 			if (numColsStr != null){
 				numCols = Integer.parseInt(numColsStr.getNodeValue());
 			}
