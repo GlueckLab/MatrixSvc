@@ -42,9 +42,22 @@ public class MatrixConstants {
     public static final String TAG_POSITIVE_DEFINITE = "positiveDefinite";
     public static final String TAG_ROW = "r";
     public static final String TAG_COLUMN = "c";
+    public static final String TAG_SUM = "sum";
     
     // XML attribute names
     public static final String ATTR_ROWS = "rows";
     public static final String ATTR_COLUMNS = "columns";
     public static final String ATTR_VALUE = "value";
+    public static final String ATTR_NAME = "name";
+    
+    // Matrix Names for Response objects
+    public static final String ADDITION_MATRIX_RETURN_NAME = "sum";
+    public static final String SUBTRACTION_MATRIX_RETURN_NAME = "difference";
+    public static final String MULTIPLICATION_MATRIX_RETURN_NAME = "product";
+    public static final String INVERSION_MATRIX_RETURN_NAME = "inverse";
+    public static final String SQ_ROOT_MATRIX_RETURN_NAME = "L";
+    public static final String TRANSPOSE_MATRIX_RETURN_NAME = "lTranspose";
+    public static final String VEC_MATRIX_RETURN_NAME = "vec";
+    public static final String VECH_MATRIX_RETURN_NAME = "vech";
+    
 }

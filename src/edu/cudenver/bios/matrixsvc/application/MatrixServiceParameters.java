@@ -23,18 +23,21 @@ package edu.cudenver.bios.matrixsvc.application;
 
 import org.apache.commons.math.linear.RealMatrix;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This is the domain object for the matrix services. 
  * @author Jonathan Cohen
  */
-public class MatrixServiceParameters {
+public class MatrixServiceParameters implements Serializable{
+	public static final long serialVersionUID = MatrixServiceParameters.class.hashCode();
+	
 	//This list holds matrices from the request 
-	private ArrayList<RealMatrix> matrixListFromRequest = null;
+	private ArrayList<NamedRealMatrix> matrixListFromRequest = null;
 	
 	//This list holds matrices for the response
-	private ArrayList<RealMatrix> matrixListForResponse = null;
+	private ArrayList<NamedRealMatrix> matrixListForResponse = null;
 	
 	//This double is the scalar multiplier for the scalar multiplication service
 	private Double scalarMultiplier = null;
@@ -50,7 +53,7 @@ public class MatrixServiceParameters {
 	 * matrices from the request object.
 	 * @param matrix
 	 */
-	public void addMatrixToRequestList(RealMatrix matrix){
+	public void addMatrixToRequestList(NamedRealMatrix matrix){
 		if(matrix != null){
 			matrixListFromRequest.add(matrix);
 		}
@@ -62,7 +65,7 @@ public class MatrixServiceParameters {
 	 * @param matrix is a 
 	 * @see org.apache.commons.math.linear.RealMatrix
 	 */
-	public void addMatrixToResponseList(RealMatrix matrix){
+	public void addMatrixToResponseList(NamedRealMatrix matrix){
 		if(matrix != null){
 			matrixListForResponse.add(matrix);
 		}
@@ -72,7 +75,7 @@ public class MatrixServiceParameters {
 	 * Getter for the list of matrices found in the request object.
 	 * @return ArrayList<RealMatrix>
 	 */
-	public ArrayList<RealMatrix> getMatrixListFromRequest() {
+	public ArrayList<NamedRealMatrix> getMatrixListFromRequest() {
 		return matrixListFromRequest;
 	}
 	
@@ -80,15 +83,17 @@ public class MatrixServiceParameters {
 	 * Setter for the list of matrices found in the request object.
 	 * @param matrixListFromRequest ArrayList<RealMatrix>
 	 */
-	public void setMatrixListFromRequest(ArrayList<RealMatrix> matrixListFromRequest) {
+	public void setMatrixListFromRequest(ArrayList<NamedRealMatrix> matrixListFromRequest) {
 		this.matrixListFromRequest = matrixListFromRequest;
 	}
 	
 	/**
 	 * Getter for the list of matrices for the response.
+	 * @TODO it may contain 1..n matrices depending on operation 
+	 * (check if this is true - can it be null or empty?)
 	 * @return ArrayList<RealMatrix>
 	 */
-	public ArrayList<RealMatrix> getMatrixListForResponse() {
+	public ArrayList<NamedRealMatrix> getMatrixListForResponse() {
 		return matrixListForResponse;
 	}
 	
@@ -96,7 +101,7 @@ public class MatrixServiceParameters {
 	 * Setter for the list of matrices for the response.
 	 * @param matrixListForResponse
 	 */
-	public void setMatrixListForResponse(ArrayList<RealMatrix> matrixListForResponse) {
+	public void setMatrixListForResponse(ArrayList<NamedRealMatrix> matrixListForResponse) {
 		this.matrixListForResponse = matrixListForResponse;
 	}
 	
