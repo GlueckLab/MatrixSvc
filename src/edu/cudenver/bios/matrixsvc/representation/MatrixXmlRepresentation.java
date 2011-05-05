@@ -21,12 +21,17 @@
  */
 package edu.cudenver.bios.matrixsvc.representation;
 
-import org.apache.commons.math.linear.RealMatrix;
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
+import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+
 import org.restlet.data.MediaType;
 import org.restlet.resource.DomRepresentation;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * XML representation of a Matrix.  
@@ -36,17 +41,93 @@ import java.io.IOException;
 public class MatrixXmlRepresentation extends DomRepresentation
 {
     /**
-     * Create an XML representation of the matrix
+     * Create an XML representation of a matrix response
+     * entity body.  
      * 
-     * @param matrix is @see RealMatrix
-     * @throws 
+     * @param params is @see MatrixServiceParameters.  
+     * @throws IOException
      */
-    public MatrixXmlRepresentation(RealMatrix matrix) throws IOException
+    public MatrixXmlRepresentation(MatrixServiceParameters params) throws IOException
     {
         super(MediaType.APPLICATION_XML);
-        
         Document doc = getDocument();
         
+        createMatrixXml(params.getMatrixListForResponse(), doc);
         doc.normalizeDocument();
+    }
+    
+    /**
+     * This method will extract each matrix found in the param matrixList
+     * and create an XML element for it.  It then puts the elements together in the
+     * param doc.
+     * @param matrixList is a list of NamedRealMatrix objects which should be 1...n in
+     * length.
+     * @param doc is the Document object to fill
+     */
+    static void createMatrixXml(ArrayList<NamedRealMatrix> matrixList, Document doc){
+    	// get the count of matrices in the list
+    	int numMatrices = matrixList.size();
+    	
+    	// if the count is greater than 1, add a <matrixList> element
+    	// as the root.  Otherwise, create the root as <matrix>
+    	Element rootElem = null;
+    	if( numMatrices > 1){
+    		// create our root element
+        	rootElem = doc.createElement(MatrixConstants.TAG_MATRIX_LIST);
+        }
+    	else if( numMatrices == 1){
+    		// create our root element
+        	rootElem = doc.createElement(MatrixConstants.TAG_MATRIX);
+    	}
+    	else{
+    		//Houston, we have a problem
+    		throw new IllegalArgumentException("No matrices in createMatrixXml()! " +
+    				"Can't create the response XML.");
+    	}
+    	
+    	//iterate through the list, and create XML of each matrix
+    	for(NamedRealMatrix matrix : matrixList){
+	    	if( rootElem.getNodeName().equals(MatrixConstants.TAG_MATRIX_LIST)){
+	    		//create a <matrix> node as a child
+	    		Element matrixNode = doc.createElement(MatrixConstants.TAG_MATRIX);
+	    		
+	    		//fill it with the matrix
+	    		createMatrixNodeFromRealMatrix(matrixNode, matrix, doc);
+	    		
+	    		//append our matrix node to the rootElem
+	    		rootElem.appendChild(matrixNode);
+	    	}
+	    	else{
+	    		//we have a matrix element already so just fill it
+	    		createMatrixNodeFromRealMatrix(rootElem, matrix, doc);
+	    	}
+    	}
+    }
+
+    static void createMatrixNodeFromRealMatrix(Element theNode, 
+    										   NamedRealMatrix matrix,
+    										   Document doc){
+    	//set the 'name' attribute to the correct name...
+		theNode.setAttribute("name", matrix.getName() );
+    	// set the 'rows' attribute
+		theNode.setAttribute("rows", Integer.toString( matrix.getRowDimension() ) );
+    	// set the 'columns' attribute
+		theNode.setAttribute("columns", Integer.toString( matrix.getColumnDimension() ) );
+    	
+		// loop through the rows in the matrix
+    	for(int rowNum = 0; rowNum < matrix.getRowDimension(); rowNum++){
+    		// create row tag
+    		Element rowNode = doc.createElement(MatrixConstants.TAG_ROW);
+    		theNode.appendChild(rowNode);
+    		
+    		// loop through the columns
+    	    for(int colNum = 0; colNum < matrix.getColumnDimension(); colNum++){
+    	    	//extract the elements using the row index and column index
+    	    	//and put them in column tags
+    	    	Element colNode = doc.createElement(MatrixConstants.TAG_COLUMN);
+    	    	colNode.setNodeValue(Double.toString( matrix.getEntry(rowNum, colNum)) );
+    	    	rowNode.appendChild(colNode);
+    	    }
+    	}
     }
 }

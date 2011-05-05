@@ -32,7 +32,7 @@ import java.io.IOException;
  *
  * @author Jonathan Cohen
  */
-public class MatrixSingleNodeRepresentation extends DomRepresentation
+public class SingleValueRepresentation extends DomRepresentation
 {
     /**
      * Create an XML representation of the specified element.
@@ -40,7 +40,7 @@ public class MatrixSingleNodeRepresentation extends DomRepresentation
      * @param element is a String representation of the element
      * @throws IOException
      */
-    public MatrixSingleNodeRepresentation(String element) throws IOException
+    public SingleValueRepresentation(String element) throws IOException
     {
     	 super(MediaType.APPLICATION_XML);
          
