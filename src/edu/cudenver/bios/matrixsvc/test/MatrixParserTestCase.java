@@ -22,6 +22,7 @@
 package edu.cudenver.bios.matrixsvc.test;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
 
 import org.apache.commons.math.linear.RealMatrix;
@@ -526,7 +527,7 @@ public class MatrixParserTestCase extends TestCase
             MatrixServiceParameters params = 
                 MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc.getDocumentElement());
             
-            ArrayList<RealMatrix> list = params.getMatrixListFromRequest();
+            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
             assertNotNull(list.get(0));
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
@@ -551,7 +552,7 @@ public class MatrixParserTestCase extends TestCase
             MatrixServiceParameters params = 
                 MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc1.getDocumentElement());
             
-            ArrayList<RealMatrix> list = params.getMatrixListFromRequest();
+            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
@@ -616,7 +617,7 @@ public class MatrixParserTestCase extends TestCase
             MatrixServiceParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
                 		validParameterListDoc.getDocumentElement());
-            ArrayList<RealMatrix> list = params.getMatrixListFromRequest();
+            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
@@ -690,7 +691,7 @@ public class MatrixParserTestCase extends TestCase
             MatrixServiceParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
                 		validParameterListDoc.getDocumentElement());
-            ArrayList<RealMatrix> list = params.getMatrixListFromRequest();
+            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
