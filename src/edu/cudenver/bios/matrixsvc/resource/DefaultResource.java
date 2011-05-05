@@ -60,7 +60,7 @@ public class DefaultResource extends Resource
     @Override
     public Representation represent(Variant variant) {
         Representation representation = 
-            new StringRepresentation("Matrix REST Service", MediaType.TEXT_PLAIN);
+            new StringRepresentation("DefaultResource of Matrix REST Service", MediaType.TEXT_PLAIN);
 
         return representation;
     }
