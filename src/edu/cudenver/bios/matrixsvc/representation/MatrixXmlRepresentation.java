@@ -22,9 +22,11 @@
 package edu.cudenver.bios.matrixsvc.representation;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 
+import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
 import org.restlet.resource.DomRepresentation;
 import org.w3c.dom.Document;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
  */
 public class MatrixXmlRepresentation extends DomRepresentation
 {
+	private static Logger logger = MatrixLogger.getInstance();
     /**
      * Create an XML representation of a matrix response
      * entity body.  
@@ -52,7 +55,8 @@ public class MatrixXmlRepresentation extends DomRepresentation
         super(MediaType.APPLICATION_XML);
         Document doc = getDocument();
         
-        createMatrixXml(params.getMatrixListForResponse(), doc);
+        Element rootElement = createMatrixXml(params.getMatrixListForResponse(), doc);
+        doc.appendChild(rootElement);
         doc.normalizeDocument();
     }
     
@@ -64,31 +68,36 @@ public class MatrixXmlRepresentation extends DomRepresentation
      * length.
      * @param doc is the Document object to fill
      */
-    static void createMatrixXml(ArrayList<NamedRealMatrix> matrixList, Document doc){
+    static Element createMatrixXml(ArrayList<NamedRealMatrix> matrixList, Document doc){
     	// get the count of matrices in the list
     	int numMatrices = matrixList.size();
-    	
+    	logger.debug("In createMatrixXML()");
     	// if the count is greater than 1, add a <matrixList> element
     	// as the root.  Otherwise, create the root as <matrix>
     	Element rootElem = null;
     	if( numMatrices > 1){
     		// create our root element
+    		logger.debug("Creating root element "+MatrixConstants.TAG_MATRIX_LIST);
         	rootElem = doc.createElement(MatrixConstants.TAG_MATRIX_LIST);
         }
     	else if( numMatrices == 1){
     		// create our root element
+    		logger.debug("Creating root element "+MatrixConstants.TAG_MATRIX);
         	rootElem = doc.createElement(MatrixConstants.TAG_MATRIX);
     	}
     	else{
     		//Houston, we have a problem
-    		throw new IllegalArgumentException("No matrices in createMatrixXml()! " +
-    				"Can't create the response XML.");
+    		String msg = "No matrices in createMatrixXml()! " +
+			"Can't create the response XML.";
+    		logger.error(msg);
+    		throw new IllegalArgumentException(msg);
     	}
     	
     	//iterate through the list, and create XML of each matrix
     	for(NamedRealMatrix matrix : matrixList){
 	    	if( rootElem.getNodeName().equals(MatrixConstants.TAG_MATRIX_LIST)){
 	    		//create a <matrix> node as a child
+	    		logger.debug("Creating a <matrix> element...");
 	    		Element matrixNode = doc.createElement(MatrixConstants.TAG_MATRIX);
 	    		
 	    		//fill it with the matrix
@@ -102,6 +111,7 @@ public class MatrixXmlRepresentation extends DomRepresentation
 	    		createMatrixNodeFromRealMatrix(rootElem, matrix, doc);
 	    	}
     	}
+    	return rootElem;
     }
 
     static void createMatrixNodeFromRealMatrix(Element theNode, 
@@ -125,7 +135,8 @@ public class MatrixXmlRepresentation extends DomRepresentation
     	    	//extract the elements using the row index and column index
     	    	//and put them in column tags
     	    	Element colNode = doc.createElement(MatrixConstants.TAG_COLUMN);
-    	    	colNode.setNodeValue(Double.toString( matrix.getEntry(rowNum, colNum)) );
+    	    	logger.debug("matrix.getEntry()=" +Double.toString( matrix.getEntry(rowNum, colNum)));
+    	    	colNode.setTextContent(Double.toString( matrix.getEntry(rowNum, colNum)));
     	    	rowNode.appendChild(colNode);
     	    }
     	}
