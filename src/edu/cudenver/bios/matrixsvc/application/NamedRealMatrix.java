@@ -22,6 +22,7 @@
 package edu.cudenver.bios.matrixsvc.application;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
+import org.apache.commons.math.linear.RealMatrix;
 
 /**
  * This is a wrapper for the {@link Array2DRowRealMatrix} 
@@ -38,6 +39,11 @@ public class NamedRealMatrix extends Array2DRowRealMatrix {
 		super();
 	}
 	
+	public NamedRealMatrix(RealMatrix matrix){
+		super();
+		this.data = matrix.getData();
+	}
+	
 	public NamedRealMatrix(int numRows, int numColumns, String name){
 		super(numRows, numColumns);
 		this.name = name;
@@ -49,5 +55,10 @@ public class NamedRealMatrix extends Array2DRowRealMatrix {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+	public NamedRealMatrix add(NamedRealMatrix matrix){
+	  return new NamedRealMatrix( super.add(matrix) );
 	}
 }
