@@ -125,7 +125,7 @@ public class MatrixSubtractionResource extends Resource
             }
             
             //subtract matrix B from matrix A
-            NamedRealMatrix retMatrix = (NamedRealMatrix)matrixA.subtract( matrixB );
+            NamedRealMatrix retMatrix = new NamedRealMatrix( matrixA.subtract( matrixB ) );
             
             //add the name to the matrix we're returning
             retMatrix.setName(MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);

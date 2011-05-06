@@ -121,7 +121,7 @@ public class MatrixMultiplicationResource extends Resource
             }
             
             //perform multiplication
-            NamedRealMatrix retMatrix = (NamedRealMatrix)matrixA.multiply(matrixB);
+            NamedRealMatrix retMatrix = new NamedRealMatrix( matrixA.multiply(matrixB) );
             
             // name the return matrix
             retMatrix.setName(MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);

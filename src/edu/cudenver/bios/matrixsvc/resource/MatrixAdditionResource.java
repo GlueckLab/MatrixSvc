@@ -126,7 +126,7 @@ public class MatrixAdditionResource extends Resource
             }
             
             //add the matrices together
-            NamedRealMatrix retMatrix = matrixA.add(matrixB);
+            NamedRealMatrix retMatrix = new NamedRealMatrix( matrixA.add(matrixB) );
             
             //add the name to the summation matrix we're returning
             retMatrix.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);

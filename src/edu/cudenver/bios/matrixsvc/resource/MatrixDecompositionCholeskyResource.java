@@ -128,7 +128,6 @@ public class MatrixDecompositionCholeskyResource extends Resource
             // perform Cholesky Decomposition
             CholeskyDecompositionImpl cdImpl = new CholeskyDecompositionImpl(matrixInput);
             
-            //TODO:does this work?
             matrixL = new NamedRealMatrix( cdImpl.getL() );
             matrixTranspose = new NamedRealMatrix( cdImpl.getLT() );
             
@@ -140,7 +139,7 @@ public class MatrixDecompositionCholeskyResource extends Resource
             list.add(matrixL);
             list.add(matrixTranspose);
             
-            //put the list in the param object
+            //put the list in the parameter object
             params.setMatrixListForResponse(list);
             
             //create our response representation
