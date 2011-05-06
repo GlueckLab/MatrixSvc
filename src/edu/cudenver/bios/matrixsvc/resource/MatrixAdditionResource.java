@@ -21,12 +21,14 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.log4j.Logger;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -37,7 +39,6 @@ import org.restlet.resource.Representation;
 import org.restlet.resource.Resource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
-import org.restlet.resource.XmlRepresentation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
  */
 public class MatrixAdditionResource extends Resource
 {
+	private static Logger logger = MatrixLogger.getInstance();
 	/**
 	 * Create a new resource to handle power requests.  Data
 	 * is returned as XML.
@@ -92,55 +94,65 @@ public class MatrixAdditionResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
-     * the entity body format.
      * 
      * @param entity HTTP entity body for the request
      */
     @Override 
     public void acceptRepresentation(Representation entity)
     {
-        DomRepresentation rep = new DomRepresentation(entity);
-        RealMatrix matrixA = null;
-        RealMatrix matrixB = null;
-        ArrayList<RealMatrix> matrixList = null;
+        DomRepresentation domRep = new DomRepresentation(entity);
+        NamedRealMatrix matrixA = null;
+        NamedRealMatrix matrixB = null;
+        ArrayList<NamedRealMatrix> matrixList = null;
         
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
-              getAdditionParamsFromDomNode( rep.getDocument().getDocumentElement() );
+              getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
             
             // get the list of matrices for the response
-            matrixList = params.getMatrixListForResponse();
+            matrixList = params.getMatrixListFromRequest();
              
             // get the 2 matrices to add from the list
             matrixA = matrixList.get(0);
             matrixB = matrixList.get(1);
-            if(matrixA == null || matrixB == null){
-            	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-            			"Couldn't retrieve the matrices to add."); 
+            if(matrixA == null || matrixB == null ||
+                    !matrixA.getName().equalsIgnoreCase("A")	||
+                    !matrixB.getName().equalsIgnoreCase("B")){
+            		logger.error("Couldn't retrieve the matrices for addition.");
+                 	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+                 			"Couldn't retrieve the matrices for addition."); 
             }
             
-            //add them
-            RealMatrix retMatrix = matrixA.add(matrixB);
+            //add the matrices together
+            NamedRealMatrix retMatrix = matrixA.add(matrixB);
             
-            //TODO build the response xml
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(retMatrix);
+            //add the name to the summation matrix we're returning
+            retMatrix.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
+            
+            //create a list and add the matrix to it
+            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
+            responseList.add(retMatrix);
+            
+            //add the list to our MatrixServiceParameters object
+            params.setMatrixListForResponse(responseList);
+            
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
         {
-            MatrixLogger.getInstance().error(re.getMessage());
+            logger.error(re.getMessage());
             try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
             catch (IOException e) {}
             getResponse().setStatus(re.getStatus());
         }
         catch (Exception e)
         {
-        	 MatrixLogger.getInstance().error(e.getMessage());
+        	 logger.error(e.getMessage());
              try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
              catch (IOException ioe) {}
              getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
