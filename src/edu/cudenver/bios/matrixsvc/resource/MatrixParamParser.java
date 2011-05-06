@@ -22,10 +22,11 @@
 package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.log4j.Logger;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.w3c.dom.NamedNodeMap;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
  *
  */
 public class MatrixParamParser {
-
+	private static Logger logger = MatrixLogger.getInstance();
 	/**
 	 * @param Node node
 	 * @return MatrixServiceParameters
@@ -101,14 +102,16 @@ public class MatrixParamParser {
 		MatrixServiceParameters params = processParametersFromMatrixList(node);
 		//The columns of A must match the rows of B for this operation.
 		int rowsB, colsA;
-		ArrayList<RealMatrix> matrixList = params.getMatrixListForResponse();
+		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListForResponse();
 		colsA = matrixList.get(0).getColumnDimension();
 		rowsB = matrixList.get(1).getRowDimension();
 		if( colsA != rowsB){
+			String msg = "The number of columns in matrix A (" +colsA+ ") must equal "
+			+ " the number of rows in matrix B (" + rowsB + ").  " +
+			"They are not equal.";
+			logger.error(msg);
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					"The number of columns in matrix A (" +colsA+ ") must equal "
-					+ " the number of rows in matrix B (" + rowsB + ").  " +
-					"They are not equal.");
+					msg);
 		}
 		return params;
 	}
@@ -147,7 +150,7 @@ public class MatrixParamParser {
 	throws ResourceException, IllegalArgumentException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -165,7 +168,7 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -183,7 +186,7 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -201,7 +204,7 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -219,14 +222,15 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         
         // the incoming matrix must be square in order to proceed...
         if( !matrixList.get(0).isSquare()){
-        	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
-        			"This operation requires a square matrix.");
+        	String msg = "This operation requires a square matrix.";
+        	logger.error(msg);
+        	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
         params.setMatrixListFromRequest(matrixList);
         
@@ -243,7 +247,7 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -261,7 +265,7 @@ public class MatrixParamParser {
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
         params.setMatrixListFromRequest(matrixList);
@@ -278,10 +282,12 @@ public class MatrixParamParser {
 	private static void notifyClientBadRequest(String nodeName, String expectedNodeName)
 	throws ResourceException
 	{
-		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
-        		"Invalid node '" + nodeName + 
-        		"' when parsing parameter object.  " +
-        		"It must be " + expectedNodeName + " for this service.");
+		String msg = "Invalid node '" + nodeName + 
+		"' when parsing parameter object.  " +
+		"It must be '" + expectedNodeName + "' for this service.";
+		
+		logger.error(msg);
+		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
 	}
 	
 	/**
@@ -296,7 +302,7 @@ public class MatrixParamParser {
      * @return matrix object
      * @throws ResourceException
      */
-    private static RealMatrix extractMatrixFromDomNode(Node node) 
+    private static NamedRealMatrix extractMatrixFromDomNode(Node node) 
     throws ResourceException,IllegalArgumentException
     {   
     	//make sure we have a matrix
@@ -305,44 +311,68 @@ public class MatrixParamParser {
             notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_MATRIX);
         }
     	
-    	//TODO do we need to extract the 'name' attribute?
-        // parse the rows / columns from the attribute list
+    	// parse the matrix name, and the number of rows & columns 
+    	// from the attribute list
         NamedNodeMap attrs = node.getAttributes();
-        Node numRowsStr = attrs.getNamedItem(MatrixConstants.ATTR_ROWS);
         int numRows = 0;
         int numCols = 0;
-		try 
+		String name =  "";
+        try 
 		{
-			if (numRowsStr != null){
+        	// get the name
+        	Node nameStr = attrs.getNamedItem(MatrixConstants.ATTR_NAME);
+        	if( nameStr != null && !nameStr.equals("")){
+        		name = nameStr.getNodeValue();
+        	}
+        	else{
+        		String msg = "Cannot find attribute " +
+				"'name' in this matrix.";
+        		logger.error(msg);
+        		throw new IllegalArgumentException(msg);
+        	}
+        	
+        	//get the number of rows
+			Node numRowsStr = attrs.getNamedItem(MatrixConstants.ATTR_ROWS);
+	        if (numRowsStr != null){
 				numRows = Integer.parseInt(numRowsStr.getNodeValue());
 			}
 			else{
-				throw new IllegalArgumentException("Cannot find attribute 'rows' in this matrix.");
+				String msg = "Cannot find attribute 'rows' in this matrix.";
+				logger.error(msg);
+				throw new IllegalArgumentException(msg);
 			}
-			Node numColsStr = attrs.getNamedItem(MatrixConstants.ATTR_COLUMNS);
+			
+	        // get the number of columns
+	        Node numColsStr = attrs.getNamedItem(MatrixConstants.ATTR_COLUMNS);
 			if (numColsStr != null){
 				numCols = Integer.parseInt(numColsStr.getNodeValue());
 			}
 			else{
-				throw new IllegalArgumentException("Cannot find attribute 'columns' in this matrix.");
+				String msg = "Cannot find attribute 'columns' in this matrix.";
+				logger.error(msg);
+				throw new IllegalArgumentException(msg);
 			}
 		} 
 		catch (NumberFormatException e) 
 		{
 			e.printStackTrace();
-			throw new IllegalArgumentException("'rows' or 'columns' attributes couldn't be converted " +
-					"from a String to a number.");
+			String msg = "Either 'rows' or 'columns' attributes couldn't be converted " +
+			"from a String to a number.";
+			logger.error(msg);
+			throw new IllegalArgumentException(msg);
 		} 
         
         // make sure we got a reasonable value for rows/columns
         if (numRows <= 0 || numCols <=0)
         {
-            throw new IllegalArgumentException("Invalid matrix rows/columns " +
-            		"specified - must be positive integer");
+        	String msg = "Invalid matrix rows/columns specified - " +
+        			"must be positive integer";
+			logger.error(msg);
+            throw new IllegalArgumentException(msg);
         }
         
         // create a place holder matrix for storing the rows/columns
-        Array2DRowRealMatrix matrix = new Array2DRowRealMatrix(numRows, numCols);
+        NamedRealMatrix matrix = new NamedRealMatrix(numRows, numCols, name);
         
         // parse the children: should contain multiple row objects with 
         // column objects as children
@@ -370,20 +400,24 @@ public class MatrixParamParser {
 							try {
 								val = Double.parseDouble(valStr);
 							} catch (NumberFormatException e) {
-								throw new IllegalArgumentException("Caught exception parsing the value of element (" 
-										+ rowIndex + "," + colIndex + ").  This position contained the following: "
-										+ valStr);
+								String msg = "Caught exception parsing the value of element (" 
+									+ rowIndex + "," + colIndex + ").  This position " +
+											"contained the following: " + valStr;
+								logger.error(msg);
+								throw new IllegalArgumentException(msg);
 							}
                             matrix.setEntry(rowIndex, colIndex, val);
                         }
                         else
                         {
-                            throw new IllegalArgumentException("Missing data in matrix [row=" + rowIndex + " col=" + colIndex + "]");
+                        	String msg = "Missing data in matrix [row=" + rowIndex + " col=" 
+                        		+ colIndex + "]";
+							logger.error(msg);
+                            throw new IllegalArgumentException(msg);
                         }
                     }
                 }
             }
-            
         }
         return matrix;
     }
@@ -409,14 +443,19 @@ public class MatrixParamParser {
     		try {
 				val = Double.parseDouble(valStr);
 			} catch (NumberFormatException e) {
+				
+				String msg = "Scalar multiplier value doesn't " +
+				"parse to a double. Its String value is "+valStr+".";
 				e.printStackTrace();
-				throw new IllegalArgumentException("Scalar multiplier value doesn't " +
-						"parse to a double. Its String value is "+valStr);
+				logger.error(msg);
+				throw new IllegalArgumentException(msg);
 			}
     	}
     	else
     	{
-    		throw new IllegalArgumentException("Scalar multiplier is null or empty.");
+    		String msg = "Scalar multiplier is null or empty.";
+			logger.error(msg);
+    		throw new IllegalArgumentException(msg);
     	}
     	return val.doubleValue();
     }
@@ -451,14 +490,15 @@ public class MatrixParamParser {
         
         //initialize our return object and the list of matrices it will contain
     	MatrixServiceParameters params = new MatrixServiceParameters();
-    	ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+    	ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
     	
     	//iterate over the child nodes (matrices)
     	NodeList nodeList = node.getChildNodes();
     	if( nodeList.getLength() == 0) {
-    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-    		"The matrixList did not contain any matrices.  " +
-    		"It must contain at least one.");
+    		String msg = "The matrixList did not contain any matrices.  " +
+    		"It must contain at least one.";
+    		logger.error(msg);
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	for(int i = 0; i < nodeList.getLength(); i++)
     	{
@@ -498,16 +538,17 @@ public class MatrixParamParser {
         
         //initialize our list of matrices, and the return object.
         MatrixServiceParameters params = new MatrixServiceParameters();
-        ArrayList<RealMatrix> matrixList = new ArrayList<RealMatrix>();
+        ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
         Node scalarValue  = null;
         
         //iterate over the child nodes to find the matrix
     	NodeList nodeList = node.getChildNodes();
     	if(nodeList.getLength() < 2)
     	{
-    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-    				"The parameterList doesn't contain proper number of elements - 2." +
-    				" It only contains "+ nodeList.getLength() + ".");
+    		String msg = "The parameterList doesn't contain proper number of elements - 2." +
+			" It only contains "+ nodeList.getLength() + ".";
+    		logger.error(msg);
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	for(int i = 0; i < nodeList.getLength(); i++)
     	{
@@ -529,12 +570,14 @@ public class MatrixParamParser {
     	}
         
     	if(!matrixFound){
-    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-			"The parameterList doesn't contain a <matrix> element.");
+    		String msg = "The parameterList doesn't contain a <matrix> element.";
+    		logger.error(msg);
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	if(!scalarFound){
-    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-			"The parameterList doesn't contain a <scalarMultiplier> element.");
+    		String msg = "The parameterList doesn't contain a <scalarMultiplier> element.";
+    		logger.error(msg);
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	//set matrix on the parameter object.
     	params.setMatrixListFromRequest(matrixList);
