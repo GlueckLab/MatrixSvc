@@ -21,12 +21,13 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
-import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -91,8 +92,7 @@ public class MatrixSubtractionResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
+     * Please see REST API documentation for details on
      * the entity body format.
      * 
      * @param entity HTTP entity body for the request
@@ -100,33 +100,45 @@ public class MatrixSubtractionResource extends Resource
     @Override 
     public void acceptRepresentation(Representation entity)
     {
-        DomRepresentation rep = new DomRepresentation(entity);
-        RealMatrix matrixA = null;
-        RealMatrix matrixB = null;
-        ArrayList<RealMatrix> matrixList = null;
+    	DomRepresentation domRep = new DomRepresentation(entity);
+        NamedRealMatrix matrixA = null;
+        NamedRealMatrix matrixB = null;
+        ArrayList<NamedRealMatrix> matrixList = null;
         
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
-              getSubtractionParamsFromDomNode( rep.getDocument().getDocumentElement() );
+              getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
             
             // get the list of matrices for the response
-            matrixList = params.getMatrixListForResponse();
+            matrixList = params.getMatrixListFromRequest();
              
             // get the 2 matrices from the list
             matrixA = matrixList.get(0);
             matrixB = matrixList.get(1);
-            if(matrixA == null || matrixB == null){
-            	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-            			"Couldn't retrieve the matrices."); 
+            if(matrixA == null || matrixB == null ||
+                    !matrixA.getName().equalsIgnoreCase("A")	||
+                    !matrixB.getName().equalsIgnoreCase("B")){
+                 	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+                 			"Couldn't retrieve the matrices for subtraction."); 
             }
             
-            //subtract 2 from 1
-            RealMatrix retMatrix = matrixA.subtract( matrixB );
+            //subtract matrix B from matrix A
+            NamedRealMatrix retMatrix = (NamedRealMatrix)matrixA.subtract( matrixB );
             
-            //TODO build the response xml
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(retMatrix);
+            //add the name to the matrix we're returning
+            retMatrix.setName(MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);
+            
+            //create a list and add the matrix to it
+            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
+            responseList.add(retMatrix);
+            
+            //add the list to our MatrixServiceParameters object
+            params.setMatrixListForResponse(responseList);
+            
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
