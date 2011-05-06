@@ -21,8 +21,6 @@
  */
 package edu.cudenver.bios.matrixsvc.application;
 
-import org.apache.commons.math.linear.RealMatrix;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -45,7 +43,7 @@ public class MatrixServiceParameters implements Serializable{
 	//This double is the calculated trace
 	private Double trace = null;
 	
-	//This double is the calculated rankt
+	//This double is the calculated rank
 	private Double rank = null;
 	
 	/**
