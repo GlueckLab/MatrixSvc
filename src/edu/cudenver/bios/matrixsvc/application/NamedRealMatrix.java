@@ -57,8 +57,8 @@ public class NamedRealMatrix extends Array2DRowRealMatrix {
 		this.name = name;
 	}
 	
-	
-	public NamedRealMatrix add(NamedRealMatrix matrix){
-	  return new NamedRealMatrix( super.add(matrix) );
-	}
+// This will allow us to do the operation using a NRM	
+//	public NamedRealMatrix add(NamedRealMatrix matrix){
+//	  return new NamedRealMatrix( super.add(matrix) );
+//	}
 }
