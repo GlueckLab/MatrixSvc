@@ -21,10 +21,15 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
+import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -37,9 +42,10 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
- * Resource for handling requests for Matrix Addition calculations.
+ * Resource for handling requests for Cholesky Decomposition calculations.
  * See the MatrixApplication class for URI mappings
  * 
  * @author Jonathan Cohen
@@ -47,7 +53,7 @@ import java.io.IOException;
 public class MatrixDecompositionCholeskyResource extends Resource
 {
 	/**
-	 * Create a new resource to handle power requests.  Data
+	 * Create a new resource to handle matrix requests.  Data
 	 * is returned as XML.
 	 * 
 	 * @param context restlet context
@@ -88,8 +94,10 @@ public class MatrixDecompositionCholeskyResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
+     * This operation takes a single square matrix (p x p) 
+     * and returns two matrices: the matrix representing its 
+     * square root (L), and its transpose (L’).  Please see 
+     * REST API documentation for details on
      * the entity body format.
      * 
      * @param entity HTTP entity body for the request
@@ -98,21 +106,46 @@ public class MatrixDecompositionCholeskyResource extends Resource
     public void acceptRepresentation(Representation entity)
     {
         DomRepresentation rep = new DomRepresentation(entity);
-
+        NamedRealMatrix matrixInput = null;
+        ArrayList<NamedRealMatrix> matrixList = null;
+        NamedRealMatrix matrixL = null;
+        NamedRealMatrix matrixTranspose = null;
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getDecompCholeskyParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            // get the matrix from the list
+            matrixInput = params.getMatrixListFromRequest().get(0);
+            
+            if(matrixInput == null ||
+               !matrixInput.getName().equalsIgnoreCase("A")){
+            	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+            			"Couldn't retrieve the matrix for Cholesky Decomposition."); 
+            }
+            
+            // perform Cholesky Decomposition
+            CholeskyDecompositionImpl cdImpl = new CholeskyDecompositionImpl(matrixInput);
+            
+            //TODO:does this work?
+            matrixL = new NamedRealMatrix( cdImpl.getL() );
+            matrixTranspose = new NamedRealMatrix( cdImpl.getLT() );
+            
+            matrixL.setName(MatrixConstants.SQ_ROOT_MATRIX_RETURN_NAME);
+            matrixTranspose.setName(MatrixConstants.TRANSPOSE_MATRIX_RETURN_NAME);
+            
+            //put them in a list
+            ArrayList<NamedRealMatrix> list = new ArrayList<NamedRealMatrix>();
+            list.add(matrixL);
+            list.add(matrixTranspose);
+            
+            //put the list in the param object
+            params.setMatrixListForResponse(list);
+            
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
