@@ -21,10 +21,14 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
+import org.apache.commons.math.linear.LUDecompositionImpl;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -37,6 +41,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -97,22 +102,43 @@ public class MatrixInversionResource extends Resource
     @Override 
     public void acceptRepresentation(Representation entity)
     {
-        DomRepresentation rep = new DomRepresentation(entity);
-
+    	DomRepresentation rep = new DomRepresentation(entity);
+        NamedRealMatrix matrixInput = null;
+        ArrayList<NamedRealMatrix> matrixList = null;
+        NamedRealMatrix inverseMatrix = null;
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getMatrixInversionParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            // get the matrix from the list
+            matrixInput = params.getMatrixListFromRequest().get(0);
+            
+            if(matrixInput == null ||
+               !matrixInput.getName().equalsIgnoreCase("A")){
+            	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+            			"Couldn't retrieve the matrix for inversion."); 
+            }
+            
+            // perform inversion
+            inverseMatrix = new NamedRealMatrix( 
+            		        new LUDecompositionImpl(matrixInput)
+            		        .getSolver().getInverse() );
+            
+            // set name
+            inverseMatrix.setName(MatrixConstants.INVERSION_MATRIX_RETURN_NAME);
+            
+            //put it in a list
+            ArrayList<NamedRealMatrix> list = new ArrayList<NamedRealMatrix>();
+            list.add(inverseMatrix);
+            
+            //put the list in the parameter object
+            params.setMatrixListForResponse(list);
+            
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
@@ -130,5 +156,4 @@ public class MatrixInversionResource extends Resource
              getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
         }
     }
-
 }
