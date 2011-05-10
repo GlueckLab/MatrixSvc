@@ -97,7 +97,7 @@ public class MatrixXmlRepresentation extends DomRepresentation
     	for(NamedRealMatrix matrix : matrixList){
 	    	if( rootElem.getNodeName().equals(MatrixConstants.TAG_MATRIX_LIST)){
 	    		//create a <matrix> node as a child
-	    		logger.debug("Creating a <matrix> element...");
+	    		logger.debug("Creating a <matrix> element under the <matrixList> root...");
 	    		Element matrixNode = doc.createElement(MatrixConstants.TAG_MATRIX);
 	    		
 	    		//fill it with the matrix
