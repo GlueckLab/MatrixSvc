@@ -28,9 +28,9 @@ package edu.cudenver.bios.matrixsvc.application;
  *
  */
 public class MatrixConstants {
-    //TODO:  make this an interface?
-	//TODO: refactor to combine with PowerConstants.  Add to one 
-	//shared jar?
+    //TODO: make this an interface?
+	//TODO: refactor to combine with PowerConstants.  Add to one shared jar?
+	
     // XML tag names
     public static final String TAG_ERROR = "error";
     public static final String TAG_MATRIX_LIST = "matrixList";
@@ -60,4 +60,9 @@ public class MatrixConstants {
     public static final String VEC_MATRIX_RETURN_NAME = "vec";
     public static final String VECH_MATRIX_RETURN_NAME = "vech";
     
+    //Constants to pass as a flag indicating which operation the Resource should create
+    public static final int SINGLE_VALUE_POSITIVE_DEFINITE = 1;
+    public static final int SINGLE_VALUE_RANK = 2;
+    public static final int SINGLE_VALUE_TRACE = 3;
+    public static final int SINGLE_VALUE_SCALAR_MULTIPLIER = 4;
 }

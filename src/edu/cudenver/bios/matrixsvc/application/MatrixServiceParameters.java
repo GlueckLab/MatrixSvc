@@ -43,9 +43,20 @@ public class MatrixServiceParameters implements Serializable{
 	//This double is the calculated trace
 	private Double trace = null;
 	
-	//This double is the calculated rank
-	private Double rank = null;
+	//This integer is the calculated rank
+	private Integer rank = null;
 	
+	//This boolean indicates whether the input matrix is positive definite
+	boolean positiveDefinite = false;
+	
+	public Boolean isPositiveDefinite() {
+		return positiveDefinite;
+	}
+
+	public void setPositiveDefinite(boolean positiveDefinite) {
+		this.positiveDefinite = positiveDefinite;
+	}
+
 	/**
 	 * This is a convenience method for adding a matrix to the list of incoming
 	 * matrices from the request object.
@@ -139,18 +150,18 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Getter for the calculated rank.
-	 * @return double
+	 * @return int
 	 */
-	public double getRank() {
-		return rank;
+	public int getRank() {
+		return rank.intValue();
 	}
 	
 	/**
 	 * Setter for the calculated rank.
-	 * @param rank double
+	 * @param rank int
 	 */
-	public void setRank(double rank) {
-		this.rank = rank;
+	public void setRank(int rank) {
+		this.rank = new Integer( rank );
 	}
 	
 }

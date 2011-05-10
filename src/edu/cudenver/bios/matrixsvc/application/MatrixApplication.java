@@ -71,7 +71,7 @@ public class MatrixApplication extends Application
         router.attach("/matrix/subtraction", MatrixSubtractionResource.class);
         
         // Multiplication resource
-        router.attach("/matrix/mult", MatrixMultiplicationResource.class);// Scalar Multiplication resource
+        router.attach("/matrix/mult", MatrixMultiplicationResource.class);
         
         // Scalar Multiplication resource
         router.attach("/matrix/mult/scalar", MatrixScalarMultiplicationResource.class);
