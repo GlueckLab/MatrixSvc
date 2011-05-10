@@ -87,7 +87,31 @@ public class MatrixParamParser {
 	public static MatrixServiceParameters getElementWiseMultiplicationParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		return processParametersFromMatrixList(node);
+		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		
+		//The two matrices must have the same dimensions for this operation.
+		int rowsA, rowsB, colsA, colsB;
+		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
+		try {
+			rowsA = matrixList.get(0).getRowDimension();
+			colsA = matrixList.get(0).getColumnDimension();
+			rowsB = matrixList.get(1).getRowDimension();
+			colsB = matrixList.get(1).getColumnDimension();
+			if( rowsA != rowsB || colsA != colsB){
+				String msg = "The dimensions of matrix A (" + rowsA  + "," + colsA 
+				+ ") must equal the dimensions of matrix B (" + rowsB  + "," + colsB 
+				+ ")." ;
+				logger.error(msg);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+						msg);
+			}
+		} catch( Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+					e.getMessage());
+		}
+		return params;
 	}
 	
 	/**
@@ -102,16 +126,28 @@ public class MatrixParamParser {
 		MatrixServiceParameters params = processParametersFromMatrixList(node);
 		//The columns of A must match the rows of B for this operation.
 		int rowsB, colsA;
-		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListForResponse();
-		colsA = matrixList.get(0).getColumnDimension();
-		rowsB = matrixList.get(1).getRowDimension();
-		if( colsA != rowsB){
-			String msg = "The number of columns in matrix A (" +colsA+ ") must equal "
-			+ " the number of rows in matrix B (" + rowsB + ").  " +
-			"They are not equal.";
-			logger.error(msg);
+		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
+		try {
+			colsA = matrixList.get(0).getColumnDimension();
+			rowsB = matrixList.get(1).getRowDimension();
+			if( colsA != rowsB){
+				String msg = "The number of columns in matrix A (" +colsA+ ") must equal "
+				+ " the number of rows in matrix B (" + rowsB + ").  " +
+				"They are not equal.";
+				logger.error(msg);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+						msg);
+			}
+		} catch (IndexOutOfBoundsException ioobe) {
+			ioobe.printStackTrace();
+			logger.error(ioobe.getMessage());
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					msg);
+					"Multiplication requires two matrices.");
+		} catch( Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+					e.getMessage());
 		}
 		return params;
 	}
@@ -125,7 +161,27 @@ public class MatrixParamParser {
 	public static MatrixServiceParameters getHorizontalDirectProductParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		return processParametersFromMatrixList(node);
+		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		
+		//The two matrices must have the same row dimensions for this operation.
+		int rowsA, rowsB;
+		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
+		try {
+			rowsA = matrixList.get(0).getRowDimension();
+			rowsB = matrixList.get(1).getRowDimension();
+			if( rowsA != rowsB ){
+				String msg = "The row dimensions of matrix A (" + rowsA  + ") " +
+						"must equal the row dimensions of matrix B (" + rowsB  + ")." ;
+				logger.error(msg);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
+			}
+		} catch( Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+					e.getMessage());
+		}
+		return params;
 	}
 
 	/**
@@ -153,6 +209,13 @@ public class MatrixParamParser {
 		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
+        
+        // the incoming matrix must be square in order to proceed...
+        if( !matrixList.get(0).isSquare()){
+        	String msg = "This operation requires a square matrix.";
+        	logger.error(msg);
+        	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+        }
         params.setMatrixListFromRequest(matrixList);
         
         return params;
