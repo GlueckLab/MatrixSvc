@@ -21,31 +21,70 @@
  */
 package edu.cudenver.bios.matrixsvc.representation;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+
+import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
 import org.restlet.resource.DomRepresentation;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
 
 /**
- * XML representation of a single node (trace, rank, positive definite.)  
+ * XML representation of a single, non-matrix node (trace, rank, positive definite,
+ * scalar multiplier.)  
  *
  * @author Jonathan Cohen
  */
 public class SingleValueRepresentation extends DomRepresentation
 {
-    /**
-     * Create an XML representation of the specified element.
-     * 
-     * @param element is a String representation of the element
-     * @throws IOException
-     */
-    public SingleValueRepresentation(String element) throws IOException
-    {
-    	 super(MediaType.APPLICATION_XML);
-         
-         Document doc = getDocument();
-         
-         doc.normalizeDocument();
-    }
+	private static Logger logger = MatrixLogger.getInstance();
+	/**
+	 * Create an XML representation of a single value element XML response
+	 * entity body.  
+	 * 
+	 * @param params is @see MatrixServiceParameters
+	 * @param operationName use MatrixConstants SINGLE_VALUE_{operation name}
+	 * @throws IOException
+	 */
+	public SingleValueRepresentation(MatrixServiceParameters params, int operationName) 
+	throws IOException
+	{
+	    super(MediaType.APPLICATION_XML);
+	    Document doc = getDocument();
+	    logger.debug("In SingleValueRepresentation constructor");
+	    Element rootElement = createXml(params, doc, operationName);
+	    doc.appendChild(rootElement);
+	    doc.normalizeDocument();
+	}
+	
+	static Element createXml(MatrixServiceParameters ourParams, Document doc, int opName){
+		Element rootElem = null;
+		
+		switch(opName){
+		case MatrixConstants.SINGLE_VALUE_POSITIVE_DEFINITE:
+			rootElem = doc.createElement(MatrixConstants.TAG_POSITIVE_DEFINITE);
+			rootElem.setNodeValue(ourParams.isPositiveDefinite().toString());
+			break;
+		
+		case MatrixConstants.SINGLE_VALUE_RANK:
+			rootElem = doc.createElement(MatrixConstants.TAG_RANK);
+			rootElem.setNodeValue(new Double(ourParams.getRank() ).toString());
+			break;
+		
+		case MatrixConstants.SINGLE_VALUE_TRACE:
+			rootElem = doc.createElement(MatrixConstants.TAG_TRACE);
+			rootElem.setNodeValue(new Double(ourParams.getTrace()).toString());
+			break;
+		
+		case MatrixConstants.SINGLE_VALUE_SCALAR_MULTIPLIER:
+			rootElem = doc.createElement(MatrixConstants.TAG_SCALAR_MULTIPLIER);
+			rootElem.setNodeValue(new Double(ourParams.getScalarMultiplier()).toString());
+			break;
+		}
+		return rootElem;
+	}
 }
