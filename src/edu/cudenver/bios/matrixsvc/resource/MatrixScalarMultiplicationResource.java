@@ -21,9 +21,12 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -37,6 +40,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -98,21 +102,33 @@ public class MatrixScalarMultiplicationResource extends Resource
     public void acceptRepresentation(Representation entity)
     {
         DomRepresentation rep = new DomRepresentation(entity);
-
+        Double multiplier = null;
+        NamedRealMatrix matrix = null;
+        
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getScalarMultiplicationParamsFromDomNode( rep.getDocument().getDocumentElement() );
+            multiplier = params.getScalarMultiplier();
+            matrix = params.getMatrixListFromRequest().get(0);
+            
+            //perform multiplication
+            NamedRealMatrix retMatrix = new NamedRealMatrix( matrix.scalarMultiply(multiplier) );
+            
+            //Name the matrix
+            retMatrix.setName(MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
+            
+            //create a list and add the matrix to it
+            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
+            responseList.add(retMatrix);
+            
+            //add the list to our MatrixServiceParameters object
+            params.setMatrixListForResponse(responseList);
 
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
