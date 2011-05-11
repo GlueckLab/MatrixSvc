@@ -126,7 +126,6 @@ public class MatrixKroneckerProductResource extends Resource
             }
             
             //get Kronecker Product
-         // TODO NOT DONE -this isn't compiling - javastatistics classpath issue in ANT
             NamedRealMatrix retMatrix = new NamedRealMatrix( MatrixUtils.KroneckerProduct(matrixA, matrixB) );
             
             // name the return matrix
