@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * @author Jonathan Cohen
  */
 public class MatrixServiceParameters implements Serializable{
+	// In order to implement Serializable
 	public static final long serialVersionUID = MatrixServiceParameters.class.hashCode();
 	
 	//This list holds matrices from the request 
@@ -49,14 +50,9 @@ public class MatrixServiceParameters implements Serializable{
 	//This boolean indicates whether the input matrix is positive definite
 	boolean positiveDefinite = false;
 	
-	public Boolean isPositiveDefinite() {
-		return positiveDefinite;
-	}
-
-	public void setPositiveDefinite(boolean positiveDefinite) {
-		this.positiveDefinite = positiveDefinite;
-	}
-
+	// This value is used in the Positive Definite calculation
+	private Double eigenTolerance = 1.0E-15;
+	
 	/**
 	 * This is a convenience method for adding a matrix to the list of incoming
 	 * matrices from the request object.
@@ -82,7 +78,7 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Getter for the list of matrices found in the request object.
-	 * @return ArrayList<RealMatrix>
+	 * @return ArrayList<NamedRealMatrix>
 	 */
 	public ArrayList<NamedRealMatrix> getMatrixListFromRequest() {
 		return matrixListFromRequest;
@@ -90,7 +86,9 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Setter for the list of matrices found in the request object.
-	 * @param matrixListFromRequest ArrayList<RealMatrix>
+	 * It may contain 0..n matrices depending on operation, 
+	 * and it may be null or empty.
+	 * @param matrixListFromRequest ArrayList<NamedRealMatrix>
 	 */
 	public void setMatrixListFromRequest(ArrayList<NamedRealMatrix> matrixListFromRequest) {
 		this.matrixListFromRequest = matrixListFromRequest;
@@ -98,9 +96,9 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Getter for the list of matrices for the response.
-	 * @TODO it may contain 1..n matrices depending on operation 
-	 * (check if this is true - can it be null or empty?)
-	 * @return ArrayList<RealMatrix>
+	 * It may contain 0..n matrices depending on operation, 
+	 * and it may be null or empty.
+	 * @return ArrayList<NamedRealMatrix>
 	 */
 	public ArrayList<NamedRealMatrix> getMatrixListForResponse() {
 		return matrixListForResponse;
@@ -116,7 +114,7 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Getter for the scalar multiplier used for the scalar 
-	 * multiplication service
+	 * multiplication service.
 	 * @return double
 	 */
 	public double getScalarMultiplier() {
@@ -125,7 +123,7 @@ public class MatrixServiceParameters implements Serializable{
 	
 	/**
 	 * Setter for the scalar multiplier used for the scalar 
-	 * multiplication service
+	 * multiplication service.
 	 * @param scalarMultiplier double
 	 */
 	public void setScalarMultiplier(double scalarMultiplier) {
@@ -164,5 +162,43 @@ public class MatrixServiceParameters implements Serializable{
 		this.rank = new Integer( rank );
 	}
 	
+	/**
+	 * Getter for Eigen Tolerance value used in positive definite determination.
+	 * The variable has a default value of 1.0E-15.  It may be reset with the
+	 * public setter method.
+	 * @return double = 1.0E-15 or value set by user.
+	 */
+	public double getEigenTolerance() {
+		return eigenTolerance;
+	}
+
+	/**
+	 * This setter can be used to change the default Eigen Tolerance value.
+	 * @param eigenTolerance double
+	 */
+	public void setEigenTolerance(double eigenTolerance) {
+		this.eigenTolerance = eigenTolerance;
+	}
+
+	/**
+	 * This getter returns a boolean indicating if the matrix is 
+	 * positive definite.
+	 * 
+	 * @return boolean true if the matrix is positive definite, false if it is not
+	 * (false if any elements <= 0.)
+	 */
+	public Boolean isPositiveDefinite() {
+		return positiveDefinite;
+	}
+
+	/**
+	 * Setter for the attribute positive definite.
+	 * @param positiveDefinite boolean set to true if the matrix is
+	 * positive definite.
+	 */
+	public void setPositiveDefinite(boolean positiveDefinite) {
+		this.positiveDefinite = positiveDefinite;
+	}
+
 }
 
