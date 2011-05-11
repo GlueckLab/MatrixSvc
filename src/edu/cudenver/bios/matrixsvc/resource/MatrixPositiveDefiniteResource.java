@@ -21,10 +21,14 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.SingleValueRepresentation;
 
+import org.apache.commons.math.linear.EigenDecompositionImpl;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -98,21 +102,38 @@ public class MatrixPositiveDefiniteResource extends Resource
     public void acceptRepresentation(Representation entity)
     {
         DomRepresentation rep = new DomRepresentation(entity);
-
+        NamedRealMatrix reqMatrix = null;
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getPositiveDefiniteParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            //get our matrix input
+            reqMatrix = params.getMatrixListFromRequest().get(0);
+            
+
+            //perform operation
+            double[] eigenValues = new EigenDecompositionImpl( reqMatrix, 
+            		params.getEigenTolerance() ).getRealEigenvalues();
+
+            // if all eigenValues are positive, we return true
+            boolean isPositiveDefinite = true;
+            for( int i = 0; i < eigenValues.length; i++){
+            	if( eigenValues[i] <= 0){
+            		isPositiveDefinite = false;
+            		break;
+            	}
+            }
+            
+            // set value in our parameters object
+            params.setPositiveDefinite(isPositiveDefinite);
+            
+            //create our response representation
+            SingleValueRepresentation response = new SingleValueRepresentation(
+            		params,
+            		MatrixConstants.SINGLE_VALUE_POSITIVE_DEFINITE);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
         catch (ResourceException re)
