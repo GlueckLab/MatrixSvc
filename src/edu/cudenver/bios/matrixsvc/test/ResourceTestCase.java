@@ -43,7 +43,8 @@ import junit.framework.TestCase;
  * will confirm whether or not the code checks for data requirements
  * for individual operations such as: the input matrix should be square; the
  * two input matrices must have the same row dimensions; 
- * the columns of A must match the rows of B  
+ * the columns of A must match the rows of B.  
+ * 
  * @author Jonathan Cohen
  */
 public class ResourceTestCase extends TestCase
@@ -57,9 +58,9 @@ public class ResourceTestCase extends TestCase
 			e.printStackTrace();
 		}
 	}
-	/*Document objects to pass to the parser*/
 	
-	//Test Case 1: non square matrix input to operation that requires a square matrix 
+	/*Document objects to pass to the parser*/
+    //Test Case 1: non square matrix input to operation that requires a square matrix 
 	static Document nonSquareMatrixDoc = null;
 	
 	//Test Case 2: Column dimension of A != row dimension of B
@@ -68,8 +69,7 @@ public class ResourceTestCase extends TestCase
 	//Test Case 3: Row dimension of A != row dimension of B
 	static Document invalidRowMatrixDoc = null;
     
-    
-    /*StringBuffers to hold the XML for each request*/
+	/*StringBuffers to hold the XML for each request*/
     
     //Valid XML for an entity body with a matrixList element
     static StringBuffer nonSquareMatrix = new StringBuffer();
@@ -125,7 +125,6 @@ public class ResourceTestCase extends TestCase
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
     }
     
     /**
@@ -136,10 +135,10 @@ public class ResourceTestCase extends TestCase
         super(name);
     }
 
-    /**
+     /**
      * Test that the incoming matrix must be square.
      */
-    public void testDecompCholesky(){
+    public void testNonSquareMatrix(){
     	try {
 			MatrixServiceParameters params = MatrixParamParser.
 			getDecompCholeskyParamsFromDomNode(nonSquareMatrixDoc.getDocumentElement());
@@ -148,7 +147,7 @@ public class ResourceTestCase extends TestCase
         }
         catch(ResourceException e)
         {
-        	System.out.println("Exception caught as expected in testDecompCholesky(): " +
+        	System.out.println("Exception caught as expected in testNonSquareMatrix(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -157,7 +156,7 @@ public class ResourceTestCase extends TestCase
     /**
      * 
      */
-    public void testMultiplication(){
+    public void testColsAMatchRowsB(){
     	//The columns of A must match the rows of B for this operation.
     	try {
 			MatrixServiceParameters params = MatrixParamParser.
@@ -167,7 +166,8 @@ public class ResourceTestCase extends TestCase
         }
         catch(ResourceException e)
         {
-        	System.out.println("Exception caught as expected in testMultiplication(): " +
+        	System.out.println("Exception caught as expected in " +
+        			"testColsAMatchRowsB(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -176,41 +176,23 @@ public class ResourceTestCase extends TestCase
     /**
      * 
      */
-    public void testHorizontalDirectProduct(){
+    public void testSameRowDimensions(){
     	//The two matrices must have the same row dimensions for this operation.
     	try {
 			MatrixServiceParameters params = MatrixParamParser.
-			getHorizontalDirectProductParamsFromDomNode(invalidRowMatrixDoc.getDocumentElement());
+			getHorizontalDirectProductParamsFromDomNode(invalidRowMatrixDoc.
+					getDocumentElement());
 			fail("INVALID non-square matrix parsed successfully by " +
 					"getHorizontalDirectProductParamsFromDomNode()!  BAD!");
         }
         catch(ResourceException e)
         {
-        	System.out.println("Exception caught as expected in testHorizontalDirectProduct(): " +
+        	System.out.println("Exception caught as expected in " +
+        			"testSameRowDimensions(): " +
             		e.getMessage());
             assertTrue(true);
         }
     }
-    
-    /**
-     * the incoming matrix must be square
-     */
-    public void testInversion(){
-    	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getMatrixInversionParamsFromDomNode(nonSquareMatrixDoc.getDocumentElement());
-			fail("INVALID non-square matrix parsed successfully by " +
-					"getMatrixInversionParamsFromDomNode()!  BAD!");
-        }
-        catch(ResourceException e)
-        {
-        	System.out.println("Exception caught as expected in testInversion(): " +
-            		e.getMessage());
-            assertTrue(true);
-        }
-    }
-    
-    
     
     /**
      * Just a reminder to always put this line in a method until
