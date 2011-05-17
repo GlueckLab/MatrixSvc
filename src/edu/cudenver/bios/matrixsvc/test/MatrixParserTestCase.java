@@ -390,7 +390,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixBadRow():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrixBadRow(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -414,7 +414,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixBadMatrixTag():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrixBadMatrixTag(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -438,7 +438,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixRows():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrixRows(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -462,7 +462,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixColumns():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrixColumns(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -486,7 +486,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrix2Numbers():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrix2Numbers(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -510,7 +510,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixNonDigit():" +
+        	System.out.println("Exception caught as expected in testInvalidMatrixNonDigit(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -579,7 +579,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-            System.out.println("Exception caught as expected in testInvalidMatrixListNoMatrix():" +
+            System.out.println("Exception caught as expected in testInvalidMatrixListNoMatrix(): " +
             		e.getMessage());
             assertTrue(true);
         }
