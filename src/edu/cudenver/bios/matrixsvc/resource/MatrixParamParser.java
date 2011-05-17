@@ -37,12 +37,14 @@ import java.util.ArrayList;
 
 /**
  * This is a utility class to parse an XML DOM Node containing the request XML
- * or "Entity Body" in RESTful terminology.
+ * or "Entity Body" in RESTful terminology.  It provides all parsing necessary
+ * for Matrix Services.
  * @author Jonathan Cohen
  *
  */
 public class MatrixParamParser {
 	private static Logger logger = MatrixLogger.getInstance();
+	
 	/**
 	 * @param Node node
 	 * @return MatrixServiceParameters
@@ -131,7 +133,7 @@ public class MatrixParamParser {
 			colsA = matrixList.get(0).getColumnDimension();
 			rowsB = matrixList.get(1).getRowDimension();
 			if( colsA != rowsB){
-				String msg = "The number of columns in matrix A (" +colsA+ ") must equal "
+				String msg = "The number of columns in matrix A (" +colsA+ ") must equal"
 				+ " the number of rows in matrix B (" + rowsB + ").  " +
 				"They are not equal.";
 				logger.error(msg);
@@ -139,12 +141,10 @@ public class MatrixParamParser {
 						msg);
 			}
 		} catch (IndexOutOfBoundsException ioobe) {
-			ioobe.printStackTrace();
 			logger.error(ioobe.getMessage());
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 					"Multiplication requires two matrices.");
 		} catch( Exception e){
-			e.printStackTrace();
 			logger.error(e.getMessage());
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 					e.getMessage());
@@ -171,12 +171,12 @@ public class MatrixParamParser {
 			rowsB = matrixList.get(1).getRowDimension();
 			if( rowsA != rowsB ){
 				String msg = "The row dimensions of matrix A (" + rowsA  + ") " +
-						"must equal the row dimensions of matrix B (" + rowsB  + ")." ;
+						"must equal the row dimensions of matrix B (" + rowsB  + "). " +
+								"They are not equal." ;
 				logger.error(msg);
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
 			}
 		} catch( Exception e){
-			e.printStackTrace();
 			logger.error(e.getMessage());
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 					e.getMessage());
