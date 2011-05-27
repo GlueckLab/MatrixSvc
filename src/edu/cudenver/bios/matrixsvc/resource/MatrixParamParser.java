@@ -21,6 +21,7 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
@@ -92,18 +93,14 @@ public class MatrixParamParser {
 		MatrixServiceParameters params = processParametersFromMatrixList(node);
 		
 		//The two matrices must have the same dimensions for this operation.
-		int rowsA, rowsB, colsA, colsB;
 		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
-		try {
-			rowsA = matrixList.get(0).getRowDimension();
-			colsA = matrixList.get(0).getColumnDimension();
-			rowsB = matrixList.get(1).getRowDimension();
-			colsB = matrixList.get(1).getColumnDimension();
-			if( rowsA != rowsB || colsA != colsB){
-				String msg = "The dimensions of matrix A (" + rowsA  + "," + colsA 
-				+ ") must equal the dimensions of matrix B (" + rowsB  + "," + colsB 
-				+ ")." ;
-				logger.error(msg);
+		try 
+		{
+			boolean ok = MatrixUtils.areDimensionsEqual( matrixList.get(0), matrixList.get(1));
+			if( !ok ){
+				String msg = "Matrix dimensions must be equal" +
+    				" for element-wise multiplication.";
+			    logger.info(msg);
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 						msg);
 			}
@@ -292,7 +289,7 @@ public class MatrixParamParser {
         // the incoming matrix must be square in order to proceed...
         if( !matrixList.get(0).isSquare()){
         	String msg = "This operation requires a square matrix.";
-        	logger.error(msg);
+        	logger.info( msg );
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
         params.setMatrixListFromRequest(matrixList);
@@ -319,7 +316,7 @@ public class MatrixParamParser {
 	}
 	
 	/**
-	 * 
+	 * This method requires that the matrix be symmetrical.
 	 * @param node Node
 	 * @return MatrixServiceParameters
 	 * @throws ResourceException
@@ -331,6 +328,19 @@ public class MatrixParamParser {
 		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
+        NamedRealMatrix a = matrixList.get(0);
+        String msg = "";
+        if( !a.isSquare() ){
+        	msg = "This operation requires a square matrix.  ";
+        }
+        if(! MatrixUtils.isSymmetrical( a ) ){
+        	msg += "This operation requires a symmetrical matrix.";
+        }
+        if( !msg.equals("") ){
+        	logger.info(msg);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+					msg);
+        }
         params.setMatrixListFromRequest(matrixList);
         
         return params;
@@ -349,7 +359,7 @@ public class MatrixParamParser {
 		"' when parsing parameter object.  " +
 		"It must be '" + expectedNodeName + "' for this service.";
 		
-		logger.error(msg);
+		logger.info(msg);
 		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
 	}
 	
@@ -390,7 +400,7 @@ public class MatrixParamParser {
         	else{
         		String msg = "Cannot find attribute " +
 				"'name' in this matrix.";
-        		logger.error(msg);
+        		logger.info(msg);
         		throw new IllegalArgumentException(msg);
         	}
         	
@@ -401,7 +411,7 @@ public class MatrixParamParser {
 			}
 			else{
 				String msg = "Cannot find attribute 'rows' in this matrix.";
-				logger.error(msg);
+				logger.info(msg);
 				throw new IllegalArgumentException(msg);
 			}
 			
@@ -412,7 +422,7 @@ public class MatrixParamParser {
 			}
 			else{
 				String msg = "Cannot find attribute 'columns' in this matrix.";
-				logger.error(msg);
+				logger.info(msg);
 				throw new IllegalArgumentException(msg);
 			}
 		} 
@@ -430,7 +440,7 @@ public class MatrixParamParser {
         {
         	String msg = "Invalid matrix rows/columns specified - " +
         			"must be positive integer";
-			logger.error(msg);
+			logger.info(msg);
             throw new IllegalArgumentException(msg);
         }
         
@@ -466,7 +476,7 @@ public class MatrixParamParser {
 								String msg = "Caught exception parsing the value of element (" 
 									+ rowIndex + "," + colIndex + ").  This position " +
 											"contained the following: " + valStr;
-								logger.error(msg);
+								logger.info(msg);
 								throw new IllegalArgumentException(msg);
 							}
                             matrix.setEntry(rowIndex, colIndex, val);
@@ -475,7 +485,7 @@ public class MatrixParamParser {
                         {
                         	String msg = "Missing data in matrix [row=" + rowIndex + " col=" 
                         		+ colIndex + "]";
-							logger.error(msg);
+							logger.info(msg);
                             throw new IllegalArgumentException(msg);
                         }
                     }
