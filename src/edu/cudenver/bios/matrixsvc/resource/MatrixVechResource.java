@@ -21,9 +21,13 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrix.MatrixUtils;
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -37,6 +41,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -97,24 +102,45 @@ public class MatrixVechResource extends Resource
     @Override 
     public void acceptRepresentation(Representation entity)
     {
-        DomRepresentation rep = new DomRepresentation(entity);
-
+    	DomRepresentation rep = new DomRepresentation(entity);
+        NamedRealMatrix matrixA = null;
+        ArrayList<NamedRealMatrix> matrixList = null;
+        
         try
         {
         	// parse the parameters from the entity body
             MatrixServiceParameters params = MatrixParamParser.
               getMatrixVechParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            // create the appropriate power calculator for this model
-//            GLMMPowerCalculator calculator = new GLMMPowerCalculator();
-            // calculate the detecable difference results
-//            List<Power> results = calculator.getPower(params);
-           
-            // build the response xml
-//            GLMMPowerListXMLRepresentation response = new GLMMPowerListXMLRepresentation(results);
-//            getResponse().setEntity(response); 
+            // get the list of matrices
+            matrixList = params.getMatrixListFromRequest();
+             
+            // get the 1 matrix from the list
+            matrixA = matrixList.get(0);
+            if( matrixA == null || !matrixA.getName().equalsIgnoreCase("A") ){
+               throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+               	   "Couldn't retrieve the matrix for Vech operation."); 
+            }
+            
+            //get Vech return matrix
+            NamedRealMatrix retMatrix = new NamedRealMatrix( MatrixUtils.getVechMatrix(matrixA) );
+            
+            // name the return matrix
+            retMatrix.setName(MatrixConstants.VECH_MATRIX_RETURN_NAME);
+            
+            //create a list and add the matrix to it
+            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
+            responseList.add(retMatrix);
+            
+            //add the list to our MatrixServiceParameters object
+            params.setMatrixListForResponse(responseList);
+
+            //create our response representation
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
+
         catch (ResourceException re)
         {
             MatrixLogger.getInstance().error(re.getMessage());
