@@ -96,7 +96,7 @@ public class MatrixDecompositionCholeskyResource extends Resource
     /**
      * This operation takes a single square matrix (p x p) 
      * and returns two matrices: the matrix representing its 
-     * square root (L), and its transpose (L’).  Please see 
+     * square root (L), and its transpose.  Please see 
      * Matrix Services REST API documentation for details on
      * the entity body format.
      * 
