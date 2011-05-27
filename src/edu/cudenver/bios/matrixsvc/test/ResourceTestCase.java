@@ -21,9 +21,12 @@
  */
 package edu.cudenver.bios.matrixsvc.test;
 
+import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
 
+import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.restlet.resource.ResourceException;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -31,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,6 +49,7 @@ import junit.framework.TestCase;
  * two input matrices must have the same row dimensions; 
  * the columns of A must match the rows of B.  
  * 
+ * It also tests method in the MatrixUtils object for vec, vech, isSymmetrical().
  * @author Jonathan Cohen
  */
 public class ResourceTestCase extends TestCase
@@ -69,13 +74,21 @@ public class ResourceTestCase extends TestCase
 	//Test Case 3: Row dimension of A != row dimension of B
 	static Document invalidRowMatrixDoc = null;
     
+	//Test Case 4: Vec operation
+	static Document vecDoc = null;
+	
+	//Test Case 5: Vech operation
+	static Document vechDoc = null;
+	
 	/*StringBuffers to hold the XML for each request*/
     
     //Valid XML for an entity body with a matrixList element
     static StringBuffer nonSquareMatrix = new StringBuffer();
     static StringBuffer invalidRowColMatrix = new StringBuffer();
     static StringBuffer invalidRowMatrix = new StringBuffer();
-   
+    static StringBuffer vecInputs = new StringBuffer();
+    static StringBuffer vechInputs = new StringBuffer();
+    
     //Initialize the XML using StringBuffers
     static{
     	
@@ -116,10 +129,26 @@ public class ResourceTestCase extends TestCase
 	    .append("</matrix>")
 	    .append("</matrixList>");
     	
+    	vecInputs
+    	.append("<matrix name='A' rows='3' columns='3'>")
+	    .append("<r><c>1</c><c>4</c><c>7</c></r>")
+	    .append("<r><c>2</c><c>5</c><c>8</c></r>")
+	    .append("<r><c>3</c><c>6</c><c>9</c></r>")
+	    .append("</matrix>");
+    	
+    	vechInputs
+    	.append("<matrix name='A' rows='3' columns='3'>")
+    	.append("<r><c>1</c><c>9</c><c>4</c></r>")
+    	.append("<r><c>9</c><c>2</c><c>6</c></r>")
+    	.append("<r><c>4</c><c>6</c><c>3</c></r>")
+    	.append("</matrix>");
+    	
 	    try {
 	    	nonSquareMatrixDoc = builder.parse(new InputSource(new StringReader(nonSquareMatrix.toString())));
 	    	invalidRowColMatrixDoc = builder.parse(new InputSource(new StringReader(invalidRowColMatrix.toString())));
 	    	invalidRowMatrixDoc = builder.parse(new InputSource(new StringReader(invalidRowMatrix.toString())));
+	    	vecDoc = builder.parse(new InputSource(new StringReader(vecInputs.toString())));
+	    	vechDoc = builder.parse(new InputSource(new StringReader(vechInputs.toString())));
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -154,15 +183,16 @@ public class ResourceTestCase extends TestCase
     }
     
     /**
-     * 
+     * Test that getMatrixMultiplicationParamsFromDomNode() complains
+     * if the column dimension of A doesn't match the row dimension of B.
      */
     public void testColsAMatchRowsB(){
-    	//The columns of A must match the rows of B for this operation.
     	try {
 			MatrixServiceParameters params = MatrixParamParser.
 			getMatrixMultiplicationParamsFromDomNode(invalidRowColMatrixDoc.getDocumentElement());
-			fail("INVALID non-square matrix parsed successfully by " +
-					"getMatrixMultiplicationParamsFromDomNode()!  BAD!");
+			fail("column dimension of A doesn't match the row dimension of B " +
+			     " but was parsed by getMatrixMultiplicationParamsFromDomNode()!" +
+			     "  BAD!");
         }
         catch(ResourceException e)
         {
@@ -174,15 +204,16 @@ public class ResourceTestCase extends TestCase
     }
     
     /**
-     * 
+     * Test that getHorizontalDirectProductParamsFromDomNode()
+     * complains if the two matrices don't have the same row dimensions.
      */
     public void testSameRowDimensions(){
-    	//The two matrices must have the same row dimensions for this operation.
+    	//
     	try {
 			MatrixServiceParameters params = MatrixParamParser.
 			getHorizontalDirectProductParamsFromDomNode(invalidRowMatrixDoc.
 					getDocumentElement());
-			fail("INVALID non-square matrix parsed successfully by " +
+			fail("Matrices with different row dimensions parsed successfully by " +
 					"getHorizontalDirectProductParamsFromDomNode()!  BAD!");
         }
         catch(ResourceException e)
@@ -195,11 +226,112 @@ public class ResourceTestCase extends TestCase
     }
     
     /**
+     * Test the getVecMatrix() method written in MatrixUtils.
+     */
+    public void testVec(){
+    	try {
+			MatrixServiceParameters params = MatrixParamParser.
+			getMatrixVecParamsFromDomNode( vecDoc.getDocumentElement());
+			ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
+			NamedRealMatrix result = null;
+			result = new NamedRealMatrix( MatrixUtils.getVecMatrix(list.get(0)) );
+			
+			assertEquals(1.0, result.getEntry(0, 0), 1E-10);
+			assertEquals(2.0, result.getEntry(1, 0), 1E-10);
+			assertEquals(3.0, result.getEntry(2, 0), 1E-10);
+			assertEquals(4.0, result.getEntry(3, 0), 1E-10);
+			assertEquals(5.0, result.getEntry(4, 0), 1E-10);
+			assertEquals(6.0, result.getEntry(5, 0), 1E-10);
+			assertEquals(7.0, result.getEntry(6, 0), 1E-10);
+			assertEquals(8.0, result.getEntry(7, 0), 1E-10);
+			assertEquals(9.0, result.getEntry(8, 0), 1E-10);
+			System.out.println("Vec operation succeeded.");
+        }
+        catch(ResourceException e)
+        {
+        	fail(e.getMessage());
+        }
+    }
+    
+    /**
+     * Test the getVechMatrix() method written in MatrixUtils.
+     */
+    public void testVech(){
+    	try {
+			MatrixServiceParameters params = MatrixParamParser.
+			getMatrixVechParamsFromDomNode( vechDoc.getDocumentElement());
+			ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
+			NamedRealMatrix result = new NamedRealMatrix( MatrixUtils.getVechMatrix(list.get(0)) );
+			
+			assertEquals(1.0, result.getEntry(0, 0), 1E-10);
+			assertEquals(9.0, result.getEntry(1, 0), 1E-10);
+			assertEquals(4.0, result.getEntry(2, 0), 1E-10);
+			assertEquals(2.0, result.getEntry(3, 0), 1E-10);
+			assertEquals(6.0, result.getEntry(4, 0), 1E-10);
+			assertEquals(3.0, result.getEntry(5, 0), 1E-10);
+			System.out.println("Vech operation succeeded.");
+        }
+        catch(ResourceException e)
+        {
+        	e.printStackTrace();
+        	fail(e.getMessage());
+        }
+    }
+    
+    /**
+     * Test the isSymmetrical() method written in MatrixUtils.
+     */
+    public void testSymmetrical()
+    {
+    	try 
+    	{
+    		//create a symmetrical matrix
+    		Array2DRowRealMatrix input = new Array2DRowRealMatrix(3, 3);
+    		input.setEntry(0, 0, 1.0);
+    		input.setEntry(0, 1, 9.0);
+    		input.setEntry(0, 2, 4.0);
+    		input.setEntry(1, 0, 9.0);
+    		input.setEntry(1, 1, 2.0);
+    		input.setEntry(1, 2, 6.0);
+    		input.setEntry(2, 0, 4.0);
+    		input.setEntry(2, 1, 6.0);
+    		input.setEntry(2, 2, 3.0);
+    		
+			assertTrue(MatrixUtils.isSymmetrical(input));
+			System.out.println("testSymmetrical succeeded.");
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+    }
+    
+    public void testNonSymmetrical(){
+    	try 
+    	{
+    		//create a non-symmetrical matrix
+    		Array2DRowRealMatrix input = new Array2DRowRealMatrix(3, 3);
+    		input.setEntry(0, 0, 1.0);
+    		input.setEntry(0, 1, 999.0);//non conforming
+    		input.setEntry(0, 2, 4.0);
+    		input.setEntry(1, 0, 9.0);
+    		input.setEntry(1, 1, 2.0);
+    		input.setEntry(1, 2, 6.0);
+    		input.setEntry(2, 0, 4.0);
+    		input.setEntry(2, 1, 6.0);
+    		input.setEntry(2, 2, 3.0);
+    		assertFalse( MatrixUtils.isSymmetrical(input) );
+    		System.out.println("testNonSymmetrical succeeded.");
+		} catch (Exception e) {
+			e.printStackTrace();
+            System.out.println(e.getMessage());
+		}
+    }
+    
+    /**
      * Just a reminder to always put this line in a method until
      * it actually works against production code.
      */
-    public void testTemplate(){
-    	//fail("Not yet implemented.");
-    	
-    }
+//    public void testTemplate(){
+//    	fail("Not yet implemented.");
+//    	
+//    }
 }

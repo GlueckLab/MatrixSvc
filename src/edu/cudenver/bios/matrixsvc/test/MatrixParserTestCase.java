@@ -21,11 +21,13 @@
  */
 package edu.cudenver.bios.matrixsvc.test;
 
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -51,6 +53,7 @@ import junit.framework.TestCase;
  */
 public class MatrixParserTestCase extends TestCase
 {
+	private static Logger logger = MatrixLogger.getInstance();
 	static DocumentBuilder builder = null;
 	static{
 	    DocumentBuilderFactory factory =  DocumentBuilderFactory.newInstance();
@@ -390,7 +393,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixBadRow(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrixBadRow(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -414,7 +417,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixBadMatrixTag(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrixBadMatrixTag(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -438,7 +441,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixRows(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrixRows(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -462,7 +465,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixColumns(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrixColumns(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -486,7 +489,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrix2Numbers(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrix2Numbers(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -510,7 +513,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-        	System.out.println("Exception caught as expected in testInvalidMatrixNonDigit(): " +
+        	logger.info("Exception caught as expected in testInvalidMatrixNonDigit(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -579,7 +582,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-            System.out.println("Exception caught as expected in testInvalidMatrixListNoMatrix(): " +
+            logger.info("Exception caught as expected in testInvalidMatrixListNoMatrix(): " +
             		e.getMessage());
             assertTrue(true);
         }
@@ -599,7 +602,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-            System.out.println("Exception caught as expected in testInvalidMatrixListMisc():" +
+            logger.info("Exception caught as expected in testInvalidMatrixListMisc():" +
             		e.getMessage());
             assertTrue(true);
         }
@@ -649,7 +652,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-            System.out.println("Exception caught as expected in " +
+            logger.info("Exception caught as expected in " +
             		"testInvalidParameterList(): " + e.getMessage());
             assertTrue(true);
         }
@@ -673,7 +676,7 @@ public class MatrixParserTestCase extends TestCase
         }
         catch(Exception e)
         {
-            System.out.println("Exception caught as expected in " +
+            logger.info("Exception caught as expected in " +
             		"testInvalidParameterListNoScalar(): " + e.getMessage());
             assertTrue(true);
         }
