@@ -26,10 +26,11 @@
     <property name="sourcedir" value="${basedir}/../src" />
     <property name="bindir" value="${basedir}/bin" />
     <property name="wcdir" value="${basedir}/../WebContent" />
-	<property name="javastatsdir" value="${basedir}/../../JavaStatistics/bin" />
+	<property name="javastatsdir" value="${basedir}/../../JavaStatistics/build/bin" />
 	<property name="thirdpartydir" value="${basedir}/../../thirdparty" />
 	<property name="javadocdir" value="${basedir}/javadoc" />
 	<property name="test.data.dir" value="${basedir}/TestData" />
+	<property name="config.dir" value="../config" />
 	
 	<fileset id="thirdpartylibs" dir="${thirdpartydir}">
 		<include name="ApacheCommonsMath/2.1/lib/commons-math-2.1.jar" />
@@ -41,11 +42,18 @@
 		<include name="log4j/1.2.15/lib/log4j-1.2.15.jar" />
 	</fileset>
 
+	<fileset id="javastatslib" dir="${javastatsdir}">
+        <include name="JavaStatistics.jar"/>
+    </fileset>
+	
+	<fileset id="log4jprops" dir="${config.dir}">
+	    <include name="log4j.properties"/>
+    </fileset>
+            
 	<path id="libraries">
 		<fileset refid="thirdpartylibs"/>
-    	<fileset dir="${javastatsdir}">
-            <include name="JavaStatistics.jar"/>
-        </fileset>
+		<fileset refid="javastatslib"/>
+		<fileset refid="log4jprops"/>
 	</path>
 		
     <target name="clean">
@@ -84,9 +92,7 @@
         </copy>
         <copy todir="${wardir}/WEB-INF/lib" flatten="true" >
             <fileset refid="thirdpartylibs" />
-        	<fileset dir="${javastatsdir}">
-                <include name="JavaStatistics.jar"/>
-            </fileset>
+        	<fileset refid="javastatslib" />
         </copy>
     </target>
 
@@ -96,7 +102,7 @@
         <war destfile="${bindir}/${svcname}.war" webxml="${wardir}/WEB-INF/web.xml">
             <webinf dir="${wardir}/WEB-INF" excludes="**/web.xml"/>
             <classes dir="${wardir}/WEB-INF/classes"/>
-            <classes dir="../config">
+            <classes dir="${config.dir}">
                 <include name="log4j.properties"/>
             </classes>
             <lib dir="${wardir}/WEB-INF/lib" includes="**/*.jar"/>
@@ -130,9 +136,11 @@
             </classpath>
             <formatter type="plain" />
   		  <test name="edu.cudenver.bios.matrixsvc.test.MatrixParserTestCase" 
-  		  	    haltonfailure="no"
-  		  	    todir="${test.data.dir}">
-  		  </test>
+  		  	   haltonfailure="no"
+  		  	  todir="${test.data.dir}"/>
+  		  <test name="edu.cudenver.bios.matrixsvc.test.ResourceTestCase" 
+              haltonfailure="no"
+              todir="${test.data.dir}"/>
         </junit>
     </target>
 	<target name="deploy" description="This target moves the ${svcname}.war 
