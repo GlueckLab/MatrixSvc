@@ -94,22 +94,14 @@ public class MatrixParamParser {
 		
 		//The two matrices must have the same dimensions for this operation.
 		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
-		try 
-		{
-			boolean ok = MatrixUtils.areDimensionsEqual( matrixList.get(0), matrixList.get(1));
-			if( !ok ){
-				String msg = "Matrix dimensions must be equal" +
-    				" for element-wise multiplication.";
-			    logger.info(msg);
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-						msg);
-			}
-		} catch( Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					e.getMessage());
+		boolean ok = MatrixUtils.areDimensionsEqual( matrixList.get(0), matrixList.get(1));
+		if( !ok ){
+			String msg = "Matrix dimensions must be equal" +
+				" for element-wise multiplication.";
+		    logger.info(msg);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
 		}
+		
 		return params;
 	}
 	
@@ -126,25 +118,14 @@ public class MatrixParamParser {
 		//The columns of A must match the rows of B for this operation.
 		int rowsB, colsA;
 		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
-		try {
-			colsA = matrixList.get(0).getColumnDimension();
-			rowsB = matrixList.get(1).getRowDimension();
-			if( colsA != rowsB){
-				String msg = "The number of columns in matrix A (" +colsA+ ") must equal"
-				+ " the number of rows in matrix B (" + rowsB + ").  " +
-				"They are not equal.";
-				logger.error(msg);
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-						msg);
-			}
-		} catch (IndexOutOfBoundsException ioobe) {
-			logger.error(ioobe.getMessage());
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					"Multiplication requires two matrices.");
-		} catch( Exception e){
-			logger.error(e.getMessage());
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					e.getMessage());
+		colsA = matrixList.get(0).getColumnDimension();
+		rowsB = matrixList.get(1).getRowDimension();
+		if( colsA != rowsB){
+			String msg = "The number of columns in matrix A (" +colsA+ ") must equal"
+			+ " the number of rows in matrix B (" + rowsB + ").  " +
+			"They are not equal.";
+			logger.info(msg);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
 		}
 		return params;
 	}
@@ -163,20 +144,14 @@ public class MatrixParamParser {
 		//The two matrices must have the same row dimensions for this operation.
 		int rowsA, rowsB;
 		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
-		try {
-			rowsA = matrixList.get(0).getRowDimension();
-			rowsB = matrixList.get(1).getRowDimension();
-			if( rowsA != rowsB ){
-				String msg = "The row dimensions of matrix A (" + rowsA  + ") " +
-						"must equal the row dimensions of matrix B (" + rowsB  + "). " +
-								"They are not equal." ;
-				logger.error(msg);
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
-			}
-		} catch( Exception e){
-			logger.error(e.getMessage());
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-					e.getMessage());
+		rowsA = matrixList.get(0).getRowDimension();
+		rowsB = matrixList.get(1).getRowDimension();
+		if( rowsA != rowsB ){
+			String msg = "The row dimensions of matrix A (" + rowsA  + ") " +
+					"must equal the row dimensions of matrix B (" + rowsB  + "). " +
+							"They are not equal." ;
+			logger.info(msg);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
 		}
 		return params;
 	}
@@ -210,7 +185,7 @@ public class MatrixParamParser {
         // the incoming matrix must be square in order to proceed...
         if( !matrixList.get(0).isSquare()){
         	String msg = "This operation requires a square matrix.";
-        	logger.error(msg);
+        	logger.info(msg);
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
         params.setMatrixListFromRequest(matrixList);
@@ -431,7 +406,7 @@ public class MatrixParamParser {
 			e.printStackTrace();
 			String msg = "Either 'rows' or 'columns' attributes couldn't be converted " +
 			"from a String to a number.";
-			logger.error(msg);
+			logger.info(msg);
 			throw new IllegalArgumentException(msg);
 		} 
         
@@ -519,15 +494,14 @@ public class MatrixParamParser {
 				
 				String msg = "Scalar multiplier value doesn't " +
 				"parse to a double. Its String value is "+valStr+".";
-				e.printStackTrace();
-				logger.error(msg);
+				logger.info(msg);
 				throw new IllegalArgumentException(msg);
 			}
     	}
     	else
     	{
     		String msg = "Scalar multiplier is null or empty.";
-			logger.error(msg);
+			logger.info(msg);
     		throw new IllegalArgumentException(msg);
     	}
     	return val.doubleValue();
@@ -570,7 +544,7 @@ public class MatrixParamParser {
     	if( nodeList.getLength() == 0) {
     		String msg = "The matrixList did not contain any matrices.  " +
     		"It must contain at least one.";
-    		logger.error(msg);
+    		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	for(int i = 0; i < nodeList.getLength(); i++)
@@ -620,7 +594,7 @@ public class MatrixParamParser {
     	{
     		String msg = "The parameterList doesn't contain proper number of elements - 2." +
 			" It only contains "+ nodeList.getLength() + ".";
-    		logger.error(msg);
+    		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	for(int i = 0; i < nodeList.getLength(); i++)
@@ -644,12 +618,12 @@ public class MatrixParamParser {
         
     	if(!matrixFound){
     		String msg = "The parameterList doesn't contain a <matrix> element.";
-    		logger.error(msg);
+    		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	if(!scalarFound){
     		String msg = "The parameterList doesn't contain a <scalarMultiplier> element.";
-    		logger.error(msg);
+    		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	//set matrix on the parameter object.
