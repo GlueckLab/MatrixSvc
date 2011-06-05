@@ -297,7 +297,7 @@ public class ResourceTestCase extends TestCase
     		input.setEntry(2, 1, 6.0);
     		input.setEntry(2, 2, 3.0);
     		
-			assertTrue(MatrixUtils.isSymmetrical(input));
+			assertTrue(MatrixUtils.isSymmetric(input));
 			System.out.println("testSymmetrical succeeded.");
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -318,7 +318,7 @@ public class ResourceTestCase extends TestCase
     		input.setEntry(2, 0, 4.0);
     		input.setEntry(2, 1, 6.0);
     		input.setEntry(2, 2, 3.0);
-    		assertFalse( MatrixUtils.isSymmetrical(input) );
+    		assertFalse( MatrixUtils.isSymmetric(input) );
     		System.out.println("testNonSymmetrical succeeded.");
 		} catch (Exception e) {
 			e.printStackTrace();
