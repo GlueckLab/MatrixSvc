@@ -128,7 +128,7 @@ public class MatrixHorizontalDirectMultiplicationResource extends Resource
             }
             
             //perform multiplication
-            retMatrix = new NamedRealMatrix( MatrixUtils.horizontalDirectProduct(matrixA, matrixB) );
+            retMatrix = new NamedRealMatrix( MatrixUtils.getHorizontalDirectProduct(matrixA, matrixB) );
 
             // name the return matrix
             retMatrix.setName(MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
