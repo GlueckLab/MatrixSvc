@@ -308,7 +308,7 @@ public class MatrixParamParser {
         if( !a.isSquare() ){
         	msg = "This operation requires a square matrix.  ";
         }
-        if(! MatrixUtils.isSymmetrical( a ) ){
+        if(! MatrixUtils.isSymmetric( a ) ){
         	msg += "This operation requires a symmetrical matrix.";
         }
         if( !msg.equals("") ){
