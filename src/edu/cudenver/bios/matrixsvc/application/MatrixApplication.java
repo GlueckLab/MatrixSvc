@@ -65,50 +65,49 @@ public class MatrixApplication extends Application
 
         /* attributes of matrix resources */
         // Matrix Addition resource 
-        router.attach("/matrix/addition", MatrixAdditionResource.class);
+        router.attach("/addition", MatrixAdditionResource.class);
         
         // Matrix Subtraction resource
-        router.attach("/matrix/subtraction", MatrixSubtractionResource.class);
+        router.attach("/subtraction", MatrixSubtractionResource.class);
         
         // Multiplication resource
-        router.attach("/matrix/mult", MatrixMultiplicationResource.class);
+        router.attach("/mult", MatrixMultiplicationResource.class);
         
         // Scalar Multiplication resource
-        router.attach("/matrix/mult/scalar", MatrixScalarMultiplicationResource.class);
+        router.attach("/mult/scalar", MatrixScalarMultiplicationResource.class);
         
         // Element-Wise Multiplication resource
-        router.attach("/matrix/mult/elementWise", MatrixElementWiseMultiplicationResource.class);
+        router.attach("/mult/elementWise", MatrixElementWiseMultiplicationResource.class);
         
         // Horizontal Direct Multiplication resource
-        router.attach("/matrix/mult/horizontalDir", MatrixHorizontalDirectMultiplicationResource.class);
+        router.attach("/mult/horizontalDir", MatrixHorizontalDirectMultiplicationResource.class);
         
         // Kronecker Product Multiplication resource
-        router.attach("/matrix/mult/kronecker", MatrixKroneckerProductResource.class);
+        router.attach("/mult/kronecker", MatrixKroneckerProductResource.class);
         
         // Matrix Inversion resource
-        router.attach("/matrix/inverse", MatrixInversionResource.class);
+        router.attach("/inverse", MatrixInversionResource.class);
         
         // Matrix Rank resource
-        router.attach("/matrix/rank", MatrixRankResource.class);
+        router.attach("/rank", MatrixRankResource.class);
         
         // Matrix Trace resource
-        router.attach("/matrix/trace", MatrixTraceResource.class);
+        router.attach("/trace", MatrixTraceResource.class);
         
         // Matrix Positive Definite resource
-        router.attach("/matrix/positiveDefinite", MatrixPositiveDefiniteResource.class);
+        router.attach("/positiveDefinite", MatrixPositiveDefiniteResource.class);
         
         // Matrix Orthogonal Polynomial Contrast resource
-        router.attach("/matrix/contrast", MatrixContrastResource.class);
+        router.attach("/contrast", MatrixContrastResource.class);
         
         //Matrix Cholesky Decomposition resource
-        router.attach("/matrix/decomposition/cholesky", MatrixDecompositionCholeskyResource.class);
+        router.attach("/decomposition/cholesky", MatrixDecompositionCholeskyResource.class);
         
         //Matrix Vec resource
-        router.attach("/matrix/vec", MatrixVecResource.class);
+        router.attach("/vec", MatrixVecResource.class);
         
         //Matrix Vech resource
-        router.attach("/matrix/vech", MatrixVechResource.class);
-        
+        router.attach("/vech", MatrixVechResource.class);
         
         return router;
     }
