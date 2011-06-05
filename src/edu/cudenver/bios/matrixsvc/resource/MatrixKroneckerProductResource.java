@@ -126,7 +126,7 @@ public class MatrixKroneckerProductResource extends Resource
             }
             
             //get Kronecker Product
-            NamedRealMatrix retMatrix = new NamedRealMatrix( MatrixUtils.KroneckerProduct(matrixA, matrixB) );
+            NamedRealMatrix retMatrix = new NamedRealMatrix( MatrixUtils.getKroneckerProduct(matrixA, matrixB) );
             
             // name the return matrix
             retMatrix.setName(MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
