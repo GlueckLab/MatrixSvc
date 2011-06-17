@@ -67,17 +67,18 @@ public class SingleValueRepresentation extends DomRepresentation
 		switch(opName){
 		case MatrixConstants.SINGLE_VALUE_POSITIVE_DEFINITE:
 			rootElem = doc.createElement(MatrixConstants.TAG_POSITIVE_DEFINITE);
-			rootElem.setNodeValue(ourParams.isPositiveDefinite().toString());
+			rootElem.setTextContent(ourParams.isPositiveDefinite().toString());
 			break;
 		
 		case MatrixConstants.SINGLE_VALUE_RANK:
 			rootElem = doc.createElement(MatrixConstants.TAG_RANK);
-			rootElem.setNodeValue(new Double(ourParams.getRank() ).toString());
+			logger.debug("RANK="+ourParams.getRank());
+			rootElem.setTextContent(new Double(ourParams.getRank() ).toString());
 			break;
 		
 		case MatrixConstants.SINGLE_VALUE_TRACE:
 			rootElem = doc.createElement(MatrixConstants.TAG_TRACE);
-			rootElem.setNodeValue(new Double(ourParams.getTrace()).toString());
+			rootElem.setTextContent(new Double(ourParams.getTrace()).toString());
 			break;
 		
 		case MatrixConstants.SINGLE_VALUE_SCALAR_MULTIPLIER:
