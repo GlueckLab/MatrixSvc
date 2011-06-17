@@ -22,6 +22,7 @@
 package edu.cudenver.bios.matrixsvc.resource;
 
 
+import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
@@ -29,7 +30,7 @@ import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
+import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -124,23 +125,25 @@ public class MatrixDecompositionCholeskyResource extends Resource
             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
             			"Couldn't retrieve the matrix for Cholesky Decomposition."); 
             }
+            ArrayList<RealMatrix> list = new ArrayList<RealMatrix>();
             
             // perform Cholesky Decomposition
-            CholeskyDecompositionImpl cdImpl = new CholeskyDecompositionImpl(matrixInput);
+            list = MatrixUtils.getCholeskyDecomposition(matrixInput);
             
-            matrixL = new NamedRealMatrix( cdImpl.getL() );
-            matrixTranspose = new NamedRealMatrix( cdImpl.getLT() );
+            //put them in a list... this is a little hokey, but we wanted the library
+            //method to return a list of RealMatrices.
+            matrixL = new NamedRealMatrix( list.get(0) );
+            matrixTranspose = new NamedRealMatrix( list.get(1) );
             
             matrixL.setName(MatrixConstants.SQ_ROOT_MATRIX_RETURN_NAME);
             matrixTranspose.setName(MatrixConstants.TRANSPOSE_MATRIX_RETURN_NAME);
             
-            //put them in a list
-            ArrayList<NamedRealMatrix> list = new ArrayList<NamedRealMatrix>();
-            list.add(matrixL);
-            list.add(matrixTranspose);
+            ArrayList<NamedRealMatrix> namedList = new ArrayList<NamedRealMatrix>();
+            namedList.add(matrixL);
+            namedList.add(matrixTranspose);
             
             //put the list in the parameter object
-            params.setMatrixListForResponse(list);
+            params.setMatrixListForResponse(namedList);
             
             //create our response representation
             MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
