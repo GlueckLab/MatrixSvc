@@ -53,12 +53,12 @@ public class MatrixAdditionResource extends Resource
 {
 	private static Logger logger = MatrixLogger.getInstance();
 	/**
-	 * Create a new resource to handle power requests.  Data
-	 * is returned as XML.
+	 * Create a new resource to handle addition requests.  Data
+	 * returned as XML.
 	 * 
 	 * @param context restlet context
-	 * @param request http request object
-	 * @param response http response object
+	 * @param request restlet request object
+	 * @param response restlet response object
 	 */
     public MatrixAdditionResource(Context context, Request request, Response response) 
     {
@@ -94,11 +94,13 @@ public class MatrixAdditionResource extends Resource
     }
 
     /**
-     * 
+     * This method expects a <matrixList> which contains 2..n matrices
+     * to add.
      * @param entity HTTP entity body for the request
      */
     @Override 
     public void acceptRepresentation(Representation entity)
+    throws ResourceException
     {
         DomRepresentation domRep = new DomRepresentation(entity);
         NamedRealMatrix matrixA = null;
@@ -111,29 +113,27 @@ public class MatrixAdditionResource extends Resource
             MatrixServiceParameters params = MatrixParamParser.
               getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
             
-            // get the list of matrices for the response
+            // get the list of matrices from the request
             matrixList = params.getMatrixListFromRequest();
-             
-            // get the 2 matrices to add from the list
-            matrixA = matrixList.get(0);
-            matrixB = matrixList.get(1);
-            if(matrixA == null || matrixB == null ||
-                    !matrixA.getName().equalsIgnoreCase("A")	||
-                    !matrixB.getName().equalsIgnoreCase("B")){
-            		logger.error("Couldn't retrieve the matrices for addition.");
-                 	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-                 			"Couldn't retrieve the matrices for addition."); 
+            if(matrixList == null || matrixList.size() < 2){
+            	String msg = "Matrix list must contain at least 2 matrices for addition.";
+            	logger.info(msg);
+             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
             }
             
             //add the matrices together
-            NamedRealMatrix retMatrix = new NamedRealMatrix( matrixA.add(matrixB) );
+            matrixA = matrixList.get(0);
+            for(int i = 1; i < matrixList.size(); i++){
+            	matrixB = matrixList.get(i);
+            	matrixA = new NamedRealMatrix( matrixA.add(matrixB) );
+            }
             
             //add the name to the summation matrix we're returning
-            retMatrix.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
+            matrixA.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
             
             //create a list and add the matrix to it
             ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
-            responseList.add(retMatrix);
+            responseList.add(matrixA);
             
             //add the list to our MatrixServiceParameters object
             params.setMatrixListForResponse(responseList);
