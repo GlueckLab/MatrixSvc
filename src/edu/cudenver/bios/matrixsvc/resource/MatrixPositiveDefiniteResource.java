@@ -21,6 +21,7 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
@@ -28,7 +29,6 @@ import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.SingleValueRepresentation;
 
-import org.apache.commons.math.linear.EigenDecompositionImpl;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -112,19 +112,8 @@ public class MatrixPositiveDefiniteResource extends Resource
             //get our matrix input
             reqMatrix = params.getMatrixListFromRequest().get(0);
             
-
             //perform operation
-            double[] eigenValues = new EigenDecompositionImpl( reqMatrix, 
-            		params.getEigenTolerance() ).getRealEigenvalues();
-
-            // if all eigenValues are positive, we return true
-            boolean isPositiveDefinite = true;
-            for( int i = 0; i < eigenValues.length; i++){
-            	if( eigenValues[i] <= 0){
-            		isPositiveDefinite = false;
-            		break;
-            	}
-            }
+            boolean isPositiveDefinite = MatrixUtils.isPositiveDefinite(reqMatrix);
             
             // set value in our parameters object
             params.setPositiveDefinite(isPositiveDefinite);
