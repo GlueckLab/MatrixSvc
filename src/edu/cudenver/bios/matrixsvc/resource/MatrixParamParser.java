@@ -242,28 +242,39 @@ public class MatrixParamParser {
 		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		
         matrixList.add( extractMatrixFromDomNode(node) );
+        // the incoming matrix must be square in order to proceed...
+        if( !matrixList.get(0).isSquare()){
+        	String msg = "This operation requires a square matrix.";
+        	logger.info( msg );
+        	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+        }
         params.setMatrixListFromRequest(matrixList);
         
         return params;
 	}
 	
 	/**
-	 * 
+	 * This method parses a matrix node into a NamedRealMatrix object.
 	 * @param node Node
 	 * @return MatrixServiceParameters
-	 * @throws ResourceException
+	 * @throws ResourceException if the incoming matrix is non-symmetric
+	 * or NOT positive definite.
 	 */
 	public static MatrixServiceParameters getDecompCholeskyParamsFromDomNode(Node node)
 	throws ResourceException
 	{
 		MatrixServiceParameters params = new MatrixServiceParameters();
 		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
+		NamedRealMatrix matrix = extractMatrixFromDomNode(node);
+        matrixList.add( matrix );
         
-        // the incoming matrix must be square in order to proceed...
-        if( !matrixList.get(0).isSquare()){
-        	String msg = "This operation requires a square matrix.";
+        // the incoming matrix must be symmetric and positive definite
+        // in order to proceed...
+        if( ! matrix.isSquare() ||
+        	! MatrixUtils.isSymmetric(matrix) ||	
+        	! MatrixUtils.isPositiveDefinite( matrix ) ){
+        	String msg = "This operation requires a symmetric, " +
+        			"positive definite matrix.";
         	logger.info( msg );
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
