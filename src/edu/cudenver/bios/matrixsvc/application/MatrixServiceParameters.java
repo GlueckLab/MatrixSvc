@@ -51,7 +51,7 @@ public class MatrixServiceParameters implements Serializable{
 	boolean positiveDefinite = false;
 	
 	// This value is used in the Positive Definite calculation
-	private Double eigenTolerance = 1.0E-15;
+	private static Double EIGEN_TOLERANCE = 1.0E-15;
 	
 	/**
 	 * This is a convenience method for adding a matrix to the list of incoming
@@ -168,8 +168,8 @@ public class MatrixServiceParameters implements Serializable{
 	 * public setter method.
 	 * @return double = 1.0E-15 or value set by user.
 	 */
-	public double getEigenTolerance() {
-		return eigenTolerance;
+	public static double getEigenTolerance() {
+		return EIGEN_TOLERANCE;
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class MatrixServiceParameters implements Serializable{
 	 * @param eigenTolerance double
 	 */
 	public void setEigenTolerance(double eigenTolerance) {
-		this.eigenTolerance = eigenTolerance;
+		EIGEN_TOLERANCE = eigenTolerance;
 	}
 
 	/**
