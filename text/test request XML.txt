@@ -1,4 +1,4 @@
-Matrix XML inputs and outputs
+#Matrix XML inputs and outputs
 
 #addition request
 <matrixList><matrix name='A' rows='2' columns='2'><r><c>2</c><c>2</c></r><r><c>4</c><c>3</c></r></matrix><matrix name='B' rows='2' columns='2'><r><c>2</c><c>4</c></r><r><c>1</c><c>4</c></r></matrix></matrixList>
@@ -10,7 +10,7 @@ response:
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="2" name="difference" rows="2"><r><c>0.0</c><c>2.0</c></r><r><c>-3.0</c><c>1.0</c></r></matrix>
 
-#mulitplication request
+#multiplication request
 <matrixList><matrix name='A' rows='3' columns='2'><r><c>4</c><c>4</c></r><r><c>4</c><c>2</c></r><r><c>1</c><c>2</c></r></matrix><matrix name='B' rows='2' columns='3'><r><c>9</c><c>2</c><c>5</c></r><r><c>11</c><c>12</c><c>4</c></r></matrix></matrixList>
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="3" name="product" rows="3"><r><c>80.0</c><c>56.0</c><c>36.0</c></r><r><c>58.0</c><c>32.0</c><c>28.0</c></r><r><c>31.0</c><c>26.0</c><c>13.0</c></r></matrix>
@@ -46,25 +46,31 @@ response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="6" name="product" rows="6"><r><c>2.0</c><c>2.0</c><c>2.0</c><c>4.0</c><c>4.0</c><c>4.0</c></r><r><c>2.0</c><c>2.0</c><c>2.0</c><c>4.0</c><c>4.0</c><c>4.0</c></r><r><c>6.0</c><c>6.0</c><c>6.0</c><c>8.0</c><c>8.0</c><c>8.0</c></r><r><c>6.0</c><c>6.0</c><c>6.0</c><c>8.0</c><c>8.0</c><c>8.0</c></r><r><c>10.0</c><c>10.0</c><c>10.0</c><c>12.0</c><c>12.0</c><c>12.0</c></r><r><c>10.0</c><c>10.0</c><c>10.0</c><c>12.0</c><c>12.0</c><c>12.0</c></r></matrix>
 
 #inversion request
-<matrix name='A' rows='p' columns='p'><r><c></c><c></c><c></c></r><r><c></c><c></c><c></c></r></matrix>
-response:
-
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
+response:NOTE decimal places!
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="2" name="inverse" rows="2"><r><c>-1.9999999999999998</c><c>1.0</c></r><r><c>1.4999999999999998</c><c>-0.49999999999999994</c></r></matrix>
 
 #Rank request
-<matrix name='A' rows='r' columns='c'><r><c>a1,1</c><c>a1,2</c>...<c>a1,c</c></r><r><c>ar,1</c><c>ar,2</c>...<c>ar,c</c></r></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
 response:
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><rank>2.0</rank>
 
 #Trace request
-<matrix name='A' rows='p' columns='p'><r><c>a1,1</c><c>a1,2</c>...<c>a1,p</c></r><r><c>ap,1</c><c>ar,2</c>...<c>ap,p</c></r></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
 response:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><trace>5.0</trace>
 
-
-#Positive Definite request
-<matrix name='A' rows='p' columns='p'><r><c>a1,1</c><c>a1,2</c>...<c>a1,p</c></r><r><c>ap,1</c><c>ar,2</c>...<c>ap,p</c></r></matrix>
+#Positive Definite request (TRUE)
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>0</c></r><r><c>0</c><c>1</c></r></matrix>
 response:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><positiveDefinite>true</positiveDefinite>
 
+#Positive Definite request (FALSE)
+<matrix name='A' rows='2' columns='2'><r><c>5</c><c>5</c></r><r><c>5</c><c>5</c></r></matrix>
+response:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><positiveDefinite>false</positiveDefinite>
 
 #Cholesky Decomposition request
-<matrix name='A' rows='p' columns='p'><r><c>a1,1</c><c>a1,2</c>...<c>a1,p</c></r><r><c>ap,1</c><c>ar,2</c>...<c>ap,p</c></r></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>0</c></r><r><c>0</c><c>1</c></r></matrix>
 response:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><matrixList><matrix columns="2" name="L" rows="2"><r><c>1.0</c><c>0.0</c></r><r><c>0.0</c><c>1.0</c></r></matrix><matrix columns="2" name="lTranspose" rows="2"><r><c>1.0</c><c>0.0</c></r><r><c>0.0</c><c>1.0</c></r></matrix></matrixList>
