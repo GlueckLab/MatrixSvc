@@ -35,7 +35,7 @@ public class MatrixConstants {
     public static final String TAG_ERROR = "error";
     public static final String TAG_MATRIX_LIST = "matrixList";
     public static final String TAG_MATRIX = "matrix";
-    public static final String TAG_PARAMETER_LIST = "parameterList";
+//    public static final String TAG_PARAMETER_LIST = "parameterList";
     public static final String TAG_SCALAR_MULTIPLIER = "scalarMultiplier";
     public static final String TAG_RANK = "rank";
     public static final String TAG_TRACE = "trace";
@@ -43,7 +43,7 @@ public class MatrixConstants {
     public static final String TAG_ROW = "r";
     public static final String TAG_COLUMN = "c";
     public static final String TAG_SUM = "sum";
-    
+    public static final String TAG_CHOLESKY_DECOMP = "choleskyDecomposition";
     // XML attribute names
     public static final String ATTR_ROWS = "rows";
     public static final String ATTR_COLUMNS = "columns";
@@ -60,9 +60,6 @@ public class MatrixConstants {
     public static final String VEC_MATRIX_RETURN_NAME = "vec";
     public static final String VECH_MATRIX_RETURN_NAME = "vech";
     
-    //Constants to pass as a flag indicating which operation the Resource should create
-    public static final int SINGLE_VALUE_POSITIVE_DEFINITE = 1;
-    public static final int SINGLE_VALUE_RANK = 2;
-    public static final int SINGLE_VALUE_TRACE = 3;
-    public static final int SINGLE_VALUE_SCALAR_MULTIPLIER = 4;
+    // This value is used in the Positive Definite calculation
+    public static Double EIGEN_TOLERANCE = 1.0E-15;
 }
