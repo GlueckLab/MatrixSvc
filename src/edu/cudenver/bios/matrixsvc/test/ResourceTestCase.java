@@ -169,8 +169,8 @@ public class ResourceTestCase extends TestCase
      */
     public void testNonSquareMatrix(){
     	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getDecompCholeskyParamsFromDomNode(nonSquareMatrixDoc.getDocumentElement());
+			MatrixParamParser.getDecompCholeskyParamsFromDomNode(
+					nonSquareMatrixDoc.getDocumentElement());
 			fail("INVALID non-square matrix parsed successfully by " +
 					"getDecompCholeskyParamsFromDomNode()!  BAD!");
         }
@@ -188,8 +188,8 @@ public class ResourceTestCase extends TestCase
      */
     public void testColsAMatchRowsB(){
     	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getMatrixMultiplicationParamsFromDomNode(invalidRowColMatrixDoc.getDocumentElement());
+			MatrixParamParser.getMatrixMultiplicationParamsFromDomNode
+				(invalidRowColMatrixDoc.getDocumentElement());
 			fail("column dimension of A doesn't match the row dimension of B " +
 			     " but was parsed by getMatrixMultiplicationParamsFromDomNode()!" +
 			     "  BAD!");
@@ -210,9 +210,8 @@ public class ResourceTestCase extends TestCase
     public void testSameRowDimensions(){
     	//
     	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getHorizontalDirectProductParamsFromDomNode(invalidRowMatrixDoc.
-					getDocumentElement());
+			MatrixParamParser.getHorizontalDirectProductParamsFromDomNode
+			(invalidRowMatrixDoc.getDocumentElement());
 			fail("Matrices with different row dimensions parsed successfully by " +
 					"getHorizontalDirectProductParamsFromDomNode()!  BAD!");
         }
@@ -230,11 +229,10 @@ public class ResourceTestCase extends TestCase
      */
     public void testVec(){
     	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getMatrixVecParamsFromDomNode( vecDoc.getDocumentElement());
-			ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
-			NamedRealMatrix result = null;
-			result = new NamedRealMatrix( MatrixUtils.getVecMatrix(list.get(0)) );
+    		NamedRealMatrix input = MatrixParamParser.
+				getMatrixVecParamsFromDomNode( vecDoc.getDocumentElement());
+			
+    		NamedRealMatrix result = new NamedRealMatrix( MatrixUtils.getVecMatrix(input));
 			
 			assertEquals(1.0, result.getEntry(0, 0), 1E-10);
 			assertEquals(2.0, result.getEntry(1, 0), 1E-10);
@@ -245,7 +243,7 @@ public class ResourceTestCase extends TestCase
 			assertEquals(7.0, result.getEntry(6, 0), 1E-10);
 			assertEquals(8.0, result.getEntry(7, 0), 1E-10);
 			assertEquals(9.0, result.getEntry(8, 0), 1E-10);
-			System.out.println("Vec operation succeeded.");
+			System.out.println("Vec operation succeeded. All values correct.");
         }
         catch(ResourceException e)
         {
@@ -258,10 +256,9 @@ public class ResourceTestCase extends TestCase
      */
     public void testVech(){
     	try {
-			MatrixServiceParameters params = MatrixParamParser.
-			getMatrixVechParamsFromDomNode( vechDoc.getDocumentElement());
-			ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
-			NamedRealMatrix result = new NamedRealMatrix( MatrixUtils.getVechMatrix(list.get(0)) );
+    		NamedRealMatrix input = MatrixParamParser.
+				getMatrixVechParamsFromDomNode( vechDoc.getDocumentElement());
+			NamedRealMatrix result = new NamedRealMatrix( MatrixUtils.getVechMatrix(input) );
 			
 			assertEquals(1.0, result.getEntry(0, 0), 1E-10);
 			assertEquals(9.0, result.getEntry(1, 0), 1E-10);
@@ -269,7 +266,7 @@ public class ResourceTestCase extends TestCase
 			assertEquals(2.0, result.getEntry(3, 0), 1E-10);
 			assertEquals(6.0, result.getEntry(4, 0), 1E-10);
 			assertEquals(3.0, result.getEntry(5, 0), 1E-10);
-			System.out.println("Vech operation succeeded.");
+			System.out.println("Vech operation succeeded. All values correct.");
         }
         catch(ResourceException e)
         {

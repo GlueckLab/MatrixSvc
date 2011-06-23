@@ -22,8 +22,8 @@
 package edu.cudenver.bios.matrixsvc.test;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import edu.cudenver.bios.matrixsvc.application.ScalarMultiplicationParameters;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
 
 import org.apache.commons.math.linear.RealMatrix;
@@ -79,10 +79,10 @@ public class MatrixParserTestCase extends TestCase
 	static Document invalidMatrixDoc5 = null;
     static Document invalidMatrixDoc6 = null;
     
-    //Test Case 3: request contains a parameterList as the root
-	static Document validParameterListDoc = null;
-	static Document invalidParameterListDoc = null;
-	static Document invalidParameterListDoc1 = null;
+    //Test Case 3: request contains a scalarMultiplicationParams as the root
+	static Document validScalarMultiplicationParamsDoc = null;
+	static Document invalidScalarMultiplicationParamsDoc = null;
+	static Document invalidScalarMultiplicationParamsDoc1 = null;
     
     /*StringBuffers to hold the XML for each request*/
     
@@ -120,14 +120,14 @@ public class MatrixParserTestCase extends TestCase
   //Invalid XML for an entity body with a matrix element
     static StringBuffer invalidMatrix6 = new StringBuffer();
     
-    //Valid XML for an entity body with a parameterList element
-    static StringBuffer validParameterList = new StringBuffer();
+    //Valid XML for an entity body with a scalarMultiplicationParams element
+    static StringBuffer validScalarMultiplicationParams = new StringBuffer();
     
-    //Invalid XML for an entity body with a parameterList element
-    static StringBuffer invalidParameterList = new StringBuffer();
+    //Invalid XML for an entity body with a scalarMultiplicationParams element
+    static StringBuffer invalidScalarMultiplicationParams = new StringBuffer();
     
-    //Invalid XML for an entity body with a parameterList element
-    static StringBuffer invalidParameterList1 = new StringBuffer();
+    //Invalid XML for an entity body with a scalarMultiplicationParams element
+    static StringBuffer invalidScalarMultiplicationParams1 = new StringBuffer();
     
     //Init the XML using StringBuffers
     static{
@@ -220,35 +220,35 @@ public class MatrixParserTestCase extends TestCase
 	    .append("/misc>")
 	    .append("</matrixList>");
 	    
-	    //valid parameterList
-	    validParameterList.append("<parameterList>")
+	    //valid scalarMultiplicationParams
+	    validScalarMultiplicationParams.append("<scalarMultiplicationParams>")
 	    .append("<matrix name='A' rows='3' columns='3'>")
 	    .append("<r><c>1</c><c>1</c><c>1</c></r>")
 	    .append("<r><c>2</c><c>2</c><c>2</c></r>")
 	    .append("<r><c>3</c><c>3</c><c>3</c></r>")
 	    .append("</matrix>")
 	    .append("<scalarMultiplier value='10.0' />")
-	    .append("</parameterList>");
+	    .append("</scalarMultiplicationParams>");
 	    
-	    //invalid parameterList (no scalarMultiplier)
-	    invalidParameterList.append("<parameterList>")
+	    //invalid ScalarMultiplicationParams (no scalarMultiplier)
+	    invalidScalarMultiplicationParams.append("<scalarMultiplicationParams>")
 	    .append("<matrix name='A' rows='3' columns='3'>")
 	    .append("<r><c>1</c><c>1</c><c>1</c></r>")
 	    .append("<r><c>2</c><c>2</c><c>2</c></r>")
 	    .append("<r><c>3</c><c>3</c><c>3</c></r>")
 	    .append("</matrix>")
-	    .append("</parameterList>");
+	    .append("</scalarMultiplicationParams>");
 	    
-	    //invalid parameterList (no scalarMultiplier, but there is a second
+	    //invalid ScalarMultiplicationParams (no scalarMultiplier, but there is a second
 	    //misc. element)
-	    invalidParameterList1.append("<parameterList>")
+	    invalidScalarMultiplicationParams1.append("<scalarMultiplicationParams>")
 	    .append("<matrix name='A' rows='3' columns='3'>")
 	    .append("<r><c>1</c><c>1</c><c>1</c></r>")
 	    .append("<r><c>2</c><c>2</c><c>2</c></r>")
 	    .append("<r><c>3</c><c>3</c><c>3</c></r>")
 	    .append("</matrix>")
 	    .append("<misc></misc>")
-	    .append("</parameterList>");
+	    .append("</scalarMultiplicationParams>");
 	    
 	    try {
 			validMatrixDoc = builder.parse(new InputSource(new StringReader(validMatrix.toString())));
@@ -262,9 +262,9 @@ public class MatrixParserTestCase extends TestCase
 			validMatrixListDoc1 = builder.parse(new InputSource(new StringReader(validMatrixList.toString())));
 			invalidMatrixListDoc = builder.parse(new InputSource(new StringReader(invalidMatrixList.toString())));
 			invalidMatrixListDoc1 = builder.parse(new InputSource(new StringReader(invalidMatrixList1.toString())));
-			validParameterListDoc = builder.parse(new InputSource(new StringReader(validParameterList.toString())));
-			invalidParameterListDoc = builder.parse(new InputSource(new StringReader(invalidParameterList.toString())));
-			invalidParameterListDoc1 = builder.parse(new InputSource(new StringReader(invalidParameterList1.toString())));
+			validScalarMultiplicationParamsDoc = builder.parse(new InputSource(new StringReader(validScalarMultiplicationParams.toString())));
+			invalidScalarMultiplicationParamsDoc = builder.parse(new InputSource(new StringReader(invalidScalarMultiplicationParams.toString())));
+			invalidScalarMultiplicationParamsDoc1 = builder.parse(new InputSource(new StringReader(invalidScalarMultiplicationParams1.toString())));
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -277,7 +277,7 @@ public class MatrixParserTestCase extends TestCase
     }
 
     /**
-     * Test parsing of a valid matrix (the happy path).  In order for the params
+     * Test parsing of a valid matrix (the happy path).  In order for the matrix
      * object to be returned, the matrix DOM must parse without
      * exception.
      */
@@ -287,64 +287,17 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+            NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		validMatrixDoc.getDocumentElement());
             
-            //assert that our params object is not null
-            assertNotNull(params);
+            //assert that our matrix object is not null
+            assertNotNull(matrix);
         }
         catch(Exception e)
         {
             e.printStackTrace();
             fail("Exception during testValidMatrix(): " + e.getMessage());
-        }
-    }
-    
-    /**
-     * This tests whether the List<@see RealMatrix> in the @see MatrixServiceParameters
-     * object for the entity body (request) is not null.  (It should be NOT NULL.) 
-     */
-    public void testNotNullList()
-    {
-        try
-        {
-        	// this parser method expects the node to contain a matrix as the
-        	//root element
-            MatrixServiceParameters params = 
-                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
-                		validMatrixDoc.getDocumentElement());
-            
-            //assert that our parameter contains a non-null list
-            assertNotNull( params.getMatrixListFromRequest() );
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            fail("Exception during testNotNullList(): " + e.getMessage());
-        }
-    }
-    
-    /**
-     * This tests that the list of matrices returned by the parser is not
-     * empty.
-     */
-    public void testNotNullListElement()
-    {
-        try
-        {
-        	// this parser method expects the node to contain a matrix as the
-        	//root element
-            MatrixServiceParameters params = 
-                MatrixParamParser.getMatrixInversionParamsFromDomNode( 
-                		validMatrixDoc.getDocumentElement());
-            //assert that our list contains a non-null element
-            assertNotNull(params.getMatrixListFromRequest().get(0));
-        }
-        catch(Exception e)
-        {
-        	e.printStackTrace();
-            fail("Exception during testNotNullListElement(): " + e.getMessage());
         }
     }
     
@@ -358,13 +311,12 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	//root element
-            MatrixServiceParameters params = 
+            NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		validMatrixDoc.getDocumentElement());
             
             //assert that our matrix contains the number 1 in the (0,0) position
             //and 3 in the (2,2) position
-            RealMatrix matrix = params.getMatrixListFromRequest().get(0);
             assertEquals(1.0, matrix.getEntry(0, 0), 1E-10);
             assertEquals(3.0, matrix.getEntry(2, 2), 1E-10);
         }
@@ -385,7 +337,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc2.getDocumentElement());
             
@@ -409,7 +361,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc3.getDocumentElement());
             
@@ -433,7 +385,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc4.getDocumentElement());
             
@@ -457,7 +409,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc6.getDocumentElement());
             
@@ -481,7 +433,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc5.getDocumentElement());
             
@@ -505,7 +457,7 @@ public class MatrixParserTestCase extends TestCase
         {
         	// this parser method expects the node to contain a matrix as the
         	// root element
-            MatrixServiceParameters params = 
+        	NamedRealMatrix matrix = 
                 MatrixParamParser.getMatrixInversionParamsFromDomNode( 
                 		invalidMatrixDoc1.getDocumentElement());
             
@@ -527,11 +479,9 @@ public class MatrixParserTestCase extends TestCase
     {
         try
         {
-            MatrixServiceParameters params = 
+        	ArrayList<NamedRealMatrix> list = 
                 MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc.getDocumentElement());
             
-            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
-            assertNotNull(list.get(0));
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
@@ -552,10 +502,9 @@ public class MatrixParserTestCase extends TestCase
     {
         try
         {
-            MatrixServiceParameters params = 
+        	ArrayList<NamedRealMatrix> list = 
                 MatrixParamParser.getAdditionParamsFromDomNode(validMatrixListDoc1.getDocumentElement());
             
-            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
             for( RealMatrix matrix: list){
             	assertNotNull(matrix);
             }
@@ -576,8 +525,7 @@ public class MatrixParserTestCase extends TestCase
     {
         try
         {
-        	MatrixServiceParameters params = 
-        		MatrixParamParser.getAdditionParamsFromDomNode(invalidMatrixListDoc.getDocumentElement());
+        	MatrixParamParser.getAdditionParamsFromDomNode(invalidMatrixListDoc.getDocumentElement());
             fail("INVALID matrixList inputs parsed successfully!  BAD!");
         }
         catch(Exception e)
@@ -596,8 +544,7 @@ public class MatrixParserTestCase extends TestCase
     {
         try
         {
-        	MatrixServiceParameters params = 
-        		MatrixParamParser.getAdditionParamsFromDomNode(invalidMatrixListDoc1.getDocumentElement());
+        	MatrixParamParser.getAdditionParamsFromDomNode(invalidMatrixListDoc1.getDocumentElement());
             fail("INVALID matrixList inputs parsed successfully!  BAD!");
         }
         catch(Exception e)
@@ -609,97 +556,92 @@ public class MatrixParserTestCase extends TestCase
     }
     
     /**
-     * This tests the parsing of a valid parameterList root node 
+     * This tests the parsing of a valid scalarMultiplicationParams root node 
      * (the happy path). Params object should contain a matrixList with
      * one matrix, and a Double for the scalarMultiplier.
      */
-    public void testValidParameterList()
+    public void testValidScalarMultiplicationParams()
     {
         try
         {
-            MatrixServiceParameters params = 
+            ScalarMultiplicationParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
-                		validParameterListDoc.getDocumentElement());
-            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
-            for( RealMatrix matrix: list){
-            	assertNotNull(matrix);
-            }
-            Double scalarValue = params.getScalarMultiplier();
-            assertNotNull(scalarValue);
+                		validScalarMultiplicationParamsDoc.getDocumentElement());
+            assertNotNull(params.getMatrix());
+            assertNotNull(params.getScalarMultiplier() );
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            fail("Exception during testValidParameterList(): " + e.getMessage());
+            fail("Exception during testValidScalarMultiplicationParams(): " + e.getMessage());
         }
     }
     
     /**
-     * This tests the parsing of an invalid parameterList. The
+     * This tests the parsing of an invalid scalarMultiplicationParams. The
      * Root Node doesn't contain a <scalarMultiplier> node, and thus there
      * is only one node (must be 2) in the call to getChildNodes().
      *  
      */
-    public void testInvalidParameterListOneNode()
+    public void testInvalidScalarMultiplicationParamsOneNode()
     {
         try
         {
-            MatrixServiceParameters params = 
+        	ScalarMultiplicationParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
-                		invalidParameterListDoc.getDocumentElement());
+                		invalidScalarMultiplicationParamsDoc.getDocumentElement());
             
-            fail("The INVALID parameterList parsed successfully!  BAD!");
+            fail("The INVALID <scalarMultiplicationParams> parsed successfully!  BAD!");
         }
         catch(Exception e)
         {
             logger.info("Exception caught as expected in " +
-            		"testInvalidParameterList(): " + e.getMessage());
+            		"testInvalidScalarMultiplicationParamsOneNode(): " + e.getMessage());
             assertTrue(true);
         }
     }
     
     /**
-     * This tests the parsing of an invalid parameterList root node. 
+     * This tests the parsing of an invalid scalarMultiplicationParams root node. 
      * The root node does not contain the scalarMultiplier node, but does
      * contain a second <misc> node.  This tests whether we catch the fact
      * that the client could send a second, but incorrect node. 
      */
-    public void testInvalidParameterListNoScalar()
+    public void testInvalidScalarMultiplicationParamstNoScalar()
     {
         try
         {
-            MatrixServiceParameters params = 
+        	ScalarMultiplicationParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
-                		invalidParameterListDoc1.getDocumentElement());
+                		invalidScalarMultiplicationParamsDoc1.getDocumentElement());
             
-            fail("The INVALID parameterList parsed successfully!  BAD!");
+            fail("The INVALID scalarMultiplicationParams parsed successfully!  BAD!");
         }
         catch(Exception e)
         {
             logger.info("Exception caught as expected in " +
-            		"testInvalidParameterListNoScalar(): " + e.getMessage());
+            		"testInvalidScalarMultiplicationParamstNoScalar(): " + e.getMessage());
             assertTrue(true);
         }
     }
     
     /**
-     * This tests the parsing of a valid parameterList root node 
-     * (the happy path). Params object should contain a matrixList with
-     * one matrix, and a Double for the scalarMultiplier.
+     * This tests the parsing of a valid scalarMultiplicationParams root node. 
+     * ScalarMultiplicationParameters object should contain one matrix, and a 
+     * double for the scalarMultiplier. This checks the double value of 
+     * the scalar multiplier.
      */
     public void testValidScalarValue()
     {
         try
         {
-            MatrixServiceParameters params = 
+        	ScalarMultiplicationParameters params = 
                 MatrixParamParser.getScalarMultiplicationParamsFromDomNode(
-                		validParameterListDoc.getDocumentElement());
-            ArrayList<NamedRealMatrix> list = params.getMatrixListFromRequest();
-            for( RealMatrix matrix: list){
-            	assertNotNull(matrix);
-            }
-            Double scalarValue = params.getScalarMultiplier();
-            assertEquals(10.0, scalarValue, 1E-10);
+                		validScalarMultiplicationParamsDoc.getDocumentElement());
+            assertNotNull(params.getMatrix());
+            assertNotNull(new Double(params.getScalarMultiplier()));
+        	assertEquals(10.0, params.getScalarMultiplier(), 1E-10);
+            
         }
         catch(Exception e)
         {
