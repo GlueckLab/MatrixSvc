@@ -23,7 +23,6 @@ package edu.cudenver.bios.matrixsvc.representation;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 
 import org.apache.log4j.Logger;
@@ -33,7 +32,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * XML representation of a Matrix.  
