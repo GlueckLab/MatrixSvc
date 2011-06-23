@@ -29,13 +29,13 @@ package edu.cudenver.bios.matrixsvc.application;
  */
 public class MatrixConstants {
     //TODO: make this an interface?
-	//TODO: refactor to combine with PowerConstants.  Add to one shared jar?
+	//TODO: refactor to combine with PowerConstants.  Add to one shared matrix jar?
 	
     // XML tag names
     public static final String TAG_ERROR = "error";
     public static final String TAG_MATRIX_LIST = "matrixList";
     public static final String TAG_MATRIX = "matrix";
-//    public static final String TAG_PARAMETER_LIST = "parameterList";
+    public static final String TAG_SCALAR_MULT_PARAMETER_LIST = "scalarMultiplicationParams";
     public static final String TAG_SCALAR_MULTIPLIER = "scalarMultiplier";
     public static final String TAG_RANK = "rank";
     public static final String TAG_TRACE = "trace";
@@ -44,6 +44,7 @@ public class MatrixConstants {
     public static final String TAG_COLUMN = "c";
     public static final String TAG_SUM = "sum";
     public static final String TAG_CHOLESKY_DECOMP = "choleskyDecomposition";
+    
     // XML attribute names
     public static final String ATTR_ROWS = "rows";
     public static final String ATTR_COLUMNS = "columns";
@@ -60,6 +61,10 @@ public class MatrixConstants {
     public static final String VEC_MATRIX_RETURN_NAME = "vec";
     public static final String VECH_MATRIX_RETURN_NAME = "vech";
     
-    // This value is used in the Positive Definite calculation
+    /**
+     *  This value is used in the Positive Definite calculation.
+     *  It could be used as follows: 
+     *  MatrixUtils.isPositiveDefinite( myMatrix, MatrixConstants.EIGEN_TOLERANCE )
+     */
     public static Double EIGEN_TOLERANCE = 1.0E-15;
 }
