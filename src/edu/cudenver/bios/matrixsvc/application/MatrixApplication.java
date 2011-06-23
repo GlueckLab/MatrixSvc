@@ -98,7 +98,7 @@ public class MatrixApplication extends Application
         router.attach("/positiveDefinite", MatrixPositiveDefiniteResource.class);
         
         // Matrix Orthogonal Polynomial Contrast resource
-      //  router.attach("/contrast", MatrixContrastResource.class);
+        router.attach("/contrast", MatrixContrastResource.class);
         
         //Matrix Cholesky Decomposition resource
         router.attach("/decomposition/cholesky", MatrixDecompositionCholeskyResource.class);
