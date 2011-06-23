@@ -24,10 +24,9 @@ package edu.cudenver.bios.matrixsvc.resource;
 import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.SingleValueRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.PositiveDefiniteXmlRepresentation;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -106,22 +105,16 @@ public class MatrixPositiveDefiniteResource extends Resource
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+        	reqMatrix = MatrixParamParser.
               getPositiveDefiniteParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            //get our matrix input
-            reqMatrix = params.getMatrixListFromRequest().get(0);
-            
             //perform operation
-            boolean isPositiveDefinite = MatrixUtils.isPositiveDefinite(reqMatrix);
-            
-            // set value in our parameters object
-            params.setPositiveDefinite(isPositiveDefinite);
+            boolean isPositiveDefinite = MatrixUtils.isPositiveDefinite(reqMatrix,
+            		MatrixConstants.EIGEN_TOLERANCE);
             
             //create our response representation
-            SingleValueRepresentation response = new SingleValueRepresentation(
-            		params,
-            		MatrixConstants.SINGLE_VALUE_POSITIVE_DEFINITE);
+            PositiveDefiniteXmlRepresentation response = new PositiveDefiniteXmlRepresentation(
+            		isPositiveDefinite);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

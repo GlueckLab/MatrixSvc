@@ -23,11 +23,11 @@ package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
+import org.apache.log4j.Logger;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -43,15 +43,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Resource for handling requests for Matrix Addition calculations.
+ * Resource for handling requests for Matrix Subtraction calculations.
  * See the MatrixApplication class for URI mappings
  * 
  * @author Jonathan Cohen
  */
 public class MatrixSubtractionResource extends Resource
 {
+	private static Logger logger = MatrixLogger.getInstance();
 	/**
-	 * Create a new resource to handle power requests.  Data
+	 * Create a new resource to handle Subtraction requests.  Data
 	 * is returned as XML.
 	 * 
 	 * @param context restlet context
@@ -83,7 +84,7 @@ public class MatrixSubtractionResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests
      */
     @Override
     public boolean allowPost() 
@@ -101,44 +102,34 @@ public class MatrixSubtractionResource extends Resource
     public void acceptRepresentation(Representation entity)
     {
     	DomRepresentation domRep = new DomRepresentation(entity);
-        NamedRealMatrix matrixA = null;
-        NamedRealMatrix matrixB = null;
+        NamedRealMatrix differenceMatrix = null;
+        NamedRealMatrix nextMatrix = null;
         ArrayList<NamedRealMatrix> matrixList = null;
         
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+        	matrixList = MatrixParamParser.
               getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
             
-            // get the list of matrices for the response
-            matrixList = params.getMatrixListFromRequest();
-             
-            // get the 2 matrices from the list
-            matrixA = matrixList.get(0);
-            matrixB = matrixList.get(1);
-            if(matrixA == null || matrixB == null ||
-                    !matrixA.getName().equalsIgnoreCase("A")	||
-                    !matrixB.getName().equalsIgnoreCase("B")){
-                 	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-                 			"Couldn't retrieve the matrices for subtraction."); 
+            if(matrixList == null || matrixList.size() < 2){
+            	String msg = "Matrix list must contain at least 2 matrices for subtraction.";
+            	logger.info(msg);
+             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
             }
             
-            //subtract matrix B from matrix A
-            NamedRealMatrix retMatrix = new NamedRealMatrix( matrixA.subtract( matrixB ) );
+            //add the matrices together
+            differenceMatrix = matrixList.get(0);
+            for(int i = 1; i < matrixList.size(); i++){
+            	nextMatrix = matrixList.get(i);
+            	differenceMatrix = new NamedRealMatrix( differenceMatrix.subtract(nextMatrix) );
+            }
             
             //add the name to the matrix we're returning
-            retMatrix.setName(MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);
-            
-            //create a list and add the matrix to it
-            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
-            responseList.add(retMatrix);
-            
-            //add the list to our MatrixServiceParameters object
-            params.setMatrixListForResponse(responseList);
+            differenceMatrix.setName(MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);
             
             //create our response representation
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(differenceMatrix);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

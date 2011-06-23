@@ -24,8 +24,8 @@ package edu.cudenver.bios.matrixsvc.resource;
 import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import edu.cudenver.bios.matrixsvc.application.ScalarMultiplicationParameters;
 
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
@@ -48,10 +48,10 @@ public class MatrixParamParser {
 	
 	/**
 	 * @param Node node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getAdditionParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getAdditionParamsFromDomNode(Node node)
 	throws ResourceException
 	{
 		return processParametersFromMatrixList(node);
@@ -60,10 +60,10 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getSubtractionParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getSubtractionParamsFromDomNode(Node node)
 	throws ResourceException
 	{
 		return processParametersFromMatrixList(node);
@@ -72,28 +72,15 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getScalarMultiplicationParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getElementWiseMultiplicationParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		return processParametersFromParameterList(node);
-	}
-
-	/**
-	 * 
-	 * @param node Node
-	 * @return MatrixServiceParameters
-	 * @throws ResourceException
-	 */
-	public static MatrixServiceParameters getElementWiseMultiplicationParamsFromDomNode(Node node)
-	throws ResourceException
-	{
-		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		ArrayList<NamedRealMatrix> matrixList = processParametersFromMatrixList(node);
 		
 		//The two matrices must have the same dimensions for this operation.
-		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
 		boolean ok = MatrixUtils.areDimensionsEqual( matrixList.get(0), matrixList.get(1));
 		if( !ok ){
 			String msg = "Matrix dimensions must be equal" +
@@ -102,22 +89,21 @@ public class MatrixParamParser {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
 		}
 		
-		return params;
+		return matrixList;
 	}
 	
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixMultiplicationParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getMatrixMultiplicationParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		ArrayList<NamedRealMatrix> matrixList = processParametersFromMatrixList(node);
 		//The columns of A must match the rows of B for this operation.
 		int rowsB, colsA;
-		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
 		colsA = matrixList.get(0).getColumnDimension();
 		rowsB = matrixList.get(1).getRowDimension();
 		if( colsA != rowsB){
@@ -127,23 +113,22 @@ public class MatrixParamParser {
 			logger.info(msg);
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
 		}
-		return params;
+		return matrixList;
 	}
 	
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getHorizontalDirectProductParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getHorizontalDirectProductParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = processParametersFromMatrixList(node);
+		ArrayList<NamedRealMatrix> matrixList = processParametersFromMatrixList(node);
 		
 		//The two matrices must have the same row dimensions for this operation.
 		int rowsA, rowsB;
-		ArrayList<NamedRealMatrix> matrixList = params.getMatrixListFromRequest();
 		rowsA = matrixList.get(0).getRowDimension();
 		rowsB = matrixList.get(1).getRowDimension();
 		if( rowsA != rowsB ){
@@ -153,16 +138,16 @@ public class MatrixParamParser {
 			logger.info(msg);
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg);
 		}
-		return params;
+		return matrixList;
 	}
 
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getKroneckerProductParamsFromDomNode(Node node)
+	public static ArrayList<NamedRealMatrix> getKroneckerProductParamsFromDomNode(Node node)
 	throws ResourceException
 	{
 		return processParametersFromMatrixList(node);
@@ -171,155 +156,116 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixInversionParamsFromDomNode(Node node)
+	public static NamedRealMatrix getMatrixInversionParamsFromDomNode(Node node)
 	throws ResourceException, IllegalArgumentException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
+		NamedRealMatrix matrix = extractMatrixFromDomNode(node);
         
         // the incoming matrix must be square in order to proceed...
-        if( !matrixList.get(0).isSquare()){
+        if( !matrix.isSquare()){
         	String msg = "This operation requires a square matrix.";
         	logger.info(msg);
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+        return matrix;
 	}
 	
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixRankParamsFromDomNode(Node node)
+	public static NamedRealMatrix getMatrixRankParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+		return extractMatrixFromDomNode(node);
+    }
+	
+	/**
+	 * 
+	 * @param node Node
+	 * @return NamedRealMatrix
+	 * @throws ResourceException
+	 */
+	public static NamedRealMatrix getMatrixTraceParamsFromDomNode(Node node)
+	throws ResourceException
+	{
+		return extractMatrixFromDomNode(node);
 	}
 	
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixTraceParamsFromDomNode(Node node)
+	public static NamedRealMatrix getPositiveDefiniteParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
+		NamedRealMatrix matrix = extractMatrixFromDomNode(node);
 		
-        matrixList.add( extractMatrixFromDomNode(node) );
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
-	}
-	
-	/**
-	 * 
-	 * @param node Node
-	 * @return MatrixServiceParameters
-	 * @throws ResourceException
-	 */
-	public static MatrixServiceParameters getPositiveDefiniteParamsFromDomNode(Node node)
-	throws ResourceException
-	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
         // the incoming matrix must be square in order to proceed...
-        if( !matrixList.get(0).isSquare()){
+        if( !matrix.isSquare()){
         	String msg = "This operation requires a square matrix.";
         	logger.info( msg );
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+        return matrix;
 	}
 	
 	/**
-	 * This method parses a matrix node into a NamedRealMatrix object.
+	 * This method parses a <matrix> node.
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException if the incoming matrix is non-symmetric
 	 * or NOT positive definite.
 	 */
-	public static MatrixServiceParameters getDecompCholeskyParamsFromDomNode(Node node)
+	public static NamedRealMatrix getDecompCholeskyParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
 		NamedRealMatrix matrix = extractMatrixFromDomNode(node);
-        matrixList.add( matrix );
         
         // the incoming matrix must be symmetric and positive definite
         // in order to proceed...
         if( ! matrix.isSquare() ||
         	! MatrixUtils.isSymmetric(matrix) ||	
-        	! MatrixUtils.isPositiveDefinite( matrix ) ){
+        	! MatrixUtils.isPositiveDefinite( matrix, MatrixConstants.EIGEN_TOLERANCE ) ){
         	String msg = "This operation requires a symmetric, " +
         			"positive definite matrix.";
         	logger.info( msg );
         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         }
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+        return matrix;
 	}
 	
 	/**
 	 * 
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixVecParamsFromDomNode(Node node)
+	public static NamedRealMatrix getMatrixVecParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+        return extractMatrixFromDomNode(node);
 	}
 	
 	/**
 	 * This method requires that the matrix be symmetrical.
 	 * @param node Node
-	 * @return MatrixServiceParameters
+	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
-	public static MatrixServiceParameters getMatrixVechParamsFromDomNode(Node node)
+	public static NamedRealMatrix getMatrixVechParamsFromDomNode(Node node)
 	throws ResourceException
 	{
-		MatrixServiceParameters params = new MatrixServiceParameters();
-		ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
-		
-        matrixList.add( extractMatrixFromDomNode(node) );
-        NamedRealMatrix a = matrixList.get(0);
+		NamedRealMatrix matrix = extractMatrixFromDomNode(node);
         String msg = "";
-        if( !a.isSquare() ){
-        	msg = "This operation requires a square matrix.  ";
-        }
-        if(! MatrixUtils.isSymmetric( a ) ){
+        if(! MatrixUtils.isSymmetric( matrix ) ){
         	msg += "This operation requires a symmetrical matrix.";
         }
         if( !msg.equals("") ){
@@ -327,9 +273,7 @@ public class MatrixParamParser {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 					msg);
         }
-        params.setMatrixListFromRequest(matrixList);
-        
-        return params;
+        return matrix;
 	}
 	
 	/**
@@ -537,7 +481,7 @@ public class MatrixParamParser {
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
-    private static MatrixServiceParameters processParametersFromMatrixList(Node node)
+    private static ArrayList<NamedRealMatrix> processParametersFromMatrixList(Node node)
     throws ResourceException
     {
     	// make sure the root node is a matrixList
@@ -546,8 +490,7 @@ public class MatrixParamParser {
             notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_MATRIX_LIST);
         }
         
-        //initialize our return object and the list of matrices it will contain
-    	MatrixServiceParameters params = new MatrixServiceParameters();
+        //initialize our list of matrices
     	ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
     	
     	//iterate over the child nodes (matrices)
@@ -563,8 +506,7 @@ public class MatrixParamParser {
     		//extract the matrix from the DOM, and add to our list
     		matrixList.add( extractMatrixFromDomNode(nodeList.item(i)) );
     	}
-    	params.setMatrixListFromRequest(matrixList);
-        return params;	
+    	return matrixList;	
     }
     
     /**
@@ -583,28 +525,29 @@ public class MatrixParamParser {
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
-    private static MatrixServiceParameters processParametersFromParameterList(Node node)
+    public static ScalarMultiplicationParameters getScalarMultiplicationParamsFromDomNode(Node node)
     throws ResourceException
     {
-    	// make sure the root node is parameterList
-        if (!MatrixConstants.TAG_PARAMETER_LIST.equals(node.getNodeName().trim()))
+    	// make sure the root node is correct
+        if (!MatrixConstants.TAG_SCALAR_MULT_PARAMETER_LIST.equals(node.getNodeName().trim()))
         {
-            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_PARAMETER_LIST);
+            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_SCALAR_MULT_PARAMETER_LIST);
         }
         boolean matrixFound = false;
         boolean scalarFound = false;
         
-        //initialize our list of matrices, and the return object.
-        MatrixServiceParameters params = new MatrixServiceParameters();
-        ArrayList<NamedRealMatrix> matrixList = new ArrayList<NamedRealMatrix>();
+        //initialize our return object.
+        ScalarMultiplicationParameters params = new ScalarMultiplicationParameters();
         Node scalarValue  = null;
+        NamedRealMatrix matrix = null;
         
         //iterate over the child nodes to find the matrix
     	NodeList nodeList = node.getChildNodes();
     	if(nodeList.getLength() < 2)
     	{
-    		String msg = "The parameterList doesn't contain proper number of elements - 2." +
-			" It only contains "+ nodeList.getLength() + ".";
+    		String msg = "The scalarMultiplicationParams doesn't contain " +
+    				"proper number of elements - 2." +
+    				" It only contains "+ nodeList.getLength() + ".";
     		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
@@ -615,7 +558,7 @@ public class MatrixParamParser {
         	if( MatrixConstants.TAG_MATRIX.equals(tmpNode.getNodeName().trim()))
         	{
         		//parse the matrix, and add to our matrix list.
-            	matrixList.add( extractMatrixFromDomNode(tmpNode) );
+            	matrix = extractMatrixFromDomNode(tmpNode);
             	matrixFound = true;
             }
         	else if( MatrixConstants.TAG_SCALAR_MULTIPLIER.equals(tmpNode.getNodeName().trim()))
@@ -628,17 +571,17 @@ public class MatrixParamParser {
     	}
         
     	if(!matrixFound){
-    		String msg = "The parameterList doesn't contain a <matrix> element.";
+    		String msg = "The <scalarMultiplicationParams> doesn't contain a <matrix> element.";
     		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	if(!scalarFound){
-    		String msg = "The parameterList doesn't contain a <scalarMultiplier> element.";
+    		String msg = "The <scalarMultiplicationParams> doesn't contain a <scalarMultiplier> element.";
     		logger.info(msg);
     		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     	}
     	//set matrix on the parameter object.
-    	params.setMatrixListFromRequest(matrixList);
+    	params.setMatrix(matrix);
         
         //extract scalar and set on parameter object
         params.setScalarMultiplier( extractScalarFromDomNode(scalarValue));

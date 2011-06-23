@@ -21,12 +21,10 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.SingleValueRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.RankXmlRepresentation;
 
 import org.apache.commons.math.linear.SingularValueDecompositionImpl;
 import org.restlet.Context;
@@ -51,7 +49,7 @@ import java.io.IOException;
 public class MatrixRankResource extends Resource
 {
 	/**
-	 * Create a new resource to handle power requests.  Data
+	 * Create a new resource to handle rank requests.  Data
 	 * is returned as XML.
 	 * 
 	 * @param context restlet context
@@ -83,7 +81,7 @@ public class MatrixRankResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests
      */
     @Override
     public boolean allowPost() 
@@ -92,8 +90,8 @@ public class MatrixRankResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
+     * Process a POST request to perform a matrix rank calculation.  
+     * Please see REST API documentation for details on
      * the entity body format.
      * 
      * @param entity HTTP entity body for the request
@@ -107,21 +105,16 @@ public class MatrixRankResource extends Resource
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+        	reqMatrix = MatrixParamParser.
               getMatrixRankParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            //get our matrix input
-            reqMatrix = params.getMatrixListFromRequest().get(0);
-            
             //perform rank operation and set value in our parameter object
             SingularValueDecompositionImpl impl = 
             	new SingularValueDecompositionImpl(reqMatrix);
-            params.setRank(impl.getRank());
-            
+           
             //create our response representation
-            SingleValueRepresentation response = new SingleValueRepresentation(
-            		params,
-            		MatrixConstants.SINGLE_VALUE_RANK);
+            RankXmlRepresentation response = new RankXmlRepresentation(
+            		                               impl.getRank());
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
@@ -140,5 +133,4 @@ public class MatrixRankResource extends Resource
              getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
         }
     }
-
 }

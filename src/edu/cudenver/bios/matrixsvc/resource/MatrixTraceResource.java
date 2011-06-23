@@ -21,12 +21,10 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.SingleValueRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.TraceXmlRepresentation;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -42,7 +40,7 @@ import org.restlet.resource.Variant;
 import java.io.IOException;
 
 /**
- * Resource for handling requests for Matrix Addition calculations.
+ * Resource for handling requests for Matrix trace calculations.
  * See the MatrixApplication class for URI mappings
  * 
  * @author Jonathan Cohen
@@ -50,7 +48,7 @@ import java.io.IOException;
 public class MatrixTraceResource extends Resource
 {
 	/**
-	 * Create a new resource to handle power requests.  Data
+	 * Create a new resource to handle trace calculation requests.  Data
 	 * is returned as XML.
 	 * 
 	 * @param context restlet context
@@ -82,7 +80,7 @@ public class MatrixTraceResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests
      */
     @Override
     public boolean allowPost() 
@@ -91,7 +89,7 @@ public class MatrixTraceResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
+     * Process a POST request to perform trace
      * calculations.  Please see REST API documentation for details on
      * the entity body format.
      * 
@@ -106,19 +104,11 @@ public class MatrixTraceResource extends Resource
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+        	reqMatrix = MatrixParamParser.
               getMatrixTraceParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            //get our matrix input
-            reqMatrix = params.getMatrixListFromRequest().get(0);
-            
-            //perform trace operation and set value in our parameter object
-            params.setTrace( reqMatrix.getTrace() );
-            
-            //create our response representation
-            SingleValueRepresentation response = new SingleValueRepresentation(
-            		params,
-            		MatrixConstants.SINGLE_VALUE_TRACE);
+            //create our response representation and send it the trace calculation
+            TraceXmlRepresentation response = new TraceXmlRepresentation(reqMatrix.getTrace());
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

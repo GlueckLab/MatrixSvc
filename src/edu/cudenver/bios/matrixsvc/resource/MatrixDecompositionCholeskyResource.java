@@ -22,15 +22,12 @@
 package edu.cudenver.bios.matrixsvc.resource;
 
 
-import edu.cudenver.bios.matrix.MatrixUtils;
-import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import edu.cudenver.bios.matrixsvc.representation.CholeskyDecompositionXmlRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -43,7 +40,6 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Cholesky Decomposition calculations.
@@ -54,7 +50,7 @@ import java.util.ArrayList;
 public class MatrixDecompositionCholeskyResource extends Resource
 {
 	/**
-	 * Create a new resource to handle matrix requests.  Data
+	 * Create a new resource to handle Cholesky Decomposition calculations.  Data
 	 * is returned as XML.
 	 * 
 	 * @param context restlet context
@@ -86,7 +82,7 @@ public class MatrixDecompositionCholeskyResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests
      */
     @Override
     public boolean allowPost() 
@@ -96,7 +92,7 @@ public class MatrixDecompositionCholeskyResource extends Resource
 
     /**
      * This operation takes a single square matrix (p x p) 
-     * and returns two matrices: the matrix representing its 
+     * and produces two matrices: the matrix representing its 
      * square root (L), and its transpose.  Please see 
      * Matrix Services REST API documentation for details on
      * the entity body format.
@@ -108,45 +104,28 @@ public class MatrixDecompositionCholeskyResource extends Resource
     {
         DomRepresentation rep = new DomRepresentation(entity);
         NamedRealMatrix matrixInput = null;
-        ArrayList<NamedRealMatrix> matrixList = null;
+        
         NamedRealMatrix matrixL = null;
         NamedRealMatrix matrixTranspose = null;
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+            matrixInput = MatrixParamParser.
               getDecompCholeskyParamsFromDomNode( rep.getDocument().getDocumentElement() );
 
-            // get the matrix from the list
-            matrixInput = params.getMatrixListFromRequest().get(0);
-            
-            if(matrixInput == null ||
+           if(matrixInput == null ||
                !matrixInput.getName().equalsIgnoreCase("A")){
             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
             			"Couldn't retrieve the matrix for Cholesky Decomposition."); 
             }
-            ArrayList<RealMatrix> list = new ArrayList<RealMatrix>();
             
             // perform Cholesky Decomposition
-            list = MatrixUtils.getCholeskyDecomposition(matrixInput);
-            
-            //put them in a list... this is a little hokey, but we wanted the library
-            //method to return a list of RealMatrices.
-            matrixL = new NamedRealMatrix( list.get(0) );
-            matrixTranspose = new NamedRealMatrix( list.get(1) );
-            
-            matrixL.setName(MatrixConstants.SQ_ROOT_MATRIX_RETURN_NAME);
-            matrixTranspose.setName(MatrixConstants.TRANSPOSE_MATRIX_RETURN_NAME);
-            
-            ArrayList<NamedRealMatrix> namedList = new ArrayList<NamedRealMatrix>();
-            namedList.add(matrixL);
-            namedList.add(matrixTranspose);
-            
-            //put the list in the parameter object
-            params.setMatrixListForResponse(namedList);
-            
+            CholeskyDecompositionImpl cdImpl = 
+            	new CholeskyDecompositionImpl(matrixInput);
+    		
             //create our response representation
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            CholeskyDecompositionXmlRepresentation response = 
+            	new CholeskyDecompositionXmlRepresentation(cdImpl);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

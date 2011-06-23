@@ -23,7 +23,6 @@ package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
@@ -85,7 +84,7 @@ public class MatrixAdditionResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests
      */
     @Override
     public boolean allowPost() 
@@ -94,8 +93,8 @@ public class MatrixAdditionResource extends Resource
     }
 
     /**
-     * This method expects a <matrixList> which contains 2..n matrices
-     * to add.
+     * Please see REST API documentation for details on
+     * the entity body format.
      * @param entity HTTP entity body for the request
      */
     @Override 
@@ -103,18 +102,15 @@ public class MatrixAdditionResource extends Resource
     throws ResourceException
     {
         DomRepresentation domRep = new DomRepresentation(entity);
-        NamedRealMatrix matrixA = null;
-        NamedRealMatrix matrixB = null;
+        NamedRealMatrix matrixSum = null;
         ArrayList<NamedRealMatrix> matrixList = null;
         
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+            matrixList = MatrixParamParser.
               getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
             
-            // get the list of matrices from the request
-            matrixList = params.getMatrixListFromRequest();
             if(matrixList == null || matrixList.size() < 2){
             	String msg = "Matrix list must contain at least 2 matrices for addition.";
             	logger.info(msg);
@@ -122,24 +118,16 @@ public class MatrixAdditionResource extends Resource
             }
             
             //add the matrices together
-            matrixA = matrixList.get(0);
+            matrixSum = matrixList.get(0);
             for(int i = 1; i < matrixList.size(); i++){
-            	matrixB = matrixList.get(i);
-            	matrixA = new NamedRealMatrix( matrixA.add(matrixB) );
+            	matrixSum = new NamedRealMatrix( matrixSum.add(matrixList.get(i)) );
             }
             
             //add the name to the summation matrix we're returning
-            matrixA.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
-            
-            //create a list and add the matrix to it
-            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
-            responseList.add(matrixA);
-            
-            //add the list to our MatrixServiceParameters object
-            params.setMatrixListForResponse(responseList);
+            matrixSum.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
             
             //create our response representation
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation( matrixSum );
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

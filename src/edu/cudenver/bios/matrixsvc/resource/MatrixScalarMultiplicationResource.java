@@ -23,8 +23,8 @@ package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import edu.cudenver.bios.matrixsvc.application.ScalarMultiplicationParameters;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
 
@@ -40,10 +40,9 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
- * Resource for handling requests for Matrix Addition calculations.
+ * Resource for handling requests for matrix scalar multiplication calculations.
  * See the MatrixApplication class for URI mappings
  * 
  * @author Jonathan Cohen
@@ -51,8 +50,8 @@ import java.util.ArrayList;
 public class MatrixScalarMultiplicationResource extends Resource
 {
 	/**
-	 * Create a new resource to handle power requests.  Data
-	 * is returned as XML.
+	 * Create a new resource to handle scalar multiplication requests.  
+	 * Data is returned as XML.
 	 * 
 	 * @param context restlet context
 	 * @param request http request object
@@ -83,7 +82,7 @@ public class MatrixScalarMultiplicationResource extends Resource
     }
 
     /**
-     * Allow POST requests to create a power list
+     * Allow POST requests f
      */
     @Override
     public boolean allowPost() 
@@ -92,8 +91,8 @@ public class MatrixScalarMultiplicationResource extends Resource
     }
 
     /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
+     * Process a POST request to perform scalar multiplication.  
+     * Please see REST API documentation for details on
      * the entity body format.
      * 
      * @param entity HTTP entity body for the request
@@ -108,10 +107,10 @@ public class MatrixScalarMultiplicationResource extends Resource
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
+            ScalarMultiplicationParameters params = MatrixParamParser.
               getScalarMultiplicationParamsFromDomNode( rep.getDocument().getDocumentElement() );
             multiplier = params.getScalarMultiplier();
-            matrix = params.getMatrixListFromRequest().get(0);
+            matrix = params.getMatrix();
             
             //perform multiplication
             NamedRealMatrix retMatrix = new NamedRealMatrix( matrix.scalarMultiply(multiplier) );
@@ -119,15 +118,8 @@ public class MatrixScalarMultiplicationResource extends Resource
             //Name the matrix
             retMatrix.setName(MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
             
-            //create a list and add the matrix to it
-            ArrayList<NamedRealMatrix> responseList = new ArrayList<NamedRealMatrix>();
-            responseList.add(retMatrix);
-            
-            //add the list to our MatrixServiceParameters object
-            params.setMatrixListForResponse(responseList);
-
             //create our response representation
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(retMatrix);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }

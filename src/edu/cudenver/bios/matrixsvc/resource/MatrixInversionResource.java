@@ -23,7 +23,6 @@ package edu.cudenver.bios.matrixsvc.resource;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
@@ -41,7 +40,6 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -104,17 +102,13 @@ public class MatrixInversionResource extends Resource
     {
     	DomRepresentation rep = new DomRepresentation(entity);
         NamedRealMatrix matrixInput = null;
-        ArrayList<NamedRealMatrix> matrixList = null;
         NamedRealMatrix inverseMatrix = null;
         try
         {
         	// parse the parameters from the entity body
-            MatrixServiceParameters params = MatrixParamParser.
-              getMatrixInversionParamsFromDomNode( rep.getDocument().getDocumentElement() );
+        	matrixInput = MatrixParamParser.getMatrixInversionParamsFromDomNode(
+        			rep.getDocument().getDocumentElement() );
 
-            // get the matrix from the list
-            matrixInput = params.getMatrixListFromRequest().get(0);
-            
             if(matrixInput == null ||
                !matrixInput.getName().equalsIgnoreCase("A")){
             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
@@ -129,15 +123,8 @@ public class MatrixInversionResource extends Resource
             // set name
             inverseMatrix.setName(MatrixConstants.INVERSION_MATRIX_RETURN_NAME);
             
-            //put it in a list
-            ArrayList<NamedRealMatrix> list = new ArrayList<NamedRealMatrix>();
-            list.add(inverseMatrix);
-            
-            //put the list in the parameter object
-            params.setMatrixListForResponse(list);
-            
             //create our response representation
-            MatrixXmlRepresentation response = new MatrixXmlRepresentation(params);
+            MatrixXmlRepresentation response = new MatrixXmlRepresentation(inverseMatrix);
             getResponse().setEntity(response); 
             getResponse().setStatus(Status.SUCCESS_CREATED);
         }
