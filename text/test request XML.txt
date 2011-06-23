@@ -16,7 +16,7 @@ response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="3" name="product" rows="3"><r><c>80.0</c><c>56.0</c><c>36.0</c></r><r><c>58.0</c><c>32.0</c><c>28.0</c></r><r><c>31.0</c><c>26.0</c><c>13.0</c></r></matrix>
 
 #scalar multiplication request
-<parameterList><matrix name='A' rows='2' columns='2'><r><c>2</c><c>2</c></r><r><c>4</c><c>3</c></r></matrix><scalarMultiplier value="2"/></parameterList>
+<scalarMultiplicationParams><matrix name='A' rows='2' columns='2'><r><c>2</c><c>2</c></r><r><c>4</c><c>3</c></r></matrix><scalarMultiplier value="2"/></scalarMultiplicationParams>
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="2" name="product" rows="2"><r><c>4.0</c><c>4.0</c></r><r><c>8.0</c><c>6.0</c></r></matrix>
 
@@ -46,17 +46,17 @@ response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="6" name="product" rows="6"><r><c>2.0</c><c>2.0</c><c>2.0</c><c>4.0</c><c>4.0</c><c>4.0</c></r><r><c>2.0</c><c>2.0</c><c>2.0</c><c>4.0</c><c>4.0</c><c>4.0</c></r><r><c>6.0</c><c>6.0</c><c>6.0</c><c>8.0</c><c>8.0</c><c>8.0</c></r><r><c>6.0</c><c>6.0</c><c>6.0</c><c>8.0</c><c>8.0</c><c>8.0</c></r><r><c>10.0</c><c>10.0</c><c>10.0</c><c>12.0</c><c>12.0</c><c>12.0</c></r><r><c>10.0</c><c>10.0</c><c>10.0</c><c>12.0</c><c>12.0</c><c>12.0</c></r></matrix>
 
 #inversion request
-<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></r></matrix>
 response:NOTE decimal places!
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrix columns="2" name="inverse" rows="2"><r><c>-1.9999999999999998</c><c>1.0</c></r><r><c>1.4999999999999998</c><c>-0.49999999999999994</c></r></matrix>
 
 #Rank request
-<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></r></matrix>
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><rank>2.0</rank>
 
 #Trace request
-<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></matrix>
+<matrix name='A' rows='2' columns='2'><r><c>1</c><c>2</c></r><r><c>3</c><c>4</c></r></matrix>
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><trace>5.0</trace>
 
