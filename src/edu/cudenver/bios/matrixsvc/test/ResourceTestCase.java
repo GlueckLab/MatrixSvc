@@ -22,7 +22,7 @@
 package edu.cudenver.bios.matrixsvc.test;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
-import edu.cudenver.bios.matrixsvc.application.MatrixServiceParameters;
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.resource.MatrixParamParser;
 
@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -278,7 +277,7 @@ public class ResourceTestCase extends TestCase
     /**
      * Test the isSymmetrical() method written in MatrixUtils.
      */
-    public void testSymmetrical()
+    public void testIsSymmetrical()
     {
     	try 
     	{
@@ -295,12 +294,16 @@ public class ResourceTestCase extends TestCase
     		input.setEntry(2, 2, 3.0);
     		
 			assertTrue(MatrixUtils.isSymmetric(input));
-			System.out.println("testSymmetrical succeeded.");
+			System.out.println("testIsSymmetrical() succeeded.");
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
     }
     
+    /**
+     * Test the isSymmetrical() method of MatrixUtils, with a non-symmetrical
+     * matrix.
+     */
     public void testNonSymmetrical(){
     	try 
     	{
@@ -316,12 +319,64 @@ public class ResourceTestCase extends TestCase
     		input.setEntry(2, 1, 6.0);
     		input.setEntry(2, 2, 3.0);
     		assertFalse( MatrixUtils.isSymmetric(input) );
-    		System.out.println("testNonSymmetrical succeeded.");
+    		System.out.println("testNonSymmetrical() succeeded.");
 		} catch (Exception e) {
 			e.printStackTrace();
             System.out.println(e.getMessage());
 		}
     }
+    
+    /**
+     * A method to test MatrixUtils.isPositiveDefinite(), with both
+     * a positiveDefinite matrix, and a matrix which is not positiveDefinite.
+     */
+    public void testPositiveDefinite(){
+    	try 
+    	{
+	    	Array2DRowRealMatrix input = new Array2DRowRealMatrix(2, 2);
+			input.setEntry(0, 0, 1.0);
+			input.setEntry(0, 1, 0.0);
+			input.setEntry(1, 0, 0.0);
+			input.setEntry(1, 1, 1.0);
+			assertTrue(MatrixUtils.isPositiveDefinite(input, MatrixConstants.EIGEN_TOLERANCE_DEFAULT));
+			input.setEntry(0, 0, -1.0);
+			input.setEntry(0, 1, -1.0);
+			input.setEntry(1, 0, -1.0);
+			input.setEntry(1, 1, -1.0);
+			assertFalse(MatrixUtils.isPositiveDefinite(input, MatrixConstants.EIGEN_TOLERANCE_DEFAULT));
+			System.out.println("testPositiveDefinite() succeeded.");
+    	} catch (Exception e) {
+			e.printStackTrace();
+            System.out.println(e.getMessage());
+		}
+    }
+    
+    /**
+     *  a method to test MatrixUtils.getKroneckerProduct()
+     */
+    public void testGetKroneckerProduct(){
+    	Array2DRowRealMatrix input1 = new Array2DRowRealMatrix(2, 1);
+		input1.setEntry(0, 0, 2.0);
+		input1.setEntry(1, 0, 4.0);
+		
+		Array2DRowRealMatrix input2 = new Array2DRowRealMatrix(1, 2);
+		input2.setEntry(0, 0, 10.0);
+		input2.setEntry(0, 1, 20.0);
+				
+		NamedRealMatrix result = new NamedRealMatrix( 
+				MatrixUtils.getKroneckerProduct(input1, input2) );
+		
+		assertEquals(20.0, result.getEntry(0, 0) );
+		assertEquals(40.0, result.getEntry(0, 1) );
+		assertEquals(40.0, result.getEntry(1, 0) );
+		assertEquals(80.0, result.getEntry(1, 1) );
+		System.out.println("testGetKroneckerProduct() succeeded.  All values correct.");
+    }
+    
+    
+    
+    
+    //TODO a method to test MatrixUtils.getHorizontalDirectProduct()
     
     /**
      * Just a reminder to always put this line in a method until
