@@ -110,7 +110,7 @@ public class MatrixPositiveDefiniteResource extends Resource
 
             //perform operation
             boolean isPositiveDefinite = MatrixUtils.isPositiveDefinite(reqMatrix,
-            		MatrixConstants.EIGEN_TOLERANCE);
+            		MatrixConstants.EIGEN_TOLERANCE_DEFAULT);
             
             //create our response representation
             PositiveDefiniteXmlRepresentation response = new PositiveDefiniteXmlRepresentation(

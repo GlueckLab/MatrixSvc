@@ -233,7 +233,7 @@ public class MatrixParamParser {
         // in order to proceed...
         if( ! matrix.isSquare() ||
         	! MatrixUtils.isSymmetric(matrix) ||	
-        	! MatrixUtils.isPositiveDefinite( matrix, MatrixConstants.EIGEN_TOLERANCE ) ){
+        	! MatrixUtils.isPositiveDefinite( matrix, MatrixConstants.EIGEN_TOLERANCE_DEFAULT ) ){
         	String msg = "This operation requires a symmetric, " +
         			"positive definite matrix.";
         	logger.info( msg );
