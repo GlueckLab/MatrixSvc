@@ -66,5 +66,5 @@ public class MatrixConstants {
      *  It could be used as follows: 
      *  MatrixUtils.isPositiveDefinite( myMatrix, MatrixConstants.EIGEN_TOLERANCE )
      */
-    public static Double EIGEN_TOLERANCE = 1.0E-15;
+    public static Double EIGEN_TOLERANCE_DEFAULT = 1.0E-15;
 }
