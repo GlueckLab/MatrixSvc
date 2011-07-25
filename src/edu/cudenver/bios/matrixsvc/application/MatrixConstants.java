@@ -44,12 +44,27 @@ public class MatrixConstants {
     public static final String TAG_COLUMN = "c";
     public static final String TAG_SUM = "sum";
     public static final String TAG_CHOLESKY_DECOMP = "choleskyDecomposition";
+    public static final String TAG_FACTOR_LIST = "factorList";
+    public static final String TAG_FACTOR = "factor";
+    public static final String TAG_ORTHOG_POLY_CONTRAST_LIST = "orthogonalPolynomialContrastList";
+    public static final String TAG_CONTRAST = "contrast";
+    public static final String TAG_V = "v";
     
     // XML attribute names
     public static final String ATTR_ROWS = "rows";
     public static final String ATTR_COLUMNS = "columns";
     public static final String ATTR_VALUE = "value";
     public static final String ATTR_NAME = "name";
+    public static final String ATTR_TYPE = "type";
+    
+    // Values of the attribute "type" for <factorList> elements
+    public static final String BETWEEN = "between";
+    public static final String WITHIN = "within";
+    
+    // Values of the attribute "type" for <contrast> elements
+    public static final String GRAND_MEAN = "grandMean";
+    public static final String MAIN_EFFECT = "mainEffect";
+    public static final String INTERACTION = "interaction";
     
     // Matrix Names for Response objects
     public static final String ADDITION_MATRIX_RETURN_NAME = "sum";

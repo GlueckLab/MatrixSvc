@@ -21,11 +21,13 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import edu.cudenver.bios.matrix.OrthogonalPolynomialContrastCollection;
+import edu.cudenver.bios.matrix.OrthogonalPolynomials;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.MatrixXmlRepresentation;
+import edu.cudenver.bios.matrixsvc.representation.OrthogonalPolynomialContrastXmlRepresentation;
+import edu.cudenver.bios.utils.Factor;
 
 import org.apache.log4j.Logger;
 import org.restlet.Context;
@@ -38,6 +40,8 @@ import org.restlet.resource.Representation;
 import org.restlet.resource.Resource;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,50 +102,70 @@ public class MatrixContrastResource extends Resource
     @Override 
     public void acceptRepresentation(Representation entity)
     throws ResourceException
-    {
-//        DomRepresentation domRep = new DomRepresentation(entity);
-//        NamedRealMatrix matrixSum = null;
-//        ArrayList<NamedRealMatrix> matrixList = null;
-//        
-//        try
-//        {
-//        	// parse the parameters from the entity body
-//            matrixList = MatrixParamParser.
-//              getAdditionParamsFromDomNode( domRep.getDocument().getDocumentElement() );
-//            
-//            if(matrixList == null || matrixList.size() < 2){
-//            	String msg = "Matrix list must contain at least 2 matrices for addition.";
-//            	logger.info(msg);
-//             	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
-//            }
-//            
-//            //add the matrices together
-//            matrixSum = matrixList.get(0);
-//            for(int i = 1; i < matrixList.size(); i++){
-//            	matrixSum = new NamedRealMatrix( matrixSum.add(matrixList.get(i)) );
-//            }
-//            
-//            //add the name to the summation matrix we're returning
-//            matrixSum.setName(MatrixConstants.ADDITION_MATRIX_RETURN_NAME);
-//            
-//            //create our response representation
-//            MatrixXmlRepresentation response = new MatrixXmlRepresentation( matrixSum );
-//            getResponse().setEntity(response); 
-//            getResponse().setStatus(Status.SUCCESS_CREATED);
-//        }
-//        catch (ResourceException re)
-//        {
-//            logger.error(re.getMessage());
-//            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
-//            catch (IOException e) {}
-//            getResponse().setStatus(re.getStatus());
-//        }
-//        catch (Exception e)
-//        {
-//        	 logger.error(e.getMessage());
-//             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
-//             catch (IOException ioe) {}
-//             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-//        }
+    {  
+        DomRepresentation domRep = new DomRepresentation(entity);
+        ArrayList<Factor> factors = null;
+        
+        try
+        {
+        	//Figure out the "type" of the Factor objects (between/within)
+        	Node root = domRep.getDocument().getDocumentElement();
+        	NamedNodeMap map = root.getAttributes();
+            Node typeNode = map.getNamedItem(MatrixConstants.ATTR_TYPE);
+            String type = "";
+            
+        	if( typeNode != null ){
+        		type = typeNode.getNodeValue().trim();
+        	}
+        	else{
+        		String msg = "Cannot find attribute " + MatrixConstants.ATTR_TYPE +
+    			" in this factor list.";
+        		logger.info(msg);
+        		throw new IllegalArgumentException(msg);
+        	}
+        	logger.debug("in MatrixContrastResource, type="+type);
+        	
+        	// parse the parameters from the entity body
+            factors = MatrixParamParser.getContrastParamsFromDomNode( root );
+            
+            // our return object
+            OrthogonalPolynomialContrastCollection opCollection = null;
+            
+            //Operation
+            if( type.equals(MatrixConstants.BETWEEN))
+            {
+            	//TODO: uncomment when available
+            	//handle 'between' factors 
+            	
+//            	opCollection =
+//            		OrthogonalPolynomials.betweenSubjectContrast(factors);
+            }
+            else if( type.equals(MatrixConstants.WITHIN))
+            {
+            	//handle 'within' factors
+            	opCollection =
+            		OrthogonalPolynomials.withinSubjectContrast(factors);
+            }
+            
+            //create our response representation
+            OrthogonalPolynomialContrastXmlRepresentation response = 
+            	new OrthogonalPolynomialContrastXmlRepresentation( opCollection );
+            getResponse().setEntity(response); 
+            getResponse().setStatus(Status.SUCCESS_CREATED);
+        }
+        catch (ResourceException re)
+        {
+            logger.error(re.getMessage());
+            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
+            catch (IOException e) {}
+            getResponse().setStatus(re.getStatus());
+        }
+        catch (Exception e)
+        {
+        	 logger.error(e.getMessage());
+             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
+             catch (IOException ioe) {}
+             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        }
     }
 }

@@ -26,6 +26,7 @@ import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.application.ScalarMultiplicationParameters;
+import edu.cudenver.bios.utils.Factor;
 
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
@@ -426,7 +427,7 @@ public class MatrixParamParser {
     }
     
     /**
-     * 
+     * This method extracts a scalar multiplier from the Dom Node.
      * @param node
      * @return double representing the scalar multiplier for the 
      * scalar multiplication service.
@@ -586,5 +587,85 @@ public class MatrixParamParser {
         //extract scalar and set on parameter object
         params.setScalarMultiplier( extractScalarFromDomNode(scalarValue));
         return params;	
+    }
+    
+    /**
+     * 
+     * @param node
+     * @return
+     * @throws ResourceException
+     */
+    public static ArrayList<Factor> getContrastParamsFromDomNode(Node node)
+    throws ResourceException
+    {
+    	// make sure the root node is correct
+        if (!MatrixConstants.TAG_FACTOR_LIST.equals(node.getNodeName().trim()))
+        {
+            notifyClientBadRequest(node.getNodeName().trim(), MatrixConstants.TAG_FACTOR_LIST);
+        }
+        
+        //Initialize our return object to the length of our nodeList.
+    	NodeList nodeList = node.getChildNodes();
+        ArrayList<Factor> factors = new ArrayList<Factor>(nodeList.getLength());
+        
+        //Iterate over our child nodes (Factors) and extract each, along with 
+        //its name
+        Node child = null;
+        String name = null;
+        Factor factor = null;
+        for(int i = 1; i <= nodeList.getLength(); i++)
+        {
+        	child = nodeList.item(i);
+        	NamedNodeMap attrs = child.getAttributes();
+        	
+        	//get the name of the Factor
+        	Node nameNode = attrs.getNamedItem(MatrixConstants.ATTR_NAME);
+        	if(nameNode != null)
+        	{
+        		name = nameNode.getNodeValue().trim();
+        	}
+        	
+        	//Get the values of the Factor
+        	NodeList values = child.getChildNodes();
+        	
+        	//init our return array to the size of the node list of values
+        	double[] doubleVals = new double[values.getLength()];
+        	
+        	String strValue = "";
+        	double val;
+        	
+        	//Iterate over the values of this Factor
+        	for(int v = 0; v < values.getLength(); v++)
+        	{
+        		strValue = values.item(v).getNodeValue();
+        		
+        		if( strValue != null && !strValue.isEmpty() )
+            	{
+            		try {
+            			val = Double.parseDouble(strValue);
+        			} catch (NumberFormatException e) {
+        				String msg = "Factor value doesn't " +
+        				"parse to a double. Its String value is "+strValue+".";
+        				logger.info(msg);
+        				throw new IllegalArgumentException(msg);
+        			}
+            	}
+            	else
+            	{
+            		String msg = "Factor value is null or empty.";
+        			logger.info(msg);
+            		throw new IllegalArgumentException(msg);
+            	}
+        		
+        		//add the value to our array
+        		doubleVals[v] = val;
+        	}
+        	//construct our Factor
+        	factor = new Factor(name, doubleVals);
+        	
+        	//Add the Factor to our list
+        	factors.add(factor);
+        }
+        return factors;
     }
 }
