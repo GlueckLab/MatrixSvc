@@ -613,7 +613,7 @@ public class MatrixParamParser {
         Node child = null;
         String name = null;
         Factor factor = null;
-        for(int i = 1; i <= nodeList.getLength(); i++)
+        for(int i = 0; i < nodeList.getLength(); i++)
         {
         	child = nodeList.item(i);
         	NamedNodeMap attrs = child.getAttributes();
@@ -628,17 +628,14 @@ public class MatrixParamParser {
         	//Get the values of the Factor
         	NodeList values = child.getChildNodes();
         	
-        	//init our return array to the size of the node list of values
         	double[] doubleVals = new double[values.getLength()];
-        	
         	String strValue = "";
         	double val;
         	
         	//Iterate over the values of this Factor
         	for(int v = 0; v < values.getLength(); v++)
         	{
-        		strValue = values.item(v).getNodeValue();
-        		
+        		strValue = values.item(v).getTextContent();
         		if( strValue != null && !strValue.isEmpty() )
             	{
             		try {
@@ -652,8 +649,11 @@ public class MatrixParamParser {
             	}
             	else
             	{
-            		String msg = "Factor value is null or empty.";
-        			logger.info(msg);
+            		String msg = null;
+            		if(strValue == null) msg = "Factor value is null.";
+            		else if(strValue.equals("")) msg = "Factor value is empty.";
+        			
+            		logger.info(msg);
             		throw new IllegalArgumentException(msg);
             	}
         		

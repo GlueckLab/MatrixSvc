@@ -83,7 +83,6 @@ public class MatrixXmlRepresentation extends DomRepresentation
     	    	//extract the elements using the row index and column index
     	    	//and put them in column tags
     	    	Element colNode = doc.createElement(MatrixConstants.TAG_COLUMN);
-    	    	logger.debug("matrix.getEntry()=" +Double.toString( matrix.getEntry(rowNum, colNum)));
     	    	colNode.setTextContent(Double.toString( matrix.getEntry(rowNum, colNum)));
     	    	rowNode.appendChild(colNode);
     	    }

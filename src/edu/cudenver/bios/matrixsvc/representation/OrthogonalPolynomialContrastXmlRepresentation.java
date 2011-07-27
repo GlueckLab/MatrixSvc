@@ -24,11 +24,9 @@ package edu.cudenver.bios.matrixsvc.representation;
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrast;
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrastCollection;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.utils.Factor;
 
-import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
 import org.restlet.resource.DomRepresentation;
 import org.w3c.dom.Document;
@@ -37,6 +35,7 @@ import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Jonathan Cohen
@@ -44,101 +43,105 @@ import java.util.ArrayList;
  */
 public class OrthogonalPolynomialContrastXmlRepresentation extends DomRepresentation 
 {
-	private static Logger logger = MatrixLogger.getInstance();
-	
-		/**
-		 * Create an XML representation for a Orthogonal Polynomial Contrast 
-		 * XML response entity body. 
-		 * 
-		 * @param opContrastColl is a @see OrthogonalPolynomialContrastCollection.
-		 * @throws IOException
-		 */
-		public OrthogonalPolynomialContrastXmlRepresentation(
-				OrthogonalPolynomialContrastCollection opContrastColl) 
-		throws IOException
-		{
-		    super(MediaType.APPLICATION_XML);
-		    logger.debug("In OrthogonalPolynomialContrastXmlRepresentation constructor");
-		    Document doc = getDocument();
-		    Element rootElement = createXml(opContrastColl, doc);
-		    doc.appendChild(rootElement);
-		    doc.normalizeDocument();
-		}
+	/**
+	 * Create an XML representation for a Orthogonal Polynomial Contrast 
+	 * XML response entity body. 
+	 * 
+	 * @param opContrastColl is a @see OrthogonalPolynomialContrastCollection.
+	 * @throws IOException
+	 */
+	public OrthogonalPolynomialContrastXmlRepresentation(
+			OrthogonalPolynomialContrastCollection opContrastColl) 
+	throws IOException
+	{
+	    super(MediaType.APPLICATION_XML);
+	    Document doc = getDocument();
+	    Element rootElement = createXml(opContrastColl, doc);
+	    doc.appendChild(rootElement);
+	    doc.normalizeDocument();
+	}
 
-		private static Element createXml(OrthogonalPolynomialContrastCollection contrastColl, Document _doc){
-			Element rootElem = _doc.createElement(MatrixConstants.TAG_ORTHOG_POLY_CONTRAST_LIST);
-			
-			//Get the list of contrasts
-			ArrayList<OrthogonalPolynomialContrast> contrasts = 
-				new ArrayList<OrthogonalPolynomialContrast> (contrastColl.getContrastList());
-			//List of Factors
-			ArrayList<Factor> factors = null;
-			//Matrix
-			NamedRealMatrix matrix = null;
-			
-			//Iterate over Contrasts
-			for(OrthogonalPolynomialContrast c: contrasts)
-			{
-				matrix = new NamedRealMatrix( c.getContrastMatrix() );
-				factors = new ArrayList<Factor>(c.getFactorList());
-				
-				Element contrastElement = _doc.createElement(MatrixConstants.TAG_CONTRAST);
-				if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.GRAND_MEAN))
-				{
-					contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.GRAND_MEAN);
-				}
-				else if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.MAIN_EFFECT))
-				{
-					contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.MAIN_EFFECT);
-				}
-				else if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.INTERACTION))
-				{
-					contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.INTERACTION);
-				}
-				//Create XML for the matrix
-				Node matrixNode = MatrixXmlRepresentation.createMatrixNodeFromRealMatrix(matrix, _doc);
-				
-				//Append matrix node to contrast element
-				contrastElement.appendChild(matrixNode);
-				
-				//Not all contrasts have a Factor list (Grand Mean does not)
-				if(factors != null)
-				{
-					//Create factorList element
-					Element factorListElement = _doc.createElement(MatrixConstants.TAG_FACTOR_LIST);
-					
-					//loop through factors, creating a node for each
-					Element factorNode = null;
-					for(Factor f : factors)
-					{
-						factorNode = createFactorXml(f, _doc);
-						
-						//add factor node to factorList element
-						factorListElement.appendChild(factorNode);
-					}
-					//append factorList as child to contrast element
-					contrastElement.appendChild(factorListElement);
-				}
-				//append Contrast element to root
-				rootElem.appendChild(contrastElement);
-			}
-			return rootElem;
-		}
+	private static Element createXml(OrthogonalPolynomialContrastCollection contrastColl, Document _doc){
+		Element rootElem = _doc.createElement(MatrixConstants.TAG_ORTHOG_POLY_CONTRAST_LIST);
 		
-		private static Element createFactorXml(Factor factor, Document _doc){
-			Element factorElement = _doc.createElement(MatrixConstants.TAG_FACTOR);
-			factorElement.setAttribute(MatrixConstants.ATTR_NAME, factor.getName());
+		//Get the list of contrasts
+		ArrayList<OrthogonalPolynomialContrast> contrasts = 
+			new ArrayList<OrthogonalPolynomialContrast> (contrastColl.getContrastList());
+		
+		//List of Factors
+		List<Factor> factors = null;
+		
+		//Matrix
+		NamedRealMatrix matrix = null;
+
+		//Iterate over Contrasts
+		for(OrthogonalPolynomialContrast c: contrasts)
+		{
+			matrix = new NamedRealMatrix( c.getContrastMatrix() );
 			
-			//Get the values of this factor
-			double[] values = factor.getValues();
-			Element valNode = null;
-			
-			for(int v = 0; v < values.length; v++)
+			Element contrastElement = _doc.createElement(MatrixConstants.TAG_CONTRAST);
+			if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.GRAND_MEAN))
 			{
-				valNode = _doc.createElement(MatrixConstants.TAG_V);
-				valNode.setTextContent(Double.toString(values[v]) );
-				factorElement.appendChild(valNode);
+				matrix.setName(MatrixConstants.GRAND_MEAN);
+				contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.GRAND_MEAN);
 			}
-			return factorElement;
+			else if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.MAIN_EFFECT))
+			{
+				factors = c.getFactorList();
+				matrix.setName(MatrixConstants.MAIN_EFFECT);
+				contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.MAIN_EFFECT);
+			}
+			else if( c.getType().equals(OrthogonalPolynomialContrast.ContrastType.INTERACTION))
+			{
+				factors = c.getFactorList();
+				matrix.setName(MatrixConstants.INTERACTION);
+				contrastElement.setAttribute(MatrixConstants.ATTR_TYPE, MatrixConstants.INTERACTION);
+			}
+			
+			//Create XML for the matrix
+			Node matrixNode = MatrixXmlRepresentation.createMatrixNodeFromRealMatrix(matrix, _doc);
+			
+			//Append matrix node to contrast element
+			contrastElement.appendChild(matrixNode);
+			
+			//Not all contrasts have a Factor list (Grand Mean does not)
+			if(factors != null && factors.size() > 0)
+			{
+				//Create factorList element
+				Element factorListElement = _doc.createElement(MatrixConstants.TAG_FACTOR_LIST);
+				
+				//loop through factors, creating a node for each
+				Element factorNode = null;
+				for(Factor f : factors)
+				{
+					factorNode = createFactorXml(f, _doc);
+					
+					//add factor node to factorList element
+					factorListElement.appendChild(factorNode);
+				}
+				//append factorList as child to contrast element
+				contrastElement.appendChild(factorListElement);
+			}
+			//append Contrast element to root
+			rootElem.appendChild(contrastElement);
 		}
+		return rootElem;
+	}
+	
+	private static Element createFactorXml(Factor factor, Document _doc){
+		Element factorElement = _doc.createElement(MatrixConstants.TAG_FACTOR);
+		factorElement.setAttribute(MatrixConstants.ATTR_NAME, factor.getName());
+		
+		//Get the values of this factor
+		double[] values = factor.getValues();
+		Element valNode = null;
+		
+		for(int v = 0; v < values.length; v++)
+		{
+			valNode = _doc.createElement(MatrixConstants.TAG_V);
+			valNode.setTextContent(Double.toString(values[v]) );
+			factorElement.appendChild(valNode);
+		}
+		return factorElement;
+	}
 }
