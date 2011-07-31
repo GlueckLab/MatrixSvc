@@ -118,8 +118,8 @@ public class MatrixContrastResource extends Resource
         		type = typeNode.getNodeValue().trim();
         	}
         	else{
-        		String msg = "Cannot find attribute " + MatrixConstants.ATTR_TYPE +
-    			" in this factor list.";
+        		String msg = "Cannot find attribute '" + MatrixConstants.ATTR_TYPE +
+    			"' in this factor list.";
         		logger.info(msg);
         		throw new IllegalArgumentException(msg);
         	}
@@ -134,15 +134,11 @@ public class MatrixContrastResource extends Resource
             //Operation
             if( type.equals(MatrixConstants.BETWEEN))
             {
-            	//TODO: uncomment when available
-            	//handle 'between' factors 
-            	
-//            	opCollection =
-//            		OrthogonalPolynomials.betweenSubjectContrast(factors);
+            	opCollection =
+            		OrthogonalPolynomials.betweenSubjectContrast(factors);
             }
             else if( type.equals(MatrixConstants.WITHIN))
             {
-            	//handle 'within' factors
             	opCollection =
             		OrthogonalPolynomials.withinSubjectContrast(factors);
             }
