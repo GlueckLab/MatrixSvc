@@ -142,6 +142,13 @@ public class MatrixContrastResource extends Resource
             	opCollection =
             		OrthogonalPolynomials.withinSubjectContrast(factors);
             }
+            else
+            {
+            	String msg = "Attribute 'type' must be either 'between' or " +
+            			"'within'.";
+        		logger.info(msg);
+        		throw new IllegalArgumentException(msg);
+            }
             
             //create our response representation
             OrthogonalPolynomialContrastXmlRepresentation response = 
