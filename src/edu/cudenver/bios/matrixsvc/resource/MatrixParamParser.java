@@ -48,8 +48,23 @@ public class MatrixParamParser {
 	private static Logger logger = MatrixLogger.getInstance();
 	
 	/**
+	 * Parse a <matrixList> from XML DOM.  The <matrixList> should be specified as follows:
+	 <P>
+	 <BR>&lt;matrixList&gt;
+     <BR>&lt;matrix name='A' rows='r' columns='c'&gt;
+	 <BR>&lt;r&gt;&lt;c&gt;a1,1&lt;/c&gt;&lt;c&gt;a1,2&lt;/c&gt;...&lt;c&gt;a1,c&lt;/c&gt;&lt;/r&gt;
+     ...
+     <BR>&lt;r&gt;<c&gt;ar,1&lt;/c&gt;&lt;c&gt;ar,2&lt;/c&gt;...&lt;c&gt;ar,c&lt;/c&gt;&lt;/r&gt;
+     <BR>&lt;/matrix&gt;
+     <BR>&lt;matrix name='B' rows='r' columns='c'&gt;
+     <BR>&lt;r&gt;&lt;c&gt;b1,1&lt;/c&gt;&lt;c&gt;b1,2&lt;/c&gt;...&lt;c&gt;b1,c&lt;/c&gt;&lt;/r&gt;
+     ...
+     <BR>&lt;r&gt;&lt;c&gt;br,1&lt;/c&gt;&lt;c&gt;br,2&lt;/c&gt;...&lt;c&gt;br,c&lt;/c&gt;&lt;/r&gt;
+	 <BR>&lt;/matrix&gt;
+	 <BR>&lt;&lt;/matrixList&gt;
+
 	 * @param Node node
-	 * @return ArrayList<NamedRealMatrix>
+	 * @return ArrayList&lt;NamedRealMatrix>
 	 * @throws ResourceException
 	 */
 	public static ArrayList<NamedRealMatrix> getAdditionParamsFromDomNode(Node node)
@@ -59,8 +74,23 @@ public class MatrixParamParser {
 	}
 	
 	/**
-	 * 
+	 * Parse a <matrixList> from XML DOM.  The <matrixList> should be specified as follows:
+	 <P>
+	 <BR>&lt;matrixList&gt;
+     <BR>&lt;matrix name='A' rows='r' columns='c'&gt;
+	 <BR>&lt;r&gt;&lt;c&gt;a1,1&lt;/c&gt;&lt;c&gt;a1,2&lt;/c&gt;...&lt;c&gt;a1,c&lt;/c&gt;&lt;/r&gt;
+     ...
+     <BR>&lt;r&gt;<c&gt;ar,1&lt;/c&gt;&lt;c&gt;ar,2&lt;/c&gt;...&lt;c&gt;ar,c&lt;/c&gt;&lt;/r&gt;
+     <BR>&lt;/matrix&gt;
+     <BR>&lt;matrix name='B' rows='r' columns='c'&gt;
+     <BR>&lt;r&gt;&lt;c&gt;b1,1&lt;/c&gt;&lt;c&gt;b1,2&lt;/c&gt;...&lt;c&gt;b1,c&lt;/c&gt;&lt;/r&gt;
+     ...
+     <BR>&lt;r&gt;&lt;c&gt;br,1&lt;/c&gt;&lt;c&gt;br,2&lt;/c&gt;...&lt;c&gt;br,c&lt;/c&gt;&lt;/r&gt;
+	 <BR>&lt;/matrix&gt;
+	 <BR>&lt;&lt;/matrixList&gt;
+
 	 * @param node Node
+	 * Please read Matrix Service API.docx
 	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
@@ -96,6 +126,7 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
+	 * Please read Matrix Service API.docx
 	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
@@ -120,6 +151,7 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
+	 * Please read Matrix Service API.docx
 	 * @return ArrayList<NamedRealMatrix>
 	 * @throws ResourceException
 	 */
@@ -157,6 +189,7 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
+	 * Please read Matrix Service API.docx
 	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
@@ -189,6 +222,8 @@ public class MatrixParamParser {
 	/**
 	 * 
 	 * @param node Node
+	 * Please read Matrix Service API.docx
+	 * 
 	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
@@ -221,6 +256,8 @@ public class MatrixParamParser {
 	/**
 	 * This method parses a <matrix> node.
 	 * @param node Node
+	 * 
+	 * Please read Matrix Service API.docx
 	 * @return NamedRealMatrix
 	 * @throws ResourceException if the incoming matrix is non-symmetric
 	 * or NOT positive definite.
@@ -258,6 +295,9 @@ public class MatrixParamParser {
 	/**
 	 * This method requires that the matrix be symmetrical.
 	 * @param node Node
+	 * 
+	 * Please read Matrix Service API.docx
+	 * 
 	 * @return NamedRealMatrix
 	 * @throws ResourceException
 	 */
@@ -301,7 +341,7 @@ public class MatrixParamParser {
      * <br>&lt;r&gt;&lt;c&gt;number&lt;c/&gt;...&lt;/r&gt;
      * <br>...
      * <br>&lt;/matrix&gt;
-     * 
+     * Please read Matrix Service API.docx
      * @param node
      * @return matrix object
      * @throws ResourceException
@@ -428,9 +468,21 @@ public class MatrixParamParser {
     
     /**
      * This method extracts a scalar multiplier from the Dom Node.
-     * @param node
+     * @param node containing:
+       <P>
+       <br>&lt;scalarMultiplicationParams&gt;
+			&lt;matrix name='A' rows='r' columns='c'&gt;
+			&lt;r&gt;&lt;c&gt;a1,1&lt;/c&gt;&lt;c&gt;a1,2&lt;/c&gt;...&lt;c&gt;a1,c&lt;/c&gt;&lt;/r&gt;
+			...
+			&lt;r&gt;&lt;c&gt;ar,1&lt;/c&gt;&lt;c&gt;ar,2&lt;/c&gt;...&lt;c&gt;ar,c&lt;/c&gt;&lt;/r&gt;
+			&lt;/matrix&gt;
+			&lt;scalarMultiplier value=”b”/&gt;NOTE quotation marks
+			&lt;/scalarMultiplicationParams&gt;
+
+     * Please read Matrix Service API.docx
      * @return double representing the scalar multiplier for the 
      * scalar multiplication service.
+     * 
      * @throws IllegalArgumentException
      */
     private static double extractScalarFromDomNode(Node node)
@@ -479,6 +531,7 @@ public class MatrixParamParser {
      * <br>...
      * <br>&lt;/matrix&gt;
 	 * <br>&lt;/matrixList&gt;
+	 * Please read Matrix Service API.docx
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
@@ -511,8 +564,8 @@ public class MatrixParamParser {
     }
     
     /**
-     * 
-     * @param node containing 
+     * This method parses a DOM node containing:
+     * @param node  
 	 * <p>
 	 * &lt;parameterList&gt;
      * <br>&lt;matrix name="name" rows="number" columns="number" &gt;
@@ -523,6 +576,7 @@ public class MatrixParamParser {
      * <br>number
      * <br>&lt;/scalarMultiplier&gt;
      * <br>&lt;/parameterList&gt;
+     * Please read Matrix Service API.docx
      * @return MatrixServiceParameters
      * @throws ResourceException
      */
@@ -590,9 +644,18 @@ public class MatrixParamParser {
     }
     
     /**
+     * This is the public method to process a DOM node that contains a list
+     * of Factors.  The Factor objects are returned in an ArrayList.
      * 
-     * @param node
-     * @return
+     * @param node containing:
+     <p>&lt;factorList type=’(between|within)’&gt;
+	 <br>&lt;factor name=’f1’&gt;&lt;v&gtv1&lt;/v&gt;...&lt;v&gtvn1&lt;/v&gt;&lt;/factor&gt;
+	 <br>&lt;factor name=’f2’&gt;&lt;v&gtv1&lt;/v&gt;...&lt;v&gtvn2&lt;/v&gt;&lt;/factor&gt;
+	 <br>...
+	 <br>&lt;factor name=’fm’&gt;&lt;v&gtv1&lt;/v&gt;...&lt;v&gt;vnm&lt;/v&gt;&lt;/factor&gt;
+     <br>&lt;/factorList&gt;
+     * Please read Matrix Service API.docx
+     * @return ArrayList<Factor> @see Factor
      * @throws ResourceException
      */
     public static ArrayList<Factor> getContrastParamsFromDomNode(Node node)
@@ -616,6 +679,13 @@ public class MatrixParamParser {
         for(int i = 0; i < nodeList.getLength(); i++)
         {
         	child = nodeList.item(i);
+        	if(!child.getNodeName().equalsIgnoreCase(MatrixConstants.TAG_FACTOR))
+        	{
+        		String msg = "The tag found, '" + child.getNodeName() + "' was " +
+        				"expected to be '"+ MatrixConstants.TAG_FACTOR+"'.";
+				logger.info(msg);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+        	}
         	NamedNodeMap attrs = child.getAttributes();
         	
         	//get the name of the Factor
@@ -623,6 +693,13 @@ public class MatrixParamParser {
         	if(nameNode != null)
         	{
         		name = nameNode.getNodeValue().trim();
+        	}
+        	else
+        	{
+        		String msg = "The " + MatrixConstants.TAG_FACTOR + " doesn't contain " +
+				"the required attribute '" + MatrixConstants.ATTR_NAME + "'.";
+				logger.info(msg);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
         	}
         	
         	//Get the values of the Factor
