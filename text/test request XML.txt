@@ -74,3 +74,7 @@ response:
 <matrix name='A' rows='2' columns='2'><r><c>1</c><c>0</c></r><r><c>0</c><c>1</c></r></matrix>
 response:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><matrixList><matrix columns="2" name="L" rows="2"><r><c>1.0</c><c>0.0</c></r><r><c>0.0</c><c>1.0</c></r></matrix><matrix columns="2" name="lTranspose" rows="2"><r><c>1.0</c><c>0.0</c></r><r><c>0.0</c><c>1.0</c></r></matrix></matrixList>
+
+#Orthogonal Polynomial Contrast
+<factorList type="within"><factor name="f1"><v>1</v><v>2</v><v>3</v><v>4</v></factor><factor name="f2"><v>1</v><v>3</v><v>5</v><v>7</v></factor><factor name="f3"><v>1</v><v>3</v><v>5</v><v>10</v></factor></factorList>
+response:
