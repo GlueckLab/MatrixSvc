@@ -32,7 +32,6 @@
 	<property name="javadocdir" value="${basedir}/javadoc" />
 	<property name="test.data.dir" value="${basedir}/TestData" />
 	<property name="config.dir" value="../config" />
-	<property name="jettylib" value="c:/jetty/lib" />
 	
 	<fileset id="thirdpartylibs" dir="${thirdpartydir}">
 		<include name="ApacheCommonsMath/2.1/lib/commons-math-2.1.jar" />
@@ -52,15 +51,11 @@
 	    <include name="log4j.properties"/>
     </fileset>
             
-	<fileset id="jetty" dir="${jettylib}">
-	    <include name="*.jar"/>
-	</fileset>
 	
 	<path id="libraries">
 		<fileset refid="thirdpartylibs"/>
 		<fileset refid="javastatslib"/>
 		<fileset refid="log4jprops"/>
-		<fileset refid="jetty"/>
 	</path>
 		
     <target name="clean">
@@ -154,7 +149,6 @@
 		to the user's catalina.home\webapps directory." >
 		
 		<copy todir="${catalina.home}\webapps">
-			<!--TMP<copy todir="c:\jetty\webapps">-->
 			<fileset dir="${bindir}">
 				<include name="${svcname}.war"/>
 			</fileset>
