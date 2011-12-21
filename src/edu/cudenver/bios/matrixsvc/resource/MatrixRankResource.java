@@ -21,24 +21,19 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
-import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.RankXmlRepresentation;
+import java.io.IOException;
 
 import org.apache.commons.math.linear.SingularValueDecompositionImpl;
-import org.restlet.Context;
-import org.restlet.data.MediaType;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
 import org.restlet.data.Status;
-import org.restlet.resource.DomRepresentation;
-import org.restlet.resource.Representation;
-import org.restlet.resource.Resource;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.Variant;
+import org.restlet.resource.ServerResource;
 
-import java.io.IOException;
+import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import edu.cudenver.bios.matrixsvc.representation.RankXmlRepresentation;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -46,59 +41,22 @@ import java.io.IOException;
  * 
  * @author Jonathan Cohen
  */
-public class MatrixRankResource extends Resource
+public class MatrixRankResource extends ServerResource
 {
-	/**
-	 * Create a new resource to handle rank requests.  Data
-	 * is returned as XML.
-	 * 
-	 * @param context restlet context
-	 * @param request http request object
-	 * @param response http response object
-	 */
-    public MatrixRankResource(Context context, Request request, Response response) 
-    {
-        super(context, request, response);
-        getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    }
-
+	
     /**
-     * Disallow GET requests
+     * Handle POST request to calculate the rank of a matrix
+     * @param entity XMl formatted matrix list
+     * @return XML representation of the matrix rank
+     * @throws ResourceException
      */
-    @Override
-    public boolean allowGet()
+    @Post
+    public Representation matrixRank(Representation entity) throws ResourceException
     {
-        return false;
-    }
-
-    /**
-     * Disallow PUT requests
-     */
-    @Override
-    public boolean allowPut()
-    {
-        return false;
-    }
-
-    /**
-     * Allow POST requests
-     */
-    @Override
-    public boolean allowPost() 
-    {
-        return  true;
-    }
-
-    /**
-     * Process a POST request to perform a matrix rank calculation.  
-     * Please see REST API documentation for details on
-     * the entity body format.
-     * 
-     * @param entity HTTP entity body for the request
-     */
-    @Override 
-    public void acceptRepresentation(Representation entity)
-    {
+    	if(entity == null)
+    	{
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "No Input- Calculation of Matrix Rank not possible");
+    	}
         DomRepresentation rep = new DomRepresentation(entity);
         NamedRealMatrix reqMatrix = null;
         
@@ -115,22 +73,21 @@ public class MatrixRankResource extends Resource
             //create our response representation
             RankXmlRepresentation response = new RankXmlRepresentation(
             		                               impl.getRank());
-            getResponse().setEntity(response); 
-            getResponse().setStatus(Status.SUCCESS_CREATED);
+           /* getResponse().setEntity(response); 
+            getResponse().setStatus(Status.SUCCESS_CREATED);*/
+            return response;
         }
-        catch (ResourceException re)
+        catch (IllegalArgumentException iae)
         {
-            MatrixLogger.getInstance().error(re.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(re.getStatus());
+        	 MatrixLogger.getInstance().error(iae.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, iae.getMessage());
+
         }
-        catch (Exception e)
+        catch (IOException ioe)
         {
-        	 MatrixLogger.getInstance().error(e.getMessage());
-             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
-             catch (IOException ioe) {}
-             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        	 MatrixLogger.getInstance().error(ioe.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, ioe.getMessage());
+             
         }
     }
 }

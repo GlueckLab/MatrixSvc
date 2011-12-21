@@ -21,88 +21,48 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.restlet.data.Status;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
+import org.restlet.resource.ServerResource;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrastCollection;
 import edu.cudenver.bios.matrix.OrthogonalPolynomials;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.OrthogonalPolynomialContrastXmlRepresentation;
 import edu.cudenver.bios.utils.Factor;
-
-import org.apache.log4j.Logger;
-import org.restlet.Context;
-import org.restlet.data.MediaType;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-import org.restlet.data.Status;
-import org.restlet.resource.DomRepresentation;
-import org.restlet.resource.Representation;
-import org.restlet.resource.Resource;
-import org.restlet.resource.ResourceException;
-import org.restlet.resource.Variant;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @author Jonathan Cohen
  *
  */
-public class MatrixContrastResource extends Resource
+public class MatrixContrastResource extends ServerResource
 {
 	private static Logger logger = MatrixLogger.getInstance();
-	/**
-	 * Create a new resource to handle contrast requests.  Data
-	 * returned as XML.
-	 * 
-	 * @param context restlet context
-	 * @param request restlet request object
-	 * @param response restlet response object
-	 */
-    public MatrixContrastResource(Context context, Request request, Response response) 
-    {
-        super(context, request, response);
-        getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    }
 
     /**
-     * Disallow GET requests
-     */
-    @Override
-    public boolean allowGet()
-    {
-        return false;
-    }
-
-    /**
-     * Disallow PUT requests
-     */
-    @Override
-    public boolean allowPut()
-    {
-        return false;
-    }
-
-    /**
-     * Allow POST requests
-     */
-    @Override
-    public boolean allowPost() 
-    {
-        return  true;
-    }
-
-    /**
+     * Create a polynomial contrast
      * Please see REST API documentation for details on
      * the entity body format.
      * @param entity HTTP entity body for the request
      */
-    @Override 
-    public void acceptRepresentation(Representation entity)
+	@Post
+    public Representation acceptRepresentation(Representation entity)
     throws ResourceException
     {  
+		if(entity  == null)
+		{
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "No Inputs Failed to Creat Contrast Matrix");
+		}
         DomRepresentation domRep = new DomRepresentation(entity);
         ArrayList<Factor> factors = null;
         
@@ -153,22 +113,22 @@ public class MatrixContrastResource extends Resource
             //create our response representation
             OrthogonalPolynomialContrastXmlRepresentation response = 
             	new OrthogonalPolynomialContrastXmlRepresentation( opCollection );
-            getResponse().setEntity(response); 
-            getResponse().setStatus(Status.SUCCESS_CREATED);
+           /* getResponse().setEntity(response); 
+            getResponse().setStatus(Status.SUCCESS_CREATED);*/
+            return response;
         }
-        catch (ResourceException re)
+        catch (IllegalArgumentException iae)
         {
-            logger.error(re.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(re.getStatus());
+        	 MatrixLogger.getInstance().error(iae.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, iae.getMessage());
+
         }
-        catch (Exception e)
+        catch (IOException ioe)
         {
-        	 logger.error(e.getMessage());
-             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
-             catch (IOException ioe) {}
-             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        	 MatrixLogger.getInstance().error(ioe.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, ioe.getMessage());
+             
         }
+		//return domRep;
     }
 }

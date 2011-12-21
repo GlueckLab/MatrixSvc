@@ -28,11 +28,10 @@ import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.utils.Factor;
 
 import org.restlet.data.MediaType;
-import org.restlet.resource.DomRepresentation;
+import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -21,14 +21,13 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
-import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-import org.restlet.resource.Representation;
-import org.restlet.resource.Resource;
-import org.restlet.resource.StringRepresentation;
-import org.restlet.resource.Variant;
+import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
+import org.restlet.representation.Variant;
+import org.restlet.resource.Get;
+import org.restlet.resource.ServerResource;
+
 
 
 /**
@@ -38,26 +37,13 @@ import org.restlet.resource.Variant;
  * 
  * @author Jonathan Cohen
  */
-public class DefaultResource extends Resource
+public class DefaultResource extends ServerResource
 {
-	/**
-	 * Create a default resource handler
-	 * @param context restlet context
-	 * @param request HTTP request object
-	 * @param response HTTP response object
-	 */
-    public DefaultResource(Context context, Request request, Response response) 
-    {
-        super(context, request, response);
-
-        // This representation has only one type of representation.
-        getVariants().add(new Variant(MediaType.TEXT_PLAIN));
-    }
 
     /**
      * Returns a full representation for a given variant.
      */
-    @Override
+	@Get
     public Representation represent(Variant variant) {
         Representation representation = 
             new StringRepresentation("DefaultResource of Matrix REST Service", MediaType.TEXT_PLAIN);

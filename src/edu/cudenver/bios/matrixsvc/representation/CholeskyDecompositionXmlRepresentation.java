@@ -28,7 +28,8 @@ import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
-import org.restlet.resource.DomRepresentation;
+
+import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

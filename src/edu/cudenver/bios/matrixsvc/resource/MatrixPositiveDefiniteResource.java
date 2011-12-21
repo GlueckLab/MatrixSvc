@@ -21,25 +21,20 @@
  */
 package edu.cudenver.bios.matrixsvc.resource;
 
+import java.io.IOException;
+
+import org.restlet.data.Status;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
+import org.restlet.resource.ServerResource;
+
 import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
-import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
 import edu.cudenver.bios.matrixsvc.representation.PositiveDefiniteXmlRepresentation;
-
-import org.restlet.Context;
-import org.restlet.data.MediaType;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-import org.restlet.data.Status;
-import org.restlet.resource.DomRepresentation;
-import org.restlet.resource.Representation;
-import org.restlet.resource.Resource;
-import org.restlet.resource.ResourceException;
-import org.restlet.resource.Variant;
-
-import java.io.IOException;
 
 /**
  * Resource for handling requests for Matrix Addition calculations.
@@ -47,59 +42,21 @@ import java.io.IOException;
  * 
  * @author Jonathan Cohen
  */
-public class MatrixPositiveDefiniteResource extends Resource
+public class MatrixPositiveDefiniteResource extends ServerResource
 {
-	/**
-	 * Create a new resource to handle power requests.  Data
-	 * is returned as XML.
-	 * 
-	 * @param context restlet context
-	 * @param request http request object
-	 * @param response http response object
-	 */
-    public MatrixPositiveDefiniteResource(Context context, Request request, Response response) 
-    {
-        super(context, request, response);
-        getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    }
-
     /**
-     * Disallow GET requests
+     * Handle POST request to determine if the matrix is positive definite
+     * @param entity XMl formatted matrix
+     * @return XML representation indicating if the matrix is positive definite
+     * @throws ResourceException
      */
-    @Override
-    public boolean allowGet()
+	@Post
+    public Representation matrixPositiveDefinite(Representation entity) throws ResourceException
     {
-        return false;
-    }
-
-    /**
-     * Disallow PUT requests
-     */
-    @Override
-    public boolean allowPut()
-    {
-        return false;
-    }
-
-    /**
-     * Allow POST requests to create a power list
-     */
-    @Override
-    public boolean allowPost() 
-    {
-        return  true;
-    }
-
-    /**
-     * Process a POST request to perform a set of power
-     * calculations.  Please see REST API documentation for details on
-     * the entity body format.
-     * 
-     * @param entity HTTP entity body for the request
-     */
-    @Override 
-    public void acceptRepresentation(Representation entity)
-    {
+		if(entity == null)
+		{
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "No Input");
+		}
         DomRepresentation rep = new DomRepresentation(entity);
         NamedRealMatrix reqMatrix = null;
         try
@@ -115,22 +72,21 @@ public class MatrixPositiveDefiniteResource extends Resource
             //create our response representation
             PositiveDefiniteXmlRepresentation response = new PositiveDefiniteXmlRepresentation(
             		isPositiveDefinite);
-            getResponse().setEntity(response); 
-            getResponse().setStatus(Status.SUCCESS_CREATED);
+            /*getResponse().setEntity(response); 
+            getResponse().setStatus(Status.SUCCESS_CREATED);*/
+            return response;
         }
-        catch (ResourceException re)
+        catch (IllegalArgumentException iae)
         {
-            MatrixLogger.getInstance().error(re.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(re.getStatus());
+        	 MatrixLogger.getInstance().error(iae.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, iae.getMessage());
+
         }
-        catch (Exception e)
+        catch (IOException ioe)
         {
-        	 MatrixLogger.getInstance().error(e.getMessage());
-             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
-             catch (IOException ioe) {}
-             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        	 MatrixLogger.getInstance().error(ioe.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, ioe.getMessage());
+             
         }
     }
 

@@ -21,17 +21,15 @@
  */
 package edu.cudenver.bios.matrixsvc.representation;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
+import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
-import org.restlet.resource.DomRepresentation;
+import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.IOException;
+import edu.cudenver.bios.matrixsvc.application.MatrixConstants;
+import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 
 /**
  * XML representation of a Matrix.  
@@ -40,7 +38,6 @@ import java.io.IOException;
  */
 public class MatrixXmlRepresentation extends DomRepresentation
 {
-	private static Logger logger = MatrixLogger.getInstance();
     /**
      * Create an XML representation of a matrix response
      * entity body.  

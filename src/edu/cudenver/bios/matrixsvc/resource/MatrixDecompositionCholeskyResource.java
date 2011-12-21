@@ -22,24 +22,22 @@
 package edu.cudenver.bios.matrixsvc.resource;
 
 
+import java.io.IOException;
+
+import org.apache.commons.math.linear.CholeskyDecompositionImpl;
+import org.apache.commons.math.linear.NonSquareMatrixException;
+import org.apache.commons.math.linear.NotPositiveDefiniteMatrixException;
+import org.apache.commons.math.linear.NotSymmetricMatrixException;
+import org.restlet.data.Status;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
+import org.restlet.resource.ServerResource;
+
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
 import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.cudenver.bios.matrixsvc.representation.CholeskyDecompositionXmlRepresentation;
-import edu.cudenver.bios.matrixsvc.representation.ErrorXMLRepresentation;
-
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
-import org.restlet.Context;
-import org.restlet.data.MediaType;
-import org.restlet.data.Request;
-import org.restlet.data.Response;
-import org.restlet.data.Status;
-import org.restlet.resource.DomRepresentation;
-import org.restlet.resource.Representation;
-import org.restlet.resource.Resource;
-import org.restlet.resource.ResourceException;
-import org.restlet.resource.Variant;
-
-import java.io.IOException;
 
 /**
  * Resource for handling requests for Cholesky Decomposition calculations.
@@ -47,50 +45,9 @@ import java.io.IOException;
  * 
  * @author Jonathan Cohen
  */
-public class MatrixDecompositionCholeskyResource extends Resource
+public class MatrixDecompositionCholeskyResource extends ServerResource
 {
-	/**
-	 * Create a new resource to handle Cholesky Decomposition calculations.  Data
-	 * is returned as XML.
-	 * 
-	 * @param context restlet context
-	 * @param request http request object
-	 * @param response http response object
-	 */
-    public MatrixDecompositionCholeskyResource(Context context, Request request, Response response) 
-    {
-        super(context, request, response);
-        getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    }
-
-    /**
-     * Disallow GET requests
-     */
-    @Override
-    public boolean allowGet()
-    {
-        return false;
-    }
-
-    /**
-     * Disallow PUT requests
-     */
-    @Override
-    public boolean allowPut()
-    {
-        return false;
-    }
-
-    /**
-     * Allow POST requests
-     */
-    @Override
-    public boolean allowPost() 
-    {
-        return  true;
-    }
-
-    /**
+       /**
      * This operation takes a single square matrix (p x p) 
      * and produces two matrices: the matrix representing its 
      * square root (L), and its transpose.  Please see 
@@ -98,15 +55,22 @@ public class MatrixDecompositionCholeskyResource extends Resource
      * the entity body format.
      * 
      * @param entity HTTP entity body for the request
+     * @throws NotPositiveDefiniteMatrixException 
+     * @throws NotSymmetricMatrixException 
+     * @throws NonSquareMatrixException 
      */
-    @Override 
-    public void acceptRepresentation(Representation entity)
+    @Post
+    public Representation acceptRepresentation(Representation entity) 
+    		throws ResourceException, NonSquareMatrixException, 
+    		NotSymmetricMatrixException, NotPositiveDefiniteMatrixException
     {
+    	if(entity == null)
+    	{
+    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "No Input- Matrix Decomposition not possible");
+    	}
         DomRepresentation rep = new DomRepresentation(entity);
         NamedRealMatrix matrixInput = null;
         
-        NamedRealMatrix matrixL = null;
-        NamedRealMatrix matrixTranspose = null;
         try
         {
         	// parse the parameters from the entity body
@@ -126,22 +90,21 @@ public class MatrixDecompositionCholeskyResource extends Resource
             //create our response representation
             CholeskyDecompositionXmlRepresentation response = 
             	new CholeskyDecompositionXmlRepresentation(cdImpl);
-            getResponse().setEntity(response); 
-            getResponse().setStatus(Status.SUCCESS_CREATED);
+           /* getResponse().setEntity(response); 
+            getResponse().setStatus(Status.SUCCESS_CREATED);*/
+            return response;
         }
-        catch (ResourceException re)
+        catch (IllegalArgumentException iae)
         {
-            MatrixLogger.getInstance().error(re.getMessage());
-            try { getResponse().setEntity(new ErrorXMLRepresentation(re.getMessage())); }
-            catch (IOException e) {}
-            getResponse().setStatus(re.getStatus());
+        	 MatrixLogger.getInstance().error(iae.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, iae.getMessage());
+
         }
-        catch (Exception e)
+        catch (IOException ioe)
         {
-        	 MatrixLogger.getInstance().error(e.getMessage());
-             try { getResponse().setEntity(new ErrorXMLRepresentation(e.getMessage())); }
-             catch (IOException ioe) {}
-             getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        	 MatrixLogger.getInstance().error(ioe.getMessage());
+        	 throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, ioe.getMessage());
+             
         }
     }
 
