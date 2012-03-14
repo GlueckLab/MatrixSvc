@@ -46,7 +46,7 @@ public class MatrixHelper
 	 * @param matrixList
 	 * @return List of Real Matrices
 	 */
-	public List<RealMatrix> toRealMatrix(List<NamedMatrix> matrixList)
+	public List<RealMatrix> toRealMatrixList(List<NamedMatrix> matrixList)
 	{
 		if(matrixList == null || matrixList.size() < 2)
 		{
@@ -56,9 +56,9 @@ public class MatrixHelper
         }
 		
 		List<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
-		for(int i = 0; i < matrixList.size(); i++)
+		for(NamedMatrix namedMatrix: matrixList)
 		{
-			realMatrixList.add(toRealMatrix(matrixList.get(i)));
+			realMatrixList.add(toRealMatrix(namedMatrix));
 		}
 		return realMatrixList;
 	}
