@@ -31,6 +31,7 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
 import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 /**
  * 
@@ -50,9 +51,9 @@ public class MatrixHelper
 	{
 		if(matrixList == null || matrixList.size() < 2)
 		{
-        	String msg = "Matrix list must contain at least 2 matrices to perform operation.";
-        	logger.info(msg);
-         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+        	logger.info(MatrixConstants.MATRIX_LIST_ERROR);
+         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
+         			MatrixConstants.MATRIX_LIST_ERROR);
         }
 		
 		List<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
@@ -73,10 +74,8 @@ public class MatrixHelper
 	{
 		if(matrix == null)
 		{
-			String 
-			msg = "At least one matrix must be specified to perform this operation"; 
-			logger.info(msg);
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+			logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, MatrixConstants.NO_INPUT_SPECIFIED);
 		}
 		return new Array2DRowRealMatrix(matrix.getData());
 	}

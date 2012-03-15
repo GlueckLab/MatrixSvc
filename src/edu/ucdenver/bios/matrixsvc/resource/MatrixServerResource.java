@@ -27,17 +27,17 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.apache.commons.math.linear.LUDecompositionImpl;
 import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math.linear.SingularValueDecompositionImpl;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.application.NamedRealMatrix;
 import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
+import edu.ucdenver.bios.matrixsvc.appliaction.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
@@ -50,114 +50,175 @@ implements MatrixResource
 {
 	private static Logger logger = MatrixLogger.getInstance();
 	MatrixHelper matrixHelper = new MatrixHelper();
-	
+
 	/**
 	 * Implementation of sum of Matrices
 	 */
 	@Override
 	public NamedMatrix add(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-
-		RealMatrix matrixSum = realMatrixList.get(0);
-		for(int i = 1; i < realMatrixList.size(); i++)
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+		RealMatrix matrixSum = null;
+		boolean first = true;
+		for(RealMatrix currentMatrix : realMatrixList )
 		{
-        	matrixSum = new NamedRealMatrix( matrixSum.add((RealMatrix) matrixList.get(i)));
-        }
-		
+			if(first)
+			{
+				matrixSum = currentMatrix;
+				first = false;
+				
+			}
+			else if(matrixSum.getRowDimension() == currentMatrix.getRowDimension()
+					&& matrixSum.getColumnDimension() == currentMatrix.getColumnDimension())
+			{
+				matrixSum = matrixSum.add(currentMatrix);
+			}
+			else
+			{
+				String msg = MatrixConstants.DIMENSION_ERROR;
+				msg.concat(MatrixConstants.ADDITION_NOTPOSSIBLE);
+	        	logger.info(msg);
+	         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+			}
+		}
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(matrixSum, 
 				MatrixConstants.ADDITION_MATRIX_RETURN_NAME );
+		
 		return matrix;
 	}
-	
-	
+
+
 	@Override
 	/**
 	 * Implementation of differences of Martices
 	 */
 	public NamedMatrix subtract(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-	
-		RealMatrix differenceMatrix = matrixHelper.toRealMatrix(matrixList.get(0));
-		RealMatrix nextMatrix = null;
-		for(int i = 1; i < realMatrixList.size(); i++)
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+		RealMatrix differenceMatrix = null;
+		boolean flag = true;
+		for(RealMatrix currentMatrix : realMatrixList)
 		{
-			nextMatrix = realMatrixList.get(i);
-			differenceMatrix = differenceMatrix.subtract(nextMatrix);
-        }
+			if(flag)
+			{
+				differenceMatrix = currentMatrix;
+				flag = false;
+			}
+			else if (differenceMatrix.getRowDimension() == currentMatrix.getRowDimension()
+					&& differenceMatrix.getColumnDimension() == currentMatrix.getColumnDimension())
+			{
+				differenceMatrix = differenceMatrix.subtract(currentMatrix);
+			}
+			else
+			{
+				String msg = MatrixConstants.DIMENSION_ERROR;
+				msg.concat(MatrixConstants.SUBTRACTION_NOTPOSSIBLE);
+	        	logger.info(msg);
+	         	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+			}
+		}
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(differenceMatrix, 
-				MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);
+					MatrixConstants.SUBTRACTION_MATRIX_RETURN_NAME);
 		return matrix;
 	}
 
-	@Override
 	/**
 	 * Implementation of multiplication of Matrices
 	 */
+	@Override
 	public NamedMatrix multiply(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-		
-		RealMatrix productMatrix = realMatrixList.get(0);
-		RealMatrix nextMatrix = null;
-		
-		for(int i = 1; i< realMatrixList.size(); i++)
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+		RealMatrix productMatrix = null;
+		boolean flag = true;
+		for(RealMatrix currentMatrix: realMatrixList)
 		{
-			nextMatrix = realMatrixList.get(i);
-			productMatrix = productMatrix.multiply(nextMatrix);
+			if(flag)
+			{
+				productMatrix = currentMatrix;
+				flag = false;
+			}
+			else if(productMatrix.getRowDimension() == currentMatrix.getColumnDimension())
+			{	
+				productMatrix = productMatrix.multiply(currentMatrix);
+			}
+			else
+			{
+				displayError(MatrixConstants.MULTIPLICATION_NOTPOSSIBLE, "");
+			}
 		}
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(productMatrix, 
 				MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
-		
 		return matrix;
 	}
 
-	@Override
 	/**
 	 * Implementation of element wise multiplication
 	 */
+	@Override
 	public NamedMatrix elementWiseMultiply(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-		
-		RealMatrix productMatrix = realMatrixList.get(0);
-		RealMatrix nextMatrix = null;
-		for(int i = 1; i < realMatrixList.size(); i++)
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+
+		RealMatrix productMatrix = null;
+		boolean flag = true;
+		for(RealMatrix currentMatrix : realMatrixList)
 		{
-			nextMatrix = realMatrixList.get(i);
-			productMatrix = MatrixUtils.getElementWiseProduct(productMatrix, nextMatrix);
+			if(flag)
+			{
+				productMatrix = currentMatrix;
+				flag = false;
+			}
+			else if(productMatrix.getRowDimension() == currentMatrix.getRowDimension()
+					&& productMatrix.getColumnDimension() == currentMatrix.getColumnDimension())
+			{
+				productMatrix = MatrixUtils.getElementWiseProduct(productMatrix, currentMatrix);
+			}
+			else
+			{
+				displayError(MatrixConstants.ELEMENTWISE_MULTIPLICATION_NOTPOSSIBLE, 
+						MatrixConstants.DIMENSION_ERROR);
+			}
 		}
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(productMatrix, 
 				MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
 		return matrix;
 	}
 
-	@Override
 	/**
 	 * Implementation of horizontal direct multiplication
 	 */
+	@Override
 	public NamedMatrix horizontalDirectMultiply(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-		
-		RealMatrix productMatrix = realMatrixList.get(0);
-		RealMatrix nextMatrix = null;
-		for(int i = 1; i < realMatrixList.size(); i++)
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+		RealMatrix productMatrix = null;
+		boolean flag = true;
+		for(RealMatrix currentMatrix : realMatrixList)
 		{
-			nextMatrix = realMatrixList.get(i);
-			productMatrix = MatrixUtils.getHorizontalDirectProduct(productMatrix, nextMatrix);
+			if(flag)
+			{
+				productMatrix = currentMatrix;
+				flag = false;
+			}
+			else if(productMatrix.getRowDimension() == currentMatrix.getRowDimension())
+			{
+				productMatrix = MatrixUtils.getHorizontalDirectProduct(productMatrix, currentMatrix);	
+			}
+			else
+			{
+				displayError(MatrixConstants.HORIZONTAL_DIRECT_MULTIPLY_ERROR, "");
+			}
 		}
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(productMatrix, 
 				MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
-		
 		return matrix;
 	}
 
-	@Override
 	/**
 	 * Implementation of sclar matrix multiplication
 	 */
+	@Override
 	public NamedMatrix scalarMultiply(double scalar, NamedMatrix matrix) 
 	{
 		double multiplier = scalar;
@@ -168,66 +229,160 @@ implements MatrixResource
 		return result;
 	}
 
-	@Override
 	/**
 	 * Implementation of kronecker Multiplication
 	 */
+	@Override
 	public NamedMatrix kroneckerMultiply(ArrayList<NamedMatrix> matrixList) 
 	{
-		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrix(matrixList);
-		
+		List<RealMatrix> realMatrixList = matrixHelper.toRealMatrixList(matrixList);
+
 		RealMatrix productMatrix = MatrixUtils.getKroneckerProduct(realMatrixList);
-		
+
 		NamedMatrix matrix = matrixHelper.toNamedMatrix(productMatrix, 
 				MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);
-		
+
 		return matrix;
 	}
 
-	@Override
 	/**
 	 * Implementation of Cholesky Decomposition
 	 */
+	@Override
 	public ArrayList<NamedMatrix> choleskyDecompose(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		
+		/*if(!matrix.getName().equalsIgnoreCase("A"))
+		{
+			String msg = MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE;
+			logger.info(msg);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+		}*/
+		
+		RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
+		ArrayList<NamedMatrix> namedMatrixList = null;
+		if(realMatrix.isSingular())
+		{
+			if(realMatrix.isSquare())
+			{
+				namedMatrixList = choleskyDecompose(matrix);
+			}
+			else
+			{
+				displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE, MatrixConstants.IS_NOT_SQUARE);
+			}
+		}
+		else
+		{
+			displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE, MatrixConstants.IS_NOT_SYMMETRIC);
+		}
+		return namedMatrixList;
 	}
 
-	@Override
 	/**
 	 * Implementation of inversion of matrix
 	 */
+	@Override
 	public NamedMatrix invert(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		RealMatrix inverseMatrix = null;
+		RealMatrix inputMatrix = matrixHelper.toRealMatrix(matrix);
+		if(inputMatrix.isSquare())
+		{
+			inverseMatrix = new LUDecompositionImpl(inputMatrix).getSolver().getInverse();
+		}
+		else
+		{
+			displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE, MatrixConstants.IS_NOT_SQUARE);
+		}
+		
+		NamedMatrix result = matrixHelper.toNamedMatrix(inverseMatrix, 
+				MatrixConstants.INVERSION_MATRIX_RETURN_NAME);
+
+		return result;
 	}
 
-	@Override
 	/**
 	 * Implementation to find rank of matrix
 	 */
+	@Override
 	public Integer rank(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.RANK_NOTPOSSIBLE, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
+		Integer rank = null;
+		if(realMatrix.isSquare())
+		{
+			SingularValueDecompositionImpl impl = 
+	            	new SingularValueDecompositionImpl(realMatrix);
+			rank = impl.getRank();
+		}
+		else
+		{
+			displayError(MatrixConstants.RANK_NOTPOSSIBLE, MatrixConstants.IS_NOT_SQUARE);
+		}
+		return rank;
 	}
 
-	@Override
 	/**
 	 * Implementation to find trace of a matrix
 	 */
+	@Override
 	public Double trace(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.TRACE_NOTPOSSIBLE, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		Double trace = null;
+		RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
+		if(realMatrix.isSquare())
+		{
+			trace = realMatrix.getTrace();
+		}
+		else
+		{
+			displayError(MatrixConstants.TRACE_NOTPOSSIBLE, MatrixConstants.IS_NOT_SQUARE);
+		}
+		return trace;
 	}
 
-	@Override
 	/**
 	 * To find if the matrix is a Positive Definite Matrix or not
 	 * returns true if the matrix is a positive definite else returns false
 	 */
+	@Override
 	public Boolean isPositiveDefinite(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE, 
+					MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
+		boolean isPositiveDefinite = false;
+		if(realMatrix.isSquare())
+		{
+			isPositiveDefinite = MatrixUtils.isPositiveDefinite(realMatrix, MatrixConstants.EIGEN_TOLERANCE_DEFAULT);
+		}
+		else
+		{
+			displayError(MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE, 
+					MatrixConstants.IS_NOT_SQUARE);
+		}
+		return isPositiveDefinite;
 	}
 
 	/**
@@ -248,4 +403,16 @@ implements MatrixResource
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param preMsg
+	 * @param posMsg
+	 */
+	public void displayError(String preMsg, String posMsg)
+	{
+		String msg = null;
+		msg = preMsg.concat(posMsg);
+		logger.info(msg);
+		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
+	}
 }
