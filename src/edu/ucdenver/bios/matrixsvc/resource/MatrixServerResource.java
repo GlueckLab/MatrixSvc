@@ -386,25 +386,52 @@ implements MatrixResource
 	}
 
 	/**
-	 * 
+	 * This method is used to perform vec operation on a matrix
+	 * if a matrix is {1 2 3, 4 5 6, 7 8 9} then the output would be
+	 * a colum matrix with elements
+	 * {1 4 7 2 5 8 3 6 9}
 	 */
 	@Override
 	public NamedMatrix vec(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.VEC_MATRIX_NOTPOSSIBLE, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		RealMatrix realMatrix =  MatrixUtils.getVecMatrix(matrixHelper.toRealMatrix(matrix));
+		
+		NamedMatrix vecMatrix = matrixHelper.toNamedMatrix(realMatrix, MatrixConstants.VEC_MATRIX_RETURN_NAME);
+		return vecMatrix;
 	}
 
 	/**
-	 * 
+	 * This method is used to perform vech operation on a matrix
+	 * if a matrix is {1 2 3, 4 5 6, 7 8 9} then the output
+	 * would be a colum matrix with elements
+	 * {1 4 7 5 8 9}
 	 */
 	@Override
 	public NamedMatrix vech(NamedMatrix matrix) 
 	{
-		return null;
+		if(matrix == null)
+		{
+			displayError(MatrixConstants.VECH_MATRIX_NOTPOSSIBLE, MatrixConstants.NO_INPUT_SPECIFIED);
+		}
+		RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
+		if(realMatrix.isSquare())
+		{
+			realMatrix =  MatrixUtils.getVechMatrix(realMatrix);
+		}
+		else
+		{
+			displayError(MatrixConstants.VECH_MATRIX_NOTPOSSIBLE, MatrixConstants.IS_NOT_SQUARE);
+		}
+		NamedMatrix vechMatrix = matrixHelper.toNamedMatrix(realMatrix, MatrixConstants.VECH_MATRIX_RETURN_NAME);
+		return vechMatrix;
 	}
 
 	/**
-	 * 
+	 * This method is used to display errors if any
 	 * @param preMsg
 	 * @param posMsg
 	 */
