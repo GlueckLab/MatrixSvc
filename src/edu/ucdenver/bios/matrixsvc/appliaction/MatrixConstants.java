@@ -23,40 +23,49 @@
 package edu.ucdenver.bios.matrixsvc.appliaction;
 /**
  * This class holds constants for the Matrix Services.  
- * @author Jonathan Cohen
+ * @author VIJAY AKULA
  *
  */
 public class MatrixConstants 
 {
-	//TODO: make this an interface?
-	//TODO: refactor to combine with PowerConstants.  Add to one shared matrix jar?
-		
-	    // XML tag names
-	    public static final String TAG_ERROR = "error";
-	    public static final String TAG_MATRIX_LIST = "matrixList";
-	    public static final String TAG_MATRIX = "matrix";
-	    public static final String TAG_SCALAR_MULT_PARAMETER_LIST = "scalarMultiplicationParams";
-	    public static final String TAG_SCALAR_MULTIPLIER = "scalarMultiplier";
-	    public static final String TAG_RANK = "rank";
-	    public static final String TAG_TRACE = "trace";
-	    public static final String TAG_POSITIVE_DEFINITE = "positiveDefinite";
-	    public static final String TAG_ROW = "r";
-	    public static final String TAG_COLUMN = "c";
-	    public static final String TAG_SUM = "sum";
-	    public static final String TAG_CHOLESKY_DECOMP = "choleskyDecomposition";
-	    public static final String TAG_FACTOR_LIST = "factorList";
-	    public static final String TAG_FACTOR = "factor";
-	    public static final String TAG_ORTHOG_POLY_CONTRAST_LIST = "orthogonalPolynomialContrastList";
-	    public static final String TAG_CONTRAST = "contrast";
-	    public static final String TAG_V = "v";
 	    
-	    // XML attribute names
-	    public static final String ATTR_ROWS = "rows";
-	    public static final String ATTR_COLUMNS = "columns";
-	    public static final String ATTR_VALUE = "value";
-	    public static final String ATTR_NAME = "name";
-	    public static final String ATTR_TYPE = "type";
-	    
+	    //Error Msgs
+		public static final String NO_INPUT_SPECIFIED = 
+				"No input specified. ";
+		public static final String MATRIX_LIST_ERROR=
+				"Matrix list must contain at least 2 matrices to perform operation. ";
+	    public static final String DIMENSION_ERROR = 
+	    		"Dimension of given matrices are not equal. ";
+	    public static final String ADDITION_NOTPOSSIBLE = 
+	    		"Addition of matrices not possible. ";
+	    public static final String SUBTRACTION_NOTPOSSIBLE = 
+	    		"Subtraction of matrices not possible. ";
+	    public static final String MULTIPLICATION_NOTPOSSIBLE = 
+	    		"Multiplication not possible because specified matrices do not" +
+	    		" have correct dimensions for multiplication. ";
+	    public static final String ELEMENTWISE_MULTIPLICATION_NOTPOSSIBLE = 
+	    		"Elementwise multiplication not possible because, ";
+	    public static final String HORIZONTAL_DIRECT_MULTIPLY_ERROR = 
+	    		"Row Dimensions in the given matrices list are not equal. Hence" +
+	    		" Horizontal Direct Multiplication cannot be possible. ";
+	    public static final String CHOLESKY_DECOMPOSITION_NOTPOSSIBLE = 
+	    		"Cholesky decomposition not possible because, ";
+	    public static final String MATRIX_INVERSION_NOTPOSSIBLE =
+	    		"Matrix Inversion is not possible because, ";
+	    public static final String IS_NOT_SQUARE = 
+	    		"specified Matrix is not Square. ";
+	    public static final String IS_NOT_SYMMETRIC = 
+	    		"specified Matrix is not Symmetric. ";
+	    public static final String RANK_NOTPOSSIBLE = 
+	    		"Rank calculation not possible because, ";
+	    public static final String TRACE_NOTPOSSIBLE = 
+	    		"Trace calculation not possible because, ";
+	    public static final String POSITIVE_DEFINITE_NOTPOSSIBLE = 
+	    		"Positive Definite calculation not possible because, ";
+	    public static final String VEC_MATRIX_NOTPOSSIBLE = 
+	    		"Vec operation not possible because, ";
+	    public static final String VECH_MATRIX_NOTPOSSIBLE = 
+	    		"Vech operation not possible because, ";
 	    // Values of the attribute "type" for <factorList> elements
 	    public static final String BETWEEN = "between";
 	    public static final String WITHIN = "within";
