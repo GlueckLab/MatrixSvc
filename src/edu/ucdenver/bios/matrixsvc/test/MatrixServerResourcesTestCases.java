@@ -36,7 +36,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 // to-do: Auto-generated Javadoc
 /**
- * The Class MatrixServerResourcesTestCases.
+ * TestCases for MatrixServerResource class.
  *
  * @author VIJAY AKULA
  */
@@ -66,8 +66,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
      * This method is exectes after the test case is instantiated.
      */
     public final void setUp() {
-        int rows = 2;
-        int columns = 3;
+        final int rows = 2;
+        final int columns = 3;
         sameDimensionNamedMatrixList = new ArrayList<NamedMatrix>();
         namedMatrix1.setData(generateData(rows, columns));
         sameDimensionNamedMatrixList.add(namedMatrix1);
@@ -76,12 +76,12 @@ public class MatrixServerResourcesTestCases extends TestCase {
         sameDimensionNamedMatrixList.add(namedMatrix2);
         differentDimensionNamedMatrixList = new ArrayList<NamedMatrix>();
         NamedMatrix namedMatrix3 = new NamedMatrix();
-        int rows3 = 2;
-        int columns3 = 3;
+        final int rows3 = 2;
+        final int columns3 = 3;
         namedMatrix3.setData(generateData(rows3, columns3));
         differentDimensionNamedMatrixList.add(namedMatrix3);
-        int rows4 = 3;
-        int columns4 = 3;
+        final int rows4 = 3;
+        final int columns4 = 3;
         namedMatrix4.setData(generateData(rows4, columns4));
         differentDimensionNamedMatrixList.add(namedMatrix4);
     }
@@ -114,7 +114,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     @Test
     public final void testValidAddition() {
         NamedMatrix result = resource.add(sameDimensionNamedMatrixList);
-        double[][] data = { { 2, 4, 6 }, { 8, 10, 12 } };
+        final double[][] data = {{2, 4, 6 }, {8, 10, 12 } };
         assertNotNull(result);
         assertArrayEquals(data, result.getData());
     }
@@ -132,8 +132,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
         catch (Exception e) {
             assertTrue("Throws Exception at add function in Matrix Helper",
                     result == null);
-            System.out.println("Throws Exception at" +
-            " add function in Matrix Server Resources Class");
+            System.out.println("Throws Exception at"
+                    + " add function in Matrix Server Resources Class");
         }
     }
 
@@ -143,7 +143,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidSubstraction() {
         NamedMatrix result = resource.subtract(sameDimensionNamedMatrixList);
-        double[][] data = { { 0, 0, 0 }, { 0, 0, 0 } };
+        final double[][] data = {{0, 0, 0 }, {0, 0, 0 } };
         assertNotNull(result);
         assertArrayEquals(data, result.getData());
     }
@@ -161,8 +161,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
             assertTrue("Throws Exception at substraction "
             + "function in Matrix Server Resource class",
                     result == null);
-            System.out.println("Throws Exception at subtract"
-            	+ "function in Matrix Server Resources Class");
+            System.out.println("Throws Exception at subtract "
+                    + "function in Matrix Server Resources Class");
         }
     }
 
@@ -174,7 +174,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidElementwiseMultiplication() {
         NamedMatrix result = resource
                 .elementWiseMultiply(sameDimensionNamedMatrixList);
-        double[][] data = { { 1, 4, 9 }, { 16, 25, 36 } };
+        final double[][] data = {{1, 4, 9 }, {16, 25, 36 } };
         assertArrayEquals(data, result.getData());
         assertNotNull(result);
     }
@@ -209,7 +209,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidMultiplication() {
         NamedMatrix result = resource
                 .multiply(differentDimensionNamedMatrixList);
-        double[][] data = { { 30, 36, 42 }, { 66, 81, 96 } };
+        final double[][] data = {{30, 36, 42 }, {66, 81, 96 } };
         assertArrayEquals(data, result.getData());
         assertNotNull(result);
     }
@@ -241,8 +241,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidHorizontalDirectMultiply() {
         NamedMatrix result = resource
                 .horizontalDirectMultiply(sameDimensionNamedMatrixList);
-        double[][] data = { { 1, 2, 3, 2, 4, 6, 3, 6, 9 },
-                { 16, 20, 24, 20, 25, 30, 24, 30, 36 } };
+        final double[][] data = {{1, 2, 3, 2, 4, 6, 3, 6, 9 },
+                {16, 20, 24, 20, 25, 30, 24, 30, 36 } };
         assertArrayEquals(data, result.getData());
         assertNotNull(result);
     }
@@ -274,7 +274,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidScalarMultiply() {
         NamedMatrix result = resource.scalarMultiply(2.0, namedMatrix1);
-        double[][] data = { { 2, 4, 6 }, { 8, 10, 12 } };
+        final double[][] data = {{2, 4, 6 }, {8, 10, 12 } };
         assertArrayEquals(data, result.getData());
         assertNotNull(result);
     }
@@ -287,21 +287,21 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidKroneckerMultiply() {
         NamedMatrix resultSameDimension = resource
                 .kroneckerMultiply(sameDimensionNamedMatrixList);
-        double[][] dataSameDimension = { { 1, 2, 3, 2, 4, 6, 3, 6, 9 },
-                { 4, 5, 6, 8, 10, 12, 12, 15, 18 },
-                { 4, 8, 12, 5, 10, 15, 6, 12, 18 },
-                { 16, 20, 24, 20, 25, 30, 24, 30, 36 } };
+        final double[][] dataSameDimension = {{1, 2, 3, 2, 4, 6, 3, 6, 9 },
+                {4, 5, 6, 8, 10, 12, 12, 15, 18 },
+                {4, 8, 12, 5, 10, 15, 6, 12, 18 },
+                {16, 20, 24, 20, 25, 30, 24, 30, 36 } };
         assertArrayEquals(dataSameDimension, resultSameDimension.getData());
         assertNotNull(resultSameDimension);
 
         NamedMatrix resultDifferentDimension = resource
                 .kroneckerMultiply(differentDimensionNamedMatrixList);
-        double[][] dataDifferentDimension = { { 1, 2, 3, 2, 4, 6, 3, 6, 9 },
-                { 4, 5, 6, 8, 10, 12, 12, 15, 18 },
-                { 7, 8, 9, 14, 16, 18, 21, 24, 27 },
-                { 4, 8, 12, 5, 10, 15, 6, 12, 18 },
-                { 16, 20, 24, 20, 25, 30, 24, 30, 36 },
-                { 28, 32, 36, 35, 40, 45, 42, 48, 54 } };
+        final double[][] dataDifferentDimension = {{1, 2, 3, 2, 4, 6, 3, 6, 9 },
+                {4, 5, 6, 8, 10, 12, 12, 15, 18 },
+                {7, 8, 9, 14, 16, 18, 21, 24, 27 },
+                {4, 8, 12, 5, 10, 15, 6, 12, 18 },
+                {16, 20, 24, 20, 25, 30, 24, 30, 36 },
+                {28, 32, 36, 35, 40, 45, 42, 48, 54 } };
         assertArrayEquals(dataDifferentDimension,
                 resultDifferentDimension.getData());
         assertNotNull(resultDifferentDimension);
@@ -314,14 +314,14 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidCholeskyDecompose() {
         NamedMatrix singularMatrix = new NamedMatrix();
-        double[][] data = { { 4, 2, -2 }, { 2, 10, 2 }, { -2, 2, 5 } };
+        final double[][] data = {{4, 2, -2 }, {2, 10, 2 }, {-2, 2, 5 } };
         singularMatrix.setData(data);
         ArrayList<NamedMatrix> resultArrayList = resource
                 .choleskyDecompose(singularMatrix);
-        double[][] dataL = { { 2, 0, 0 }, { 1, 3, 0 },
-                { -1, 1, Math.sqrt(3) } };
-        double[][] dataLTranspose = { { 2, 1, -1 }, { 0, 3, 1 },
-                { 0, 0, Math.sqrt(3) } };
+        final double[][] dataL = {{2, 0, 0 }, {1, 3, 0 },
+                {-1, 1, Math.sqrt(3) } };
+        final double[][] dataLTranspose = {{2, 1, -1 }, {0, 3, 1 },
+                {0, 0, Math.sqrt(3) } };
 
         assertArrayEquals(dataL, resultArrayList.get(0).getData());
         assertArrayEquals(dataLTranspose, resultArrayList.get(1).getData());
@@ -355,10 +355,10 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     private final void testValidInvert() {
         NamedMatrix squareMatrix = new NamedMatrix();
-        double[][] data = { { 2, 1 }, { 3, 2 } };
+        final double[][] data = {{2, 1 }, {3, 2 } };
         squareMatrix.setData(data);
         NamedMatrix inverse = resource.invert(squareMatrix);
-        double[][] inverseData = { { 2, -1 }, { -3, 2 } };
+        final double[][] inverseData = {{2, -1 }, {-3, 2 } };
 
         assertArrayEquals(inverseData, inverse.getData());
         assertNotNull(inverse);
@@ -390,11 +390,11 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidRank() {
         NamedMatrix rankMatrix = new NamedMatrix();
-        double[][] data = { { 2, -1, 3 }, { 2, -1, 3 }, { 0, 2, -1 },
-                { 1, 1, 4 } };
+        final double[][] data = {{2, -1, 3 }, {2, -1, 3 }, {0, 2, -1 },
+                {1, 1, 4 } };
         rankMatrix.setData(data);
         int rank = resource.rank(rankMatrix);
-        int matrixRank = 3;
+        final int matrixRank = 3;
         assertEquals(matrixRank, rank);
         assertNotNull(rank);
     }
@@ -415,7 +415,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidTrace() {
         double trace = resource.trace(namedMatrix4);
-        double expectedTrace = 15.0;
+        final double expectedTrace = 15.0;
         assertEquals(expectedTrace, trace);
         assertNotNull(trace);
     }
@@ -445,7 +445,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidIsPositiveDefinite() {
         NamedMatrix positiveDefiniteMatrix = new NamedMatrix();
-        double[][] data = { { 2, -1, 0 }, { -1, 2, -1 }, { 0, -1, 2 } };
+        final double[][] data = {{2, -1, 0 }, {-1, 2, -1 }, {0, -1, 2 } };
         positiveDefiniteMatrix.setData(data);
         boolean isPositiveDefinite = resource
                 .isPositiveDefinite(positiveDefiniteMatrix);
@@ -468,7 +468,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         } catch (Exception e) {
             assertTrue("Throws Exception at "
                     + "isPositiveDefinite function in"
-                    + " Matrix Server Resources Class", flag == false);
+                    + " Matrix Server Resources Class", !flag);
             System.out.println("Throws Exception at isPositiveDefinite "
                     + "function in Matrix Server Resources Class");
         }
@@ -481,7 +481,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidVec() {
         NamedMatrix vecMatrix = resource.vec(namedMatrix1);
-        double[][] data = { { 1 }, { 4 }, { 2 }, { 5 }, { 3 }, { 6 } };
+        final double[][] data = {{1 }, {4 }, {2 }, {5 }, {3 }, {6 } };
         assertArrayEquals(data, vecMatrix.getData());
     }
 
@@ -501,11 +501,11 @@ public class MatrixServerResourcesTestCases extends TestCase {
      */
     public final void testValidVech() {
         NamedMatrix symmetricMatrix = new NamedMatrix();
-        double[][] data = { { 1, 2, 3 }, { 2, 4, 6 }, { 3, 6, 5 } };
+        final double[][] data = {{1, 2, 3 }, {2, 4, 6 }, {3, 6, 5 } };
         symmetricMatrix.setData(data);
 
         NamedMatrix vechMatric = resource.vech(symmetricMatrix);
-        double[][] expectedData = { { 1 }, { 2 }, { 3 }, { 4 }, { 6 }, { 5 } };
+        final double[][] expectedData = {{1 }, {2 }, {3 }, {4 }, {6 }, {5 } };
         assertArrayEquals(expectedData, vechMatric.getData());
     }
 
