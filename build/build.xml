@@ -32,6 +32,8 @@
 	<property name="javadocdir" value="${basedir}/javadoc" />
 	<property name="test.data.dir" value="${basedir}/TestData" />
 	<property name="config.dir" value="../config" />
+	<property name="webservicecommonlibsdir" value="${basedir}/../../WebServiceCommon/build/bin" />
+	<property name="javastats.dir" value="${basedir}/../../JavaStatistics/build/bin" />
 	
 	<fileset id="thirdpartylibs" dir="${thirdpartydir}">
 		<include name="ApacheCommonsMath/2.1/lib/commons-math-2.1.jar" />
@@ -41,6 +43,7 @@
 	    <include name="restlet/2.0.10/lib/org.restlet.ext.servlet.jar" />
 		<include name="junit/4.7/lib/junit-4.7.jar" />
 		<include name="log4j/1.2.15/lib/log4j-1.2.15.jar" />
+		<include name= "gson/2.1/lib/gson-2.1.jar"/>
 	</fileset>
 
 	<fileset id="javastatslib" dir="${javastatsdir}">
@@ -56,6 +59,12 @@
 		<fileset refid="thirdpartylibs"/>
 		<fileset refid="javastatslib"/>
 		<fileset refid="log4jprops"/>
+		<fileset dir="${webservicecommonlibsdir}">            
+		            <include name="edu.ucdenver.bios.webservice.common-1.0.0.jar"/>
+		        </fileset>
+		<fileset dir="${javastats.dir}">
+		            <include name="edu.ucdenver.bios.javastatistics-2.0.0.jar"/>
+		        </fileset>
 	</path>
 		
     <target name="clean">
@@ -95,7 +104,14 @@
         <copy todir="${wardir}/WEB-INF/lib" flatten="true" >
             <fileset refid="thirdpartylibs" />
         	<fileset refid="javastatslib" />
+        	<fileset dir="${webservicecommonlibsdir}">
+        	<include name="edu.ucdenver.bios.webservice.common-1.0.0.jar"/>
+        	</fileset>
+        	<fileset dir="${javastats.dir}">
+        	                <include name="edu.ucdenver.bios.javastatistics-2.0.0.jar"/>
+        	            </fileset>
         </copy>
+    	
     </target>
 
     <!-- Build the project's web application.  -->
