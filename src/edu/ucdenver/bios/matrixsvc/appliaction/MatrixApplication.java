@@ -3,7 +3,7 @@
  * incoming HTTP requests for matrix operations like addition, substraction
  * kronecker multiplication and so on
  * 
- * Copyright (C) 2010 Regents of the University of Colorado.  
+ * Copyright (C) 2010 Regents of the University of Colorado.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 package edu.ucdenver.bios.matrixsvc.appliaction;
 
@@ -37,13 +38,15 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixServerResource;
  */
 public class MatrixApplication extends Application
 {
+    
     /**
      * Class which dispatches http requests to the appropriate
      * handler class for the matrix service.
-     * 
-     * @param parentContext
+     *
+     * @param parentContext the parent context
+     * @throws Exception the exception
      */
-    public MatrixApplication(Context parentContext) throws Exception
+    public MatrixApplication(final Context parentContext) throws Exception
     {
         super(parentContext);
 
@@ -51,19 +54,20 @@ public class MatrixApplication extends Application
     }
     
     /**
-     * Define URI mappings for incoming power, sample size,
+     * Define URI mappings for incoming matrix, contrast,
      * and detectable difference requests
      */
     @Override
-    public Restlet createInboundRoot() 
+    public Restlet createInboundRoot()
     {
-        // Create a router Restlet that routes each call to a new instance of Resource.
+        // Create a router Restlet that routes each call to a new
+        //instance of Resource.
         Router router = new Router(getContext());
         
         // Defines only one default route, self-identifies server
         router.attachDefault(DefaultResource.class);
         
-        // Matrix Server Resource 
+        // Matrix Server Resource
         router.attach("/matrix", MatrixServerResource.class);
         
         //Contrast Server Resource

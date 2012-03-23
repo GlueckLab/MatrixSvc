@@ -1,9 +1,8 @@
-/* 
+/*
  * Matrix Service for the GLIMMPSE Software System.  Processes
  * incoming HTTP requests for matrix operations like addition, substraction
  * kronecker multiplication and so on
- * 
- * Copyright (C) 2010 Regents of the University of Colorado.  
+ * Copyright (C) 2010 Regents of the University of Colorado.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,40 +16,25 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
-
-package edu.ucdenver.bios.matrixsvc.appliaction;
-
-import org.apache.log4j.Logger;
-
 /**
- * Singleton Log4J wrapper class
+ * Application level classes including Restlet entry point, constants, 
+ * and logging setup.
+ * <p>
+ *  
+ * Dependencies
+ * JRE 1.6.0 or higher
+ * Log4J 1.2.15
+ * Restlet 1.1.6
+ * Apache Commons Math 2.1 or higher
+ * Junit 4.7
  * 
- * @author Sarah Kreidler
+ * <p>
+ * This package is part of the matrix web service component for 
+ * the Glimmpse software system, please see the following for 
+ * more information:
+ * @see http://www.glimmpse.com/
  */
-public class MatrixLogger 
-{
-	 private static Logger instance = null;
-
-	    /**
-	     * Create a new logging object.
-	     */
-	    private MatrixLogger() 
-	    {
-	    }
-
-	    /**
-	     * Create a single instance of a logging class.
-	     * @return Logger object
-	     */
-	    public static Logger getInstance() 
-	    {
-	        if (instance == null) 
-	        {
-	            instance = Logger.getLogger("edu.cudenver.bios.matrixsvc.Matrix");
-	        }
-
-	        return instance;
-	    }
-}
+package edu.ucdenver.bios.matrixsvc.appliaction;
