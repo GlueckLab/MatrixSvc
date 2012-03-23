@@ -56,8 +56,11 @@ public class MatrixHelper {
      * Real Matrices and returns a List of Real Matrices.
      * 
      * @param matrixList
-     *            the matrix list
-     * @return List of Real Matrices
+     *            The matrixList is the list of NamedMatrix which are to be
+     *            converted RealMatrix
+     * @return realMatrixList Returns List of RealMatrix. The NamedMatrix in the
+     *         matrixlist are converted to RealMatrix and add to realMatrixList.
+     *         This relaMatrixList is returned.
      */
     public List<RealMatrix> toRealMatrixList(
             final ArrayList<NamedMatrix> matrixList) {
@@ -79,8 +82,10 @@ public class MatrixHelper {
      * returns a Real Matrix.
      * 
      * @param matrix
-     *            the matrix
-     * @return Real Matrix
+     *            The matrix is a input matrix of type NamedMatrix which is to
+     *            be converted to type RealMatrix.
+     * @return RealMatrix Returns a RealMatrix which is obtained by converting
+     *         the input matrix to a RealMatrix.
      */
     public RealMatrix toRealMatrix(final NamedMatrix matrix) {
         if (matrix == null) {
@@ -96,10 +101,12 @@ public class MatrixHelper {
      * returns that Named Matrix.
      * 
      * @param matrix
-     *            the matrix
+     *            The matrix is a input matrix of type RealMatrix and is to be
+     *            converted to a NamedMatrix.
      * @param name
-     *            the name
-     * @return Named Matrix
+     *            the name is a String, which is to be assigned to named matrix.
+     * @return namedMatrix Returns a NamedMatrix which is obtained by converting
+     *         the input matrix to NamedMatrix
      */
     public NamedMatrix toNamedMatrix(final RealMatrix matrix, final String name) {
         NamedMatrix namedMatrix = new NamedMatrix();
@@ -115,18 +122,18 @@ public class MatrixHelper {
      * converts it to ArrayList of Factor object.
      * 
      * @param betweenParticipantFactorList
-     *            the between participant factor list
-     * @return the array list
+     *            The betweenParticipantFactorList is a ArrayList of
+     *            BetweenParticipantFactor which are to converted to an
+     *            ArrayList of Factor
+     * @return factorArrayList Returns a ArrayList of Factor which is obtained
+     *         from converting ArrayList of BetweenParticipantFactor to
+     *         ArrayList of Factor.
      */
     public ArrayList<Factor> betweenParticipantFactorsListToFactorList(
-            final ArrayList<BetweenParticipantFactor>
-            betweenParticipantFactorList) {
+            final ArrayList<BetweenParticipantFactor> betweenParticipantFactorList) {
         ArrayList<Factor> factorArrayList = new ArrayList<Factor>();
-        for (BetweenParticipantFactor betweenParticipantFactor :
-            betweenParticipantFactorList) {
-            Factor factor =
-                    betweenParticipantFactorToFactor(
-                            betweenParticipantFactor);
+        for (BetweenParticipantFactor betweenParticipantFactor : betweenParticipantFactorList) {
+            Factor factor = betweenParticipantFactorToFactor(betweenParticipantFactor);
             factorArrayList.add(factor);
         }
         return factorArrayList;
@@ -136,14 +143,18 @@ public class MatrixHelper {
      * This methods takes ArrayList of RepeatedMeasuresNode Objects and converts
      * it to ArrayList of Factor object.
      * 
-     * @param repeatedMeasuresNodesArrayList
-     *            the repeated measures nodes array list
-     * @return the array list
+     * @param repeatedMeasuresNodesList
+     *            The repeatedMeasuresNodesList is a ArrayList of
+     *            RepeatedMeasuresNode which are to converted to an ArrayList of
+     *            Factor
+     * @return factorArrayList Returns a ArrayList of Factor which is obtained
+     *         from converting ArrayList of RepeatedMeasuresNode to ArrayList of
+     *         Factor.
      */
     public ArrayList<Factor> repeatedMeasuresNodesListToFactorList(
-            final ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodesArrayList) {
+            final ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodesList) {
         ArrayList<Factor> factorArrayList = new ArrayList<Factor>();
-        for (RepeatedMeasuresNode node : repeatedMeasuresNodesArrayList) {
+        for (RepeatedMeasuresNode node : repeatedMeasuresNodesList) {
             factorArrayList.add(repeatedMeasuresNodeToFactor(node));
         }
         return factorArrayList;
@@ -154,8 +165,11 @@ public class MatrixHelper {
      * Factor Object.
      * 
      * @param betweenParticipantFactor
-     *            the between participant factor
-     * @return the factor
+     *            The betweenParticipantFactor is a object of
+     *            BetweenParticipantFactor which is to be converted to a object
+     *            of type Factor
+     * @return factor Returns factor which is a object of class Factor, obtained
+     *         by converting BetweenParticipantFactor object to Factor object
      */
     public Factor betweenParticipantFactorToFactor(
             final BetweenParticipantFactor betweenParticipantFactor) {
@@ -176,11 +190,12 @@ public class MatrixHelper {
      * Factor Object.
      * 
      * @param node
-     *            the node
-     * @return Factor Object
+     *            The node is a object of RepeatedMeasuresNode which is to be
+     *            converted to a Factor object
+     * @return factor Returns a Factor object, which is obtained by converting,
+     *         RepeatedMeasuresNode object to a Factor object.
      */
-    public Factor repeatedMeasuresNodeToFactor(
-            final RepeatedMeasuresNode node) {
+    public Factor repeatedMeasuresNodeToFactor(final RepeatedMeasuresNode node) {
         List<Spacing> spacingList = node.getSpacingList();
         double[] values = null;
         int index = 0;
@@ -191,5 +206,4 @@ public class MatrixHelper {
         Factor factor = new Factor(node.getDimension(), values);
         return factor;
     }
-
 }

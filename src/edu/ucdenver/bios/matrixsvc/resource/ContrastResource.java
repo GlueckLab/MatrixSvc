@@ -32,6 +32,7 @@ import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
  * The Interface ContrastResource.
  * 
  * @author Vijay Akula
+ * @version 2.0.0 03\23\2012
  */
 public interface ContrastResource {
 
@@ -42,10 +43,18 @@ public interface ContrastResource {
      * dimension.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            The fullFactorList is the ArrayList of
+     *            BetweenParticipantFactor objects which are to be converted to
+     *            Factor Objects and a full contrast collection is generated
+     *            using this fullFactorList.
      * @param testFactorList
-     *            the test factor list
-     * @return NamedMatrix
+     *            The testFactor is an object of BetweenParticipantFactor which
+     *            is converted to a Factor object and a interaction contrast is
+     *            obtained based on this factor object from full contrast
+     *            collection obtained form fullFactorList.
+     * 
+     * @return NamedMatrix Returns a interaction contrast matrix based on the
+     *         testFator object. The contrast matrix is of type NamedMatrix.
      */
     NamedMatrix getBetweenInteractionContrast(
             ArrayList<BetweenParticipantFactor> fullFactorList,
@@ -58,10 +67,17 @@ public interface ContrastResource {
      * dimension.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            The fullFactorList is the ArrayList of RepeatedMeasuresNode
+     *            objects which are to be converted to Factor Objects and a full
+     *            contrast collection is generated using this fullFactorList.
      * @param testFactorList
-     *            the test factor list
-     * @return NamedMatrix the within interaction contrast
+     *            The testFactor is an object of BetweenParticipantFactor which
+     *            is converted to a Factor object and a interaction contrast is
+     *            obtained based on this factor object from full contrast
+     *            collection obtained form fullFactorList.
+     * 
+     * @return NamedMatrix Returns a interaction contrast matrix based on the
+     *         testFator object. The contrast matrix is of type NamedMatrix.
      */
     NamedMatrix getWithinInteractionContrast(
             ArrayList<RepeatedMeasuresNode> fullFactorList,
@@ -74,10 +90,17 @@ public interface ContrastResource {
      * dimension.
      * 
      * @param fullFactorialList
-     *            the full factorial list
+     *            The fullFactorList is the ArrayList of
+     *            BetweenParticipantFactor objects which are to be converted to
+     *            Factor Objects and a full contrast collection is generated
+     *            using this fullFactorList.
      * @param testFactor
-     *            the test factor
-     * @return NamedMatrix the main effect contrast
+     *            The testFactor is an object of BetweenParticipantFactor which
+     *            is converted to a Factor object and a main effect contrast is
+     *            obtained based on this factor object from full contrast
+     *            collection obtained form fullFactorList.
+     * @return NamedMatrix Returns a main effect contrast matrix based on the
+     *         testFator object. The contrast matrix is of type NamedMatrix
      */
     NamedMatrix getMainEffectContrast(
             ArrayList<BetweenParticipantFactor> fullFactorialList,
@@ -90,10 +113,16 @@ public interface ContrastResource {
      * dimension.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            The fullFactorList is the ArrayList of RepeatedMeasuresNode
+     *            objects which are to be converted to Factor Objects and a full
+     *            contrast collection is generated using this fullFactorList.
      * @param testFactor
-     *            the test factor
-     * @return NamedMatrix the main effect constract
+     *            The testFactor is an object of RepeatedMeasuresNode which is
+     *            converted to a Factor object and a main effect contrast is
+     *            obtained based on this factor object.
+     * 
+     * @return NamedMatrix Returns a main effect contrast matrix based on the
+     *         testFator object. The contrast matrix is of type NamedMatrix
      */
     NamedMatrix getMainEffectConstract(
             ArrayList<RepeatedMeasuresNode> fullFactorList,
@@ -104,8 +133,13 @@ public interface ContrastResource {
      * list of factors.
      * 
      * @param fullFactorList
-     *            the full factor list
-     * @return NamedMatrix
+     *            The fullFactorList is the ArrayList of
+     *            BetweenParticipantFactor objects which are to be converted to
+     *            Factor Objects and a full contrast collection is generated
+     *            using this fullFactorList.
+     * 
+     * @return NamedMatrix Return a polynomial contrast to test the grand mean
+     *         for the specified list of factors which is of type NamedMatrix.
      */
     NamedMatrix getBetweenGrandMeanContrast(
             ArrayList<BetweenParticipantFactor> fullFactorList);
@@ -115,8 +149,12 @@ public interface ContrastResource {
      * list of factors.
      * 
      * @param fullFactorList
-     *            the full factor list
-     * @return NamedMatrix the within grand mean contrast
+     *            The fullFactorList is the ArrayList of RepeatedMeasuresNode
+     *            objects which are to be converted to Factor Objects and a full
+     *            contrast collection is generated using this fullFactorList.
+     * 
+     * @return NamedMatrix Return a polynomial contrast to test the grand mean
+     *         for the specified list of which is of type NamedMatrix.
      */
     NamedMatrix getWithinGrandMeanContrast(
             ArrayList<RepeatedMeasuresNode> fullFactorList);
@@ -128,7 +166,9 @@ public interface ContrastResource {
      *            the x
      * @param maxDegree
      *            the max degree
-     * @return NamedMatrix the orthogonal polynomial coefficients
+     * 
+     * @return NamedMatrix Returns computed orthogonal polynomial contrasts for
+     *         the specified data values which is a NamedMatrix.
      */
     NamedMatrix getOrthogonalPolynomialCoefficients(double[] x, int maxDegree);
 
