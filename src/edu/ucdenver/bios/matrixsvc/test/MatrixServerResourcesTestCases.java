@@ -353,7 +353,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
      * MatrixServerResource is performed correctly if valid
      * inputs are given.
      */
-    private final void testValidInvert() {
+/*    private final void testValidInvert() {
         NamedMatrix squareMatrix = new NamedMatrix();
         final double[][] data = {{2, 1 }, {3, 2 } };
         squareMatrix.setData(data);
@@ -362,7 +362,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
 
         assertArrayEquals(inverseData, inverse.getData());
         assertNotNull(inverse);
-    }
+    }*/
 
     /**
      * The test to verify if the invert method in
