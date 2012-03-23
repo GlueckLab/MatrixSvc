@@ -1,0 +1,5 @@
+Matrix Service 2.0.0 Release Notes
+------------------------------------------------
+
+1. Upgraded to the Restlet 2.0 libraries. Note that the external API
+is unchanged.
