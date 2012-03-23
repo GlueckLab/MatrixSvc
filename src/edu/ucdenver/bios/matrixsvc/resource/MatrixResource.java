@@ -25,114 +25,140 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
-/**
- * 
- * @author Vijay Akula
- *
- */
-public interface MatrixResource 
-{
 
-	/**
-	 * Return the sum of the matrices in the input list.
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix add(ArrayList<NamedMatrix> matrixList);
-	
-	/**
-	 * Return the difference of the matrices in the input list.
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix subtract(ArrayList<NamedMatrix> matrixList);
-	
-	/**
-	 * Return the product of the matrices in the input list.
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix multiply(ArrayList<NamedMatrix> matrixList);
-	
-	
-	/**
-	 * Return the element wise product of the matrices in the input list.
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix elementWiseMultiply(ArrayList<NamedMatrix> matrixList);
-	
-	/**
-	 * Return the horizontal direct product of the matrices in the input list.
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix horizontalDirectMultiply(ArrayList<NamedMatrix> matrixList);
-	
-	/**
-	 * Return the product of the matrix with the specified scalar value.
-	 * @param scalar
-	 * @param matrix
-	 * @return
-	 */
-	public NamedMatrix scalarMultiply(double scalar, NamedMatrix matrix);
-	
-	/**
-	 * Returns the Kronecker product pf the matricex in the input list
-	 * @param matrixList
-	 * @return
-	 */
-	public NamedMatrix kroneckerMultiply(ArrayList<NamedMatrix> matrixList);
-	
-	/**
-	 * Return the Cholesky decomposition A=LL^Tof the matrix. 
-	 * The returned list of matrices will include both components 
-	 * of the decomposition, named “L” and “Ltranspose” respectively.
-	 * @param matrix
-	 * @return
-	 */
-	public ArrayList<NamedMatrix> choleskyDecompose(NamedMatrix matrix);
-	
-	/**
-	 * Return the inverse of the matrix if possible.  
-	 * Throws an exception for singular matrices.
-	 * @param matrix
-	 * @return
-	 */
-	public NamedMatrix invert(NamedMatrix matrix);
-	
-	/**
-	 * Return the rank of the matrix.
-	 * @param matrix
-	 * @return
-	 */
-	public Integer rank(NamedMatrix matrix);
-	
-	/**
-	 * Return the trace of the matrix.
-	 * @param matrix
-	 * @return
-	 */
-	public Double trace(NamedMatrix matrix);
-	
-	/**
-	 * Return true if the matrix is positive definite.
-	 * @param matrix
-	 * @return
-	 */
-	public Boolean isPositiveDefinite(NamedMatrix matrix);
-	
-	/**
-	 * Return the vec of the matrix.
-	 * @param matrix
-	 * @return
-	 */
-	public NamedMatrix vec(NamedMatrix matrix);
-	
-	/**
-	 * Return the vech of the matrix.
-	 * @param matrix
-	 * @return
-	 */
-	public NamedMatrix vech(NamedMatrix matrix);
+/**
+ * @author Vijay Akula
+ * 
+ */
+public interface MatrixResource {
+    /**
+     * Return the sum of the matrices in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix add(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the difference of the matrices in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix subtract(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the product of the matrices in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix multiply(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the element wise product of the matrices in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix elementWiseMultiply(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the horizontal direct product of the matrices in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix horizontalDirectMultiply(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the product of the matrix with the specified scalar value.
+     * 
+     * @param scalar
+     *            the scalar
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    NamedMatrix scalarMultiply(double scalar, NamedMatrix matrix);
+
+    /**
+     * Returns the Kronecker product pf the matricex in the input list.
+     * 
+     * @param matrixList
+     *            the matrix list
+     * @return NamedMatrix
+     */
+    NamedMatrix kroneckerMultiply(ArrayList<NamedMatrix> matrixList);
+
+    /**
+     * Return the Cholesky decomposition A=LL^Tof the matrix. The returned list
+     * of matrices will include both components of the decomposition, named “L”
+     * and “Ltranspose” respectively.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    ArrayList<NamedMatrix> choleskyDecompose(NamedMatrix matrix);
+
+    /**
+     * Return the inverse of the matrix if possible. Throws an exception for
+     * singular matrices.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    NamedMatrix invert(NamedMatrix matrix);
+
+    /**
+     * Return the rank of the matrix.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    Integer rank(NamedMatrix matrix);
+
+    /**
+     * Return the trace of the matrix.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    Double trace(NamedMatrix matrix);
+
+    /**
+     * Return true if the matrix is positive definite.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    Boolean isPositiveDefinite(NamedMatrix matrix);
+
+    /**
+     * Return the vec of the matrix.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    NamedMatrix vec(NamedMatrix matrix);
+
+    /**
+     * Return the vech of the matrix.
+     * 
+     * @param matrix
+     *            the matrix
+     * @return NamedMatrix
+     */
+    NamedMatrix vech(NamedMatrix matrix);
 }
