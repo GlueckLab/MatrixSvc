@@ -32,6 +32,7 @@ import edu.ucdenver.bios.matrixsvc.resource.ContrastServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixHelper;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.Category;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 import edu.ucdenver.bios.webservice.common.domain.Spacing;
 
@@ -51,15 +52,26 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * BetweenParticipantFactor objects and convert them to Factor
      * ArrayList.
      */
-    private ArrayList<BetweenParticipantFactor> betweenParticipantList =
-            new ArrayList<BetweenParticipantFactor>();
+    private ArrayList<BetweenParticipantFactor> betweenParticipantList = null;
     /**
      * ArrayList of BetweenParticipantFactor to store all the
      * RepeatedMeasuresNode objects and convert them to Factor
      * ArrayList.
      */
-    private ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodeList = 
-            new ArrayList<RepeatedMeasuresNode>();
+    private ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodeList = null;
+    /**
+     * ArrayList of BetweenParticipantFactor to store all the
+     * BetweenParticipantFactor objects and convert them to Factor
+     * ArrayList.
+     */
+    private ArrayList<BetweenParticipantFactor> betweenParticipantTestFactorList = null;
+    /**
+     * ArrayList of BetweenParticipantFactor to store all the
+     * RepeatedMeasuresNode objects and convert them to Factor
+     * ArrayList.
+     */
+    private ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodeTestFactorList = null;
+    
     /**
      * Instance of a RepeatedeMeasuresNode class.
      */
@@ -74,60 +86,30 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * This method is exectes after the test case is instantiated.
      */
     
-    
-    private ArrayList<Factor> betweenParticipantFullFactorList =
-            new ArrayList<Factor>();
-    
-    
-    private ArrayList<Factor> repeatedMeasuresNodeFullFactorList =
-            new ArrayList<Factor>();
-    
-    private ArrayList<Factor> betweenParticipantTestFactorList =
-            new ArrayList<Factor>();
-    
-    
-    private ArrayList<Factor> repeatedMeasuresNodeTestFactorList =
-            new ArrayList<Factor>();
-    
-    private Factor betweenParticipantTestFactor;
-    
-    private Factor repeatedMeaeasuresNodeTestFactor;
-    
     public final void setUp()
     {
-        generateBetweenParticipantFactorList(3);
+        betweenParticipantList = generateBetweenParticipantFactorList(3);
+        System.out.println(betweenParticipantList.toString());
         participant1 = betweenParticipantList.get(0);
-        betweenParticipantFullFactorList = 
-                matrixHelper.betweenParticipantFactorsListToFactorList(
-                        betweenParticipantList);
-        betweenParticipantTestFactor =
-                matrixHelper.betweenParticipantFactorToFactor(participant1);
-        betweenParticipantList.clear();
-        generateBetweenParticipantFactorList(2);
-        betweenParticipantTestFactorList = 
-                matrixHelper.betweenParticipantFactorsListToFactorList(
-                        betweenParticipantList);
-        
-        generateRepeatedMeasureNodeList(3);
+        System.out.println(participant1.toString());
+        betweenParticipantTestFactorList = generateBetweenParticipantFactorList(2);
+        System.out.println(betweenParticipantTestFactorList.toString());
+        repeatedMeasuresNodeList = generateRepeatedMeasureNodeList(3);
+        System.out.println(repeatedMeasuresNodeList.toString());
         node1 = repeatedMeasuresNodeList.get(0);
-        repeatedMeasuresNodeFullFactorList =
-                matrixHelper.repeatedMeasuresNodesListToFactorList(
-                        repeatedMeasuresNodeList);
-        repeatedMeaeasuresNodeTestFactor =
-                matrixHelper.repeatedMeasuresNodeToFactor(node1);
-        repeatedMeasuresNodeList.clear();
-        generateRepeatedMeasureNodeList(2);
-        repeatedMeasuresNodeTestFactorList =
-                matrixHelper.repeatedMeasuresNodesListToFactorList(
-                        repeatedMeasuresNodeList);
+        System.out.println(node1.toString());
+        repeatedMeasuresNodeTestFactorList = generateRepeatedMeasureNodeList(2);
+        System.out.println(repeatedMeasuresNodeTestFactorList.toString());
+
     }
     /**
      * This method is used to generate BetweenParticipantFactors list
      * @param x
      * the x is size of the list to be generated.
      */
-    public void generateBetweenParticipantFactorList(int x)
+    public ArrayList<BetweenParticipantFactor> generateBetweenParticipantFactorList(int x)
     {
+        ArrayList<BetweenParticipantFactor> arrayList = new ArrayList<BetweenParticipantFactor>();
         for(int i = 0; i < x; i++)
         {
             Category category1 = new Category();
@@ -148,26 +130,28 @@ public class ContrastServerResourcesTestCases extends TestCase{
             BetweenParticipantFactor participant =
                     new BetweenParticipantFactor();
             participant.setCategoryList(categoryList);
-            participant.setId(i);
             participant.setPredictorName("Participant "+(i+1));
             
-            betweenParticipantList.add(participant);
+            arrayList.add(participant);
         }
+        return arrayList;
     }
     /**
      * This method is used to generate List of RepeatedMeasuresNode list
      * @param x
      * the x is size of the Repeated Measures Node list.
      */
-    public void generateRepeatedMeasureNodeList(int x)
+    public ArrayList<RepeatedMeasuresNode> generateRepeatedMeasureNodeList(int x)
     {
+        ArrayList<RepeatedMeasuresNode> arrayList = new ArrayList<RepeatedMeasuresNode>();
         for(int i = 0; i < x; i++)
         {
             RepeatedMeasuresNode node = new RepeatedMeasuresNode();
             node.setDimension("Node"+(i+1));
             node.setSpacingList(generateSpacingList(i+1));
-            repeatedMeasuresNodeList.add(node);
+            arrayList.add(node);
         }
+        return arrayList;
     }
     /**
      * This method is to generate spacingList for
@@ -196,6 +180,13 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetBetweenInteractionContrast()
     {
+        NamedMatrix namedMatrix = resource.getBetweenInteractionContrast(
+                betweenParticipantList, betweenParticipantTestFactorList);
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getColumns());
+        /*assertEquals(27, namedMatrix.getRows());*/
+        assertEquals(27, namedMatrix.getColumns());
+        
         
     }
     /**
@@ -204,13 +195,18 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetWithinInteractionContrast()
     {
-        
+        NamedMatrix namedMatrix = resource.getWithinInteractionContrast(
+                repeatedMeasuresNodeList, repeatedMeasuresNodeTestFactorList);
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getRows());
+        /*assertEquals(27, namedMatrix.getRows());*/
+        assertEquals(27, namedMatrix.getColumns());
     }
     /**
      * This is the test case to verify getMainEffectContrast method
      * in ContrastServerResource class.
      */
-    public void testGetMainEffectContrast(ArrayList<BetweenParticipantFactor>
+    private void testGetMainEffectContrast(ArrayList<BetweenParticipantFactor>
     betweenParticipantFullFactorList,
             BetweenParticipantFactor betweenParticipantTestFactor)
     {
@@ -221,7 +217,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * @param repeatedMeasuresNodeFullFactorList
      * @param repeatedMeaeasuresNodeTestFactor
      */
-    public void testGetMainEffectContrast(ArrayList<RepeatedMeasuresNode>
+    private void testGetMainEffectContrast(ArrayList<RepeatedMeasuresNode>
     repeatedMeasuresNodeFullFactorList, RepeatedMeasuresNode repeatedMeaeasuresNodeTestFactor)
     {
         
@@ -230,7 +226,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * This is the test case to verify getBetweenGrandMeanContrast method
      * in ContrastServerResource class.
      */
-    public void testGetBetweenGrandMeanContrast()
+    private void testGetBetweenGrandMeanContrast()
     {
         
     }
@@ -238,7 +234,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * This is the test case to verify getWithinGrandMeanContrast method
      * in ContrastServerResource class.
      */
-    public void testGetWithinGrandMeanContrast()
+    private void testGetWithinGrandMeanContrast()
     {
         
     }
@@ -247,7 +243,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * This is the test case to verfiy getOrthogonalPolynomialCoefficiens
      * method in ContrastServerResource class.
      */
-    public void testGetOrthogonalPolynomialCoefficients()
+    private void testGetOrthogonalPolynomialCoefficients()
     {
         
     }
