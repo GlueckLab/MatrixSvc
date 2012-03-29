@@ -360,11 +360,12 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix inverse = resource.invert(squareMatrix);
         double[][] resultData = inverse.getData();
         final double[][] inverseData = {{2, -1 }, {-3, 2 } };
+        double delta = 0.0000000000000011;
         for(int  i = 0; i < 2; i++)
         {
             for( int j = 0; j < 2; j++)
             {
-                assertEquals(inverseData[i][j], resultData[i][j], 0.0000000000000011);
+                assertEquals(inverseData[i][j], resultData[i][j], delta);
                 System.out.println(""+resultData[i][j]);
             }
         }
