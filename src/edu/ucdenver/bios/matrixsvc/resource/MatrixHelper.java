@@ -64,7 +64,7 @@ public class MatrixHelper {
      */
     public List<RealMatrix> toRealMatrixList(
             final ArrayList<NamedMatrix> matrixList) {
-        if (matrixList == null || matrixList.size() < 2) {
+        if (matrixList.isEmpty() || matrixList.size() < 2) {
             logger.info(MatrixConstants.MATRIX_LIST_ERROR);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.MATRIX_LIST_ERROR);
@@ -93,7 +93,7 @@ public class MatrixHelper {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        return new Array2DRowRealMatrix(matrix.getData());
+        return new Array2DRowRealMatrix(matrix.getData().getData());
     }
 
     /**
@@ -173,10 +173,10 @@ public class MatrixHelper {
      */
     public Factor betweenParticipantFactorToFactor(
             final BetweenParticipantFactor betweenParticipantFactor) {
-        double[] values = null;
         List<Category> categoryList = betweenParticipantFactor
                 .getCategoryList();
         int size = categoryList.size();
+        double[] values = new double[size];
         for (int i = 0; i < size; i++) {
             values[i] = i + 1;
         }
@@ -197,7 +197,8 @@ public class MatrixHelper {
      */
     public Factor repeatedMeasuresNodeToFactor(final RepeatedMeasuresNode node) {
         List<Spacing> spacingList = node.getSpacingList();
-        double[] values = null;
+        int size = spacingList.size();
+        double[] values = new double[size];
         int index = 0;
         for (Spacing spacing : spacingList) {
             values[index] = spacing.getValue();

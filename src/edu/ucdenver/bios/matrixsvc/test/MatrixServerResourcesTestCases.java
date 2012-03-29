@@ -116,7 +116,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix result = resource.add(sameDimensionNamedMatrixList);
         final double[][] data = {{2, 4, 6 }, {8, 10, 12 } };
         assertNotNull(result);
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
     }
 
     /**
@@ -145,7 +145,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix result = resource.subtract(sameDimensionNamedMatrixList);
         final double[][] data = {{0, 0, 0 }, {0, 0, 0 } };
         assertNotNull(result);
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
     }
 
     /**
@@ -175,7 +175,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix result = resource
                 .elementWiseMultiply(sameDimensionNamedMatrixList);
         final double[][] data = {{1, 4, 9 }, {16, 25, 36 } };
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
         assertNotNull(result);
     }
 
@@ -210,7 +210,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix result = resource
                 .multiply(differentDimensionNamedMatrixList);
         final double[][] data = {{30, 36, 42 }, {66, 81, 96 } };
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
         assertNotNull(result);
     }
 
@@ -243,7 +243,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 .horizontalDirectMultiply(sameDimensionNamedMatrixList);
         final double[][] data = {{1, 2, 3, 2, 4, 6, 3, 6, 9 },
                 {16, 20, 24, 20, 25, 30, 24, 30, 36 } };
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
         assertNotNull(result);
     }
 
@@ -275,7 +275,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidScalarMultiply() {
         NamedMatrix result = resource.scalarMultiply(2.0, namedMatrix1);
         final double[][] data = {{2, 4, 6 }, {8, 10, 12 } };
-        assertArrayEquals(data, result.getData());
+        assertArrayEquals(data, result.getData().getData());
         assertNotNull(result);
     }
 
@@ -291,7 +291,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 {4, 5, 6, 8, 10, 12, 12, 15, 18 },
                 {4, 8, 12, 5, 10, 15, 6, 12, 18 },
                 {16, 20, 24, 20, 25, 30, 24, 30, 36 } };
-        assertArrayEquals(dataSameDimension, resultSameDimension.getData());
+        assertArrayEquals(dataSameDimension, resultSameDimension.getData().getData());
         assertNotNull(resultSameDimension);
 
         NamedMatrix resultDifferentDimension = resource
@@ -303,7 +303,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 {16, 20, 24, 20, 25, 30, 24, 30, 36 },
                 {28, 32, 36, 35, 40, 45, 42, 48, 54 } };
         assertArrayEquals(dataDifferentDimension,
-                resultDifferentDimension.getData());
+                resultDifferentDimension.getData().getData());
         assertNotNull(resultDifferentDimension);
     }
 
@@ -323,8 +323,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
         final double[][] dataLTranspose = {{2, 1, -1 }, {0, 3, 1 },
                 {0, 0, Math.sqrt(3) } };
 
-        assertArrayEquals(dataL, resultArrayList.get(0).getData());
-        assertArrayEquals(dataLTranspose, resultArrayList.get(1).getData());
+        assertArrayEquals(dataL, resultArrayList.get(0).getData().getData());
+        assertArrayEquals(dataLTranspose, resultArrayList.get(1).getData().getData());
     }
 
     /**
@@ -358,7 +358,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         double[][] data = {{2, 1 }, {3, 2 } };
         squareMatrix.setData(data);
         NamedMatrix inverse = resource.invert(squareMatrix);
-        double[][] resultData = inverse.getData();
+        double[][] resultData = inverse.getData().getData();
         final double[][] inverseData = {{2, -1 }, {-3, 2 } };
         double delta = 0.0000000000000011;
         for(int  i = 0; i < 2; i++)
@@ -490,7 +490,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void testValidVec() {
         NamedMatrix vecMatrix = resource.vec(namedMatrix1);
         final double[][] data = {{1 }, {4 }, {2 }, {5 }, {3 }, {6 } };
-        assertArrayEquals(data, vecMatrix.getData());
+        assertArrayEquals(data, vecMatrix.getData().getData());
     }
 
     /**
@@ -514,7 +514,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
 
         NamedMatrix vechMatric = resource.vech(symmetricMatrix);
         final double[][] expectedData = {{1 }, {2 }, {3 }, {4 }, {6 }, {5 } };
-        assertArrayEquals(expectedData, vechMatric.getData());
+        assertArrayEquals(expectedData, vechMatric.getData().getData());
     }
 
     /**
