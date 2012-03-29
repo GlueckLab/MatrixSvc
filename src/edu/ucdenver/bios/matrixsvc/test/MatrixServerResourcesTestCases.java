@@ -42,7 +42,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
  */
 public class MatrixServerResourcesTestCases extends TestCase {
     /**
-     * Instance of Matrix Helper Class.
+     * Instance of MatrixServerResource Class.
      */
     private MatrixServerResource resource = new MatrixServerResource();
     /**
@@ -353,16 +353,23 @@ public class MatrixServerResourcesTestCases extends TestCase {
      * MatrixServerResource is performed correctly if valid
      * inputs are given.
      */
-/*    private final void testValidInvert() {
+       public final void testValidInvert() {
         NamedMatrix squareMatrix = new NamedMatrix();
-        final double[][] data = {{2, 1 }, {3, 2 } };
+        double[][] data = {{2, 1 }, {3, 2 } };
         squareMatrix.setData(data);
         NamedMatrix inverse = resource.invert(squareMatrix);
+        double[][] resultData = inverse.getData();
         final double[][] inverseData = {{2, -1 }, {-3, 2 } };
-
-        assertArrayEquals(inverseData, inverse.getData());
+        for(int  i = 0; i < 2; i++)
+        {
+            for( int j = 0; j < 2; j++)
+            {
+                assertEquals(inverseData[i][j], resultData[i][j], 0.0000000000000011);
+                System.out.println(""+resultData[i][j]);
+            }
+        }
         assertNotNull(inverse);
-    }*/
+    }
 
     /**
      * The test to verify if the invert method in
