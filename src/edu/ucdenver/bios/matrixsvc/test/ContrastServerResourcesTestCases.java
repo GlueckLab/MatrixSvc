@@ -75,12 +75,12 @@ public class ContrastServerResourcesTestCases extends TestCase{
     /**
      * Instance of a RepeatedeMeasuresNode class.
      */
-    private RepeatedMeasuresNode node1 = new RepeatedMeasuresNode();
+    private RepeatedMeasuresNode node = new RepeatedMeasuresNode();
     
     /**
      * Instance of a BetweenParticipantFactor class.
      */
-    private BetweenParticipantFactor participant1 = new BetweenParticipantFactor();
+    private BetweenParticipantFactor participant = new BetweenParticipantFactor();
         
     /**
      * This method is exectes after the test case is instantiated.
@@ -90,14 +90,14 @@ public class ContrastServerResourcesTestCases extends TestCase{
     {
         betweenParticipantList = generateBetweenParticipantFactorList(3);
         System.out.println(betweenParticipantList.toString());
-        participant1 = betweenParticipantList.get(0);
-        System.out.println(participant1.toString());
+        participant = betweenParticipantList.get(0);
+        System.out.println(participant.toString());
         betweenParticipantTestFactorList = generateBetweenParticipantFactorList(2);
         System.out.println(betweenParticipantTestFactorList.toString());
         repeatedMeasuresNodeList = generateRepeatedMeasureNodeList(3);
         System.out.println(repeatedMeasuresNodeList.toString());
-        node1 = repeatedMeasuresNodeList.get(0);
-        System.out.println(node1.toString());
+        node = repeatedMeasuresNodeList.get(0);
+        System.out.println(node.toString());
         repeatedMeasuresNodeTestFactorList = generateRepeatedMeasureNodeList(2);
         System.out.println(repeatedMeasuresNodeTestFactorList.toString());
 
@@ -147,6 +147,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
         for(int i = 0; i < x; i++)
         {
             RepeatedMeasuresNode node = new RepeatedMeasuresNode();
+            node.setId(i);
+            node.setNumberOfMeasurements(i+1);
             node.setDimension("Node"+(i+1));
             node.setSpacingList(generateSpacingList(i+1));
             arrayList.add(node);
@@ -184,7 +186,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 betweenParticipantList, betweenParticipantTestFactorList);
         System.out.println("Rows "+namedMatrix.getRows());
         System.out.println("Columns "+namedMatrix.getColumns());
-        /*assertEquals(27, namedMatrix.getRows());*/
         assertEquals(27, namedMatrix.getColumns());
         
         
@@ -199,52 +200,56 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 repeatedMeasuresNodeList, repeatedMeasuresNodeTestFactorList);
         System.out.println("Rows "+namedMatrix.getRows());
         System.out.println("Columns "+namedMatrix.getRows());
-        /*assertEquals(27, namedMatrix.getRows());*/
         assertEquals(27, namedMatrix.getColumns());
     }
     /**
      * This is the test case to verify getMainEffectContrast method
      * in ContrastServerResource class.
      */
-    private void testGetMainEffectContrast(ArrayList<BetweenParticipantFactor>
-    betweenParticipantFullFactorList,
-            BetweenParticipantFactor betweenParticipantTestFactor)
+    public void testGetMainEffectContrastBetweenParticipantFactors()
     {
-        
+        NamedMatrix namedMatrix = resource.getMainEffectContrast(
+                betweenParticipantList, participant );
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getColumns());
+        assertEquals(27, namedMatrix.getColumns());
     }
     /**
      * 
      * @param repeatedMeasuresNodeFullFactorList
      * @param repeatedMeaeasuresNodeTestFactor
      */
-    private void testGetMainEffectContrast(ArrayList<RepeatedMeasuresNode>
-    repeatedMeasuresNodeFullFactorList, RepeatedMeasuresNode repeatedMeaeasuresNodeTestFactor)
+    public void testGetMainEffectContrastRepeatedMeasuresNode()
     {
-        
+        NamedMatrix namedMatrix = resource.getMainEffectConstract(
+                repeatedMeasuresNodeList, node);
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getRows());
+        assertEquals(27, namedMatrix.getColumns());
     }
     /**
      * This is the test case to verify getBetweenGrandMeanContrast method
      * in ContrastServerResource class.
      */
-    private void testGetBetweenGrandMeanContrast()
+    public void testGetBetweenGrandMeanContrast()
     {
+        NamedMatrix namedMatrix = resource.getBetweenGrandMeanContrast(
+                betweenParticipantList);
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getColumns());
+        assertEquals(27, namedMatrix.getColumns());
         
     }
     /**
      * This is the test case to verify getWithinGrandMeanContrast method
      * in ContrastServerResource class.
      */
-    private void testGetWithinGrandMeanContrast()
+    public void testGetWithinGrandMeanContrast()
     {
-        
-    }
-    
-    /**
-     * This is the test case to verfiy getOrthogonalPolynomialCoefficiens
-     * method in ContrastServerResource class.
-     */
-    private void testGetOrthogonalPolynomialCoefficients()
-    {
-        
+        NamedMatrix namedMatrix = resource.getWithinGrandMeanContrast(
+                repeatedMeasuresNodeList);
+        System.out.println("Rows "+namedMatrix.getRows());
+        System.out.println("Columns "+namedMatrix.getRows());
+        assertEquals(27, namedMatrix.getColumns());
     }
 }
