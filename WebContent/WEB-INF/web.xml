@@ -5,7 +5,7 @@
     <!-- Application class name -->
     <context-param>
         <param-name>org.restlet.application</param-name>
-        <param-value>edu.cudenver.bios.matrixsvc.application.MatrixApplication</param-value>
+        <param-value>edu.ucdenver.bios.matrixsvc.application.MatrixApplication</param-value>
     </context-param>
     
     <!-- Restlet adapter -->
