@@ -27,9 +27,8 @@ import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
-import edu.cudenver.bios.matrixsvc.resource.DefaultResource;
 import edu.ucdenver.bios.matrixsvc.resource.ContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.DefaultResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixServerResource;
 /**
  * 

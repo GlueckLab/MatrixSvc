@@ -48,7 +48,7 @@ public class MatrixLogger
 	    {
 	        if (instance == null) 
 	        {
-	            instance = Logger.getLogger("edu.cudenver.bios.matrixsvc.Matrix");
+	            instance = Logger.getLogger("edu.ucdenver.bios.matrixsvc.Matrix");
 	        }
 
 	        return instance;
