@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+import org.restlet.resource.ClientResource;
 
 import com.google.gson.Gson;
 
+import edu.ucdenver.bios.matrixsvc.resource.MatrixResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
@@ -41,6 +43,9 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
  * @author VIJAY AKULA
  */
 public class MatrixServerResourcesTestCases extends TestCase {
+   
+    ClientResource clientResource = null; 
+    MatrixResource matrixResource = null;
     /**
      * Instance of MatrixServerResource Class.
      */
@@ -61,7 +66,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
      * Instance of a Named Matrix.
      */
     private NamedMatrix namedMatrix4 = new NamedMatrix();
-
+    
+    
     /**
      * This method is exectes after the test case is instantiated.
      */
@@ -84,6 +90,20 @@ public class MatrixServerResourcesTestCases extends TestCase {
         final int columns4 = 3;
         namedMatrix4.setData(generateData(rows4, columns4));
         differentDimensionNamedMatrixList.add(namedMatrix4);
+        
+        try
+        {
+            clientResource = new ClientResource("http://localhost:8080/matrix/matrix"); 
+            matrixResource = clientResource.wrap(MatrixResource.class);
+            System.out.println(matrixResource.toString());
+        }
+        catch (Exception e)
+        {
+            System.err.println("Failed to connect to server: " + e.getMessage());
+            fail();
+        }
+        
+        
     }
 
     /**
@@ -366,7 +386,6 @@ public class MatrixServerResourcesTestCases extends TestCase {
             for( int j = 0; j < 2; j++)
             {
                 assertEquals(inverseData[i][j], resultData[i][j], delta);
-                System.out.println(""+resultData[i][j]);
             }
         }
         assertNotNull(inverse);
@@ -537,4 +556,28 @@ public class MatrixServerResourcesTestCases extends TestCase {
                     + "function in Matrix Server Resources Class");
         }
     }
+    public void testRank()
+    {
+            NamedMatrix squareMatrix = new NamedMatrix();
+            double[][] data = {{2, 1 }, {3, 2 } };
+            squareMatrix.setData(data);
+            squareMatrix.setColumns(2);
+            squareMatrix.setRows(2);
+            squareMatrix.setName("ABC");
+            System.out.println(squareMatrix.toString());
+            int rank = matrixResource.rank(squareMatrix);
+            System.out.println("Rank  "+rank);
+            /*final double[][] inverseData = {{2, -1 }, {-3, 2 } };
+            double delta = 0.0000000000000011;
+            for(int  i = 0; i < 2; i++)
+            {
+                for( int j = 0; j < 2; j++)
+                {
+                    assertEquals(inverseData[i][j], resultData[i][j], delta);
+                }
+            }
+            assertNotNull(inverse);*/
+    }
+    
+        
 }
