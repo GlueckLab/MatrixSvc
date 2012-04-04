@@ -26,10 +26,13 @@ package edu.ucdenver.bios.matrixsvc.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.restlet.resource.ClientResource;
+
 import junit.framework.TestCase;
 import edu.cudenver.bios.utils.Factor;
 import edu.ucdenver.bios.matrixsvc.resource.ContrastServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixHelper;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixResource;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.Category;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
@@ -85,6 +88,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
     /**
      * This method is exectes after the test case is instantiated.
      */
+    ClientResource clientResource = null;
+    MatrixResource matrixResource = null;
     
     public final void setUp()
     {
@@ -100,6 +105,19 @@ public class ContrastServerResourcesTestCases extends TestCase{
         System.out.println(node.toString());
         repeatedMeasuresNodeTestFactorList = generateRepeatedMeasureNodeList(2);
         System.out.println(repeatedMeasuresNodeTestFactorList.toString());
+        
+        
+        try
+        {
+            clientResource = new ClientResource("http://localhost:8080/power/power"); 
+            //clientResource = new ClientResource("http://sph-bi-sakhadeo:8080/power/power"); 
+            matrixResource = clientResource.wrap(MatrixResource.class);
+        }
+        catch (Exception e)
+        {
+            System.err.println("Failed to connect to server: " + e.getMessage());
+            fail();
+        }
 
     }
     /**
@@ -252,4 +270,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
         System.out.println("Columns "+namedMatrix.getRows());
         assertEquals(27, namedMatrix.getColumns());
     }
+    
+ 
 }
