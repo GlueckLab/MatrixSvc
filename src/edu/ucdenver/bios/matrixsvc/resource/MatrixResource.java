@@ -24,6 +24,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Get;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
@@ -31,6 +33,12 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
  * 
  */
 public interface MatrixResource {
+    @Get
+    int getValue();
+    
+    
+    
+    
     /**
      * Return the sum of the matrices specified in the input list.
      * 

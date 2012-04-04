@@ -31,9 +31,10 @@ import org.apache.log4j.Logger;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
-import edu.cudenver.bios.matrixsvc.application.MatrixLogger;
+
 import edu.cudenver.bios.utils.Factor;
 import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
+import edu.ucdenver.bios.matrixsvc.appliaction.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.Category;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
@@ -93,7 +94,8 @@ public class MatrixHelper {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        return new Array2DRowRealMatrix(matrix.getData().getData());
+        double[][] d = matrix.getDataFromBlob();
+        return new Array2DRowRealMatrix(d);
     }
 
     /**

@@ -30,6 +30,7 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrast;
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrastCollection;
 import edu.cudenver.bios.matrix.OrthogonalPolynomials;
@@ -41,15 +42,15 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 
 // to-do: Auto-generated Javadoc
-/**The Class ContrastServerResource.
- *
+/**
+ * The Class ContrastServerResource.
+ * 
  * @author VIJAY AKULA
  */
-public class ContrastServerResource extends ServerResource
-implements ContrastResource {
+public class ContrastServerResource extends ServerResource implements
+        ContrastResource {
     /**
-     * Instance of Logger class to dispaly the
-     * log msgs.
+     * Instance of Logger class to dispaly the log msgs.
      */
     private static Logger logger = MatrixLogger.getInstance();
     /**
@@ -86,8 +87,7 @@ implements ContrastResource {
 
         ArrayList<Factor> testFactorArrayList = matrixHelper
                 .betweenParticipantFactorsListToFactorList(testFactorList);
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
                 .betweenSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
@@ -104,11 +104,11 @@ implements ContrastResource {
      * specified
      * 
      * @param fullFactorList
-     *            the full factor list is the list of all the Repeated
-     *            Measures Node
+     *            the full factor list is the list of all the Repeated Measures
+     *            Node
      * @param testFactorList
-     *            the test facotr list is the list of Repeated Measures
-     *            Node factors for which Interaction Contrast is generated
+     *            the test facotr list is the list of Repeated Measures Node
+     *            factors for which Interaction Contrast is generated
      * @return namedMatrix Return a polynomial contrast to test the interaction
      *         of the specified factors. Note that both the full set of factors
      *         and subset of factors to be tested must be specified to ensure a
@@ -128,8 +128,7 @@ implements ContrastResource {
 
         ArrayList<Factor> testFactorArrayList = matrixHelper
                 .repeatedMeasuresNodesListToFactorList(testFactorList);
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
                 .withinSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
@@ -145,10 +144,15 @@ implements ContrastResource {
      * Gets the main effect contrast.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            the full factor list is the list of all the Between
+     *            Participant Factors.
      * @param testFactor
-     *            the test factor
-     * @return Named Matrix
+     *            the test facotr list is the list of Between Participant
+     *            factors for which Interaction Contrast is generated
+     * @return namedMatrix Return a polynomial contrast to test the main effect
+     *         of the specified factor. Note that both the full set of factors
+     *         and subset of factors to be tested must be specified to ensure a
+     *         contrast matrix of appropriate dimension.
      */
     @Override
     public NamedMatrix getMainEffectContrast(
@@ -165,8 +169,7 @@ implements ContrastResource {
         Factor factor = matrixHelper
                 .betweenParticipantFactorToFactor(testFactor);
 
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
                 .betweenSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
@@ -182,10 +185,15 @@ implements ContrastResource {
      * Gets the main effect constract.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            the full factor list is the list of all the Repeated Measures
+     *            Node
      * @param testFactor
-     *            the test factor
-     * @return Named Matrix
+     *            the test facotr list is the list of Repeated Measures Node
+     *            factors for which Interaction Contrast is generated
+     * @return namedMatrix Return a polynomial contrast to test the main effect
+     *         of the specified factor. Note that both the full set of factors
+     *         and subset of factors to be tested must be specified to ensure a
+     *         contrast matrix of appropriate dimension.
      */
     @Override
     public NamedMatrix getMainEffectConstract(
@@ -201,8 +209,7 @@ implements ContrastResource {
 
         Factor factor = matrixHelper.repeatedMeasuresNodeToFactor(testFactor);
 
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
                 .withinSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
@@ -218,7 +225,8 @@ implements ContrastResource {
      * Gets the between grand mean contrast.
      * 
      * @param fullFactorList
-     *            the full factor list
+     *            the full factor list is the list of all the Between
+     *            Participant Factors.
      * @return Named Matrix
      */
     @Override
@@ -231,9 +239,8 @@ implements ContrastResource {
         }
         ArrayList<Factor> fullFactorArrayList = matrixHelper
                 .betweenParticipantFactorsListToFactorList(fullFactorList);
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials.betweenSubjectContrast(
-                        fullFactorArrayList);
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
+                .betweenSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
                 .getGrandMean();
@@ -262,9 +269,8 @@ implements ContrastResource {
         ArrayList<Factor> fullFactorArrayList = matrixHelper
                 .repeatedMeasuresNodesListToFactorList(fullFactorList);
 
-        OrthogonalPolynomialContrastCollection contrastCollection =
-                OrthogonalPolynomials.withinSubjectContrast(
-                        fullFactorArrayList);
+        OrthogonalPolynomialContrastCollection contrastCollection = OrthogonalPolynomials
+                .withinSubjectContrast(fullFactorArrayList);
 
         OrthogonalPolynomialContrast contrast = contrastCollection
                 .getGrandMean();
@@ -304,8 +310,7 @@ implements ContrastResource {
      * 
      * @param contrast
      *            the contrast
-     * @return NamedMatrix
-     * which is constructed from the passed contrast
+     * @return NamedMatrix which is constructed from the passed contrast
      */
     public final NamedMatrix getNamedMatrix(
             final OrthogonalPolynomialContrast contrast) {

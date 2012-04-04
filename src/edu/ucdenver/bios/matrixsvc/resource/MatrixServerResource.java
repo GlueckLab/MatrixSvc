@@ -506,4 +506,9 @@ public class MatrixServerResource extends ServerResource implements
         logger.info(msg);
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     }
+    @Override
+    public int getValue() {
+        // TODO Auto-generated method stub
+        return 2;
+    }
 }
