@@ -20,6 +20,7 @@
  -->
 <project name="matrix" default="test">
 	<property environment="env"/>
+	<property name="version" value="2.0.0" />
 	<property name="catalina.home" value="${env.CATALINA_HOME}" />
     <property name="svcname" value="matrix" />
     <property name="wardir" value="${basedir}/war" />
