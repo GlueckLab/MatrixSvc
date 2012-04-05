@@ -27,9 +27,27 @@ import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
-import edu.ucdenver.bios.matrixsvc.resource.ContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenGrandMeanContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenInteractionContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenMainEffectContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetOrthogonalPolynomialCoefficientsServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinGrandMeanContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinInteractionContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinMainEffectContrastServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.DefaultResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixAdditionServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixCholeskyDecomposeServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixElementwiseMultiplicationServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixHorizontalDirectMultiplyServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixInversionServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixIsPositiveDefiniteServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixKroneckerMultiplyServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixMultiplicationServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixSubtractionServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixVecServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixVechServerResource;
 /**
  * 
  * @author VIJAY AKULA
@@ -66,11 +84,78 @@ public class MatrixApplication extends Application
         // Defines only one default route, self-identifies server
         router.attachDefault(DefaultResource.class);
         
-        // Matrix Server Resource
+        /*// Matrix Server Resource
         router.attach("/matrix", MatrixServerResource.class);
         
         //Contrast Server Resource
-        router.attach("/contrast", ContrastServerResource.class);
+        router.attach("/contrast", ContrastServerResource.class);*/
+        
+        //MatrixAdditionResource
+        router.attach("/add", MatrixAdditionServerResource.class);
+        
+        //MatrixSubstractionResource
+        router.attach("/subtract", MatrixSubtractionServerResource.class);
+        
+        //MatrixMultiplicationResource
+        router.attach("/multiply", MatrixMultiplicationServerResource.class);
+        
+        //MatrixElementwiseMultiplicationResource
+        router.attach("/elementwisemultiply", MatrixElementwiseMultiplicationServerResource.class);
+        
+        //MatrixKronckerMultiplyResource
+        router.attach("/kroneckermultiply", MatrixKroneckerMultiplyServerResource.class);
+        
+        //MatrixSclarMultiplyResource
+        router.attach("/scalarmultiply", MatrixScalarMultiplyResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/horizontaldirectmultiply", MatrixHorizontalDirectMultiplyServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/choleskydecompose", MatrixCholeskyDecomposeServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/invert", MatrixInversionServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/trace", MatrixTraceServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/positivedefinite", MatrixIsPositiveDefiniteServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/vec", MatrixVecServerResource.class);
+        
+        //MatrixHorizontalDirectMultiplyResource
+        router.attach("/vech", MatrixVechServerResource.class);
+                
+        //ContrastGetBetweenInteractionContrastServerResource
+        router.attach("/contrast/interaction/between",
+                ContrastGetBetweenInteractionContrastServerResource.class);
+        
+        //ContrastGetWithinInteractionContrastServerResource
+        router.attach("/contrast/interaction/within",
+                ContrastGetWithinInteractionContrastServerResource.class);
+        
+        //ContrastGetBetweenMainEffectContrastServerResource
+        router.attach("/contrast/main/between",
+                ContrastGetBetweenMainEffectContrastServerResource.class);
+        
+        //ContrastGetWithinMainEffectContrastServerResource
+        router.attach("/contrast/main/within",
+                ContrastGetWithinMainEffectContrastServerResource.class);
+        
+        //ContrastGetBetweenGrandMeanContrastServerResource
+        router.attach("/contrast/grandmean/between",
+                ContrastGetBetweenGrandMeanContrastServerResource.class);
+        
+      //ContrastGetWithinGrandMeanContrastServerResource
+        router.attach("/contrast/grandmean/within",
+                ContrastGetWithinGrandMeanContrastServerResource.class);
+        
+        //ContrastGetOrthogonalPolynomialCoefficientsServerResource
+        router.attach("/contrast/coefficients", 
+                ContrastGetOrthogonalPolynomialCoefficientsServerResource.class);
         
         return router;
     }
