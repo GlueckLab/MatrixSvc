@@ -32,27 +32,55 @@ import org.apache.commons.math.linear.RealMatrix;
  */
 public class NamedRealMatrix extends Array2DRowRealMatrix {
     public static final long serialVersionUID = NamedRealMatrix.class.hashCode();
-    
+    /**
+     * name variable of datatype String.
+     */
 	private String name = null;
-
+	/**
+	 * Default constructor for this class.
+	 */
 	public NamedRealMatrix(){
 		super();
 	}
 	
+	/**
+	 * Instantiates a new named real matrix.
+	 *
+	 * @param matrix
+	 * This a matrix of type RealMatrix
+	 */
 	public NamedRealMatrix(RealMatrix matrix){
 		super();
 		this.data = matrix.getData();
 	}
 	
+	/**
+	 * Instantiates a new named real matrix.
+	 *
+	 * @param numRows
+	 * the num rows
+	 * @param numColumns the num columns
+	 * @param name the name
+	 */
 	public NamedRealMatrix(int numRows, int numColumns, String name){
 		super(numRows, numColumns);
 		this.name = name;
 	}
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
