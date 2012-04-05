@@ -33,8 +33,8 @@ import org.restlet.resource.ResourceException;
 
 
 import edu.cudenver.bios.utils.Factor;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixLogger;
+import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
+import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.Category;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;

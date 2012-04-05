@@ -38,8 +38,8 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixLogger;
+import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
+import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 // to-do: Auto-generated Javadoc
@@ -507,8 +507,8 @@ public class MatrixServerResource extends ServerResource implements
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     }
     @Override
-    public int getValue() {
+    public String getValue() {
         // TODO Auto-generated method stub
-        return 2;
+        return "abc";
     }
 }

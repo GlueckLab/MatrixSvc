@@ -34,7 +34,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
  */
 public interface MatrixResource {
     @Get
-    int getValue();
+    String getValue();
     
     
     

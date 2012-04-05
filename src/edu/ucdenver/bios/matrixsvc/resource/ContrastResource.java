@@ -102,7 +102,7 @@ public interface ContrastResource {
      * @return NamedMatrix Returns a main effect contrast matrix based on the
      *         testFator object. The contrast matrix is of type NamedMatrix
      */
-    NamedMatrix getMainEffectContrast(
+    NamedMatrix getBetweenMainEffectContrast(
             ArrayList<BetweenParticipantFactor> fullFactorialList,
             BetweenParticipantFactor testFactor);
 
@@ -124,7 +124,7 @@ public interface ContrastResource {
      * @return NamedMatrix Returns a main effect contrast matrix based on the
      *         testFator object. The contrast matrix is of type NamedMatrix
      */
-    NamedMatrix getMainEffectConstract(
+    NamedMatrix getWithinMainEffectConstract(
             ArrayList<RepeatedMeasuresNode> fullFactorList,
             RepeatedMeasuresNode testFactor);
 

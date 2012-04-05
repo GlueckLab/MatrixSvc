@@ -5,6 +5,9 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
+import org.restlet.resource.ServerResource;
+
+import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
 
 /**
  * Default request resource.  Called from the URI /matrix
@@ -13,15 +16,14 @@ import org.restlet.resource.Get;
  * @author VIJAY AKULA
  *
  */
-public class DefaultResource {
+public class DefaultResource extends ServerResource
+{
     /**
      * Returns a full representation for a given variant.
      */
     @Get
-    public Representation represent(Variant variant) {
-        Representation representation = 
-            new StringRepresentation("DefaultResource of Matrix REST Service", MediaType.TEXT_PLAIN);
-
-        return representation;
+    public String represent()
+    {
+        return "Matrix REST Service, version "+MatrixConstants.VERSION;
     }
 }

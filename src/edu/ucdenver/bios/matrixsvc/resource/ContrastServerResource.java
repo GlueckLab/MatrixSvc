@@ -35,8 +35,8 @@ import edu.cudenver.bios.matrix.OrthogonalPolynomialContrast;
 import edu.cudenver.bios.matrix.OrthogonalPolynomialContrastCollection;
 import edu.cudenver.bios.matrix.OrthogonalPolynomials;
 import edu.cudenver.bios.utils.Factor;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixConstants;
-import edu.ucdenver.bios.matrixsvc.appliaction.MatrixLogger;
+import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
+import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
@@ -155,7 +155,7 @@ public class ContrastServerResource extends ServerResource implements
      *         contrast matrix of appropriate dimension.
      */
     @Override
-    public NamedMatrix getMainEffectContrast(
+    public NamedMatrix getBetweenMainEffectContrast(
             final ArrayList<BetweenParticipantFactor> fullFactorList,
             final BetweenParticipantFactor testFactor) {
         if (fullFactorList == null || testFactor == null) {
@@ -196,7 +196,7 @@ public class ContrastServerResource extends ServerResource implements
      *         contrast matrix of appropriate dimension.
      */
     @Override
-    public NamedMatrix getMainEffectConstract(
+    public NamedMatrix getWithinMainEffectConstract(
             final ArrayList<RepeatedMeasuresNode> fullFactorList,
             final RepeatedMeasuresNode testFactor) {
         if (fullFactorList == null || testFactor == null) {
@@ -301,21 +301,6 @@ public class ContrastServerResource extends ServerResource implements
         RealMatrix realMatrix = OrthogonalPolynomials
                 .orthogonalPolynomialCoefficients(x, maxDegree);
         NamedMatrix namedMatrix = matrixHelper.toNamedMatrix(realMatrix, "");
-        return namedMatrix;
-    }
-
-    /**
-     * This method takes a OrthogonalPolynomialContrast object and returns a
-     * NamedMatrix from that object.
-     * 
-     * @param contrast
-     *            the contrast
-     * @return NamedMatrix which is constructed from the passed contrast
-     */
-    public final NamedMatrix getNamedMatrix(
-            final OrthogonalPolynomialContrast contrast) {
-        NamedMatrix namedMatrix = matrixHelper.toNamedMatrix(
-                contrast.getContrastMatrix(), "");
         return namedMatrix;
     }
 }
