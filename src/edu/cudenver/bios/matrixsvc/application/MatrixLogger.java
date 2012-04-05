@@ -1,7 +1,7 @@
 /*
- * Power Service for the GLIMMPSE Software System.  Processes
- * incoming HTTP requests for power, sample size, and detectable
- * difference
+ * Matrix Service for the GLIMMPSE Software System.  Processes
+ * incoming HTTP requests for matrix operations like addition, substraction
+ * kronecker multiplication and so on
  * 
  * Copyright (C) 2010 Regents of the University of Colorado.  
  *
