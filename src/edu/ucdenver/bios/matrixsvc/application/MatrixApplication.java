@@ -83,13 +83,7 @@ public class MatrixApplication extends Application
         
         // Defines only one default route, self-identifies server
         router.attachDefault(DefaultResource.class);
-        
-        /*// Matrix Server Resource
-        router.attach("/matrix", MatrixServerResource.class);
-        
-        //Contrast Server Resource
-        router.attach("/contrast", ContrastServerResource.class);*/
-        
+                
         //MatrixAdditionResource
         router.attach("/add", MatrixAdditionServerResource.class);
         
