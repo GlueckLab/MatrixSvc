@@ -160,6 +160,6 @@ public final class MatrixConstants {
      */
     public static final Double EIGEN_TOLERANCE_DEFAULT = 1.0E-15;
     
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "2.0.0";
 
 }
