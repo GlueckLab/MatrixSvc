@@ -26,12 +26,16 @@ package edu.ucdenver.bios.matrixsvc.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.restlet.resource.ClientResource;
 
-import junit.framework.TestCase;
-import edu.cudenver.bios.utils.Factor;
-import edu.ucdenver.bios.matrixsvc.resource.ContrastServerResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixHelper;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenGrandMeanContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenInteractionContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetBetweenMainEffectContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinGrandMeanContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinInteractionContrastServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.ContrastGetWithinMainEffectContrastServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixResource;
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.Category;
@@ -40,16 +44,6 @@ import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 import edu.ucdenver.bios.webservice.common.domain.Spacing;
 
 public class ContrastServerResourcesTestCases extends TestCase{
-    /**
-     * Instance of Contrast Server Resource class.
-     */
-    private ContrastServerResource resource = 
-            new ContrastServerResource();
-    /**
-     * Instance of a Matrix Helper class.
-     */
-    private MatrixHelper matrixHelper = 
-            new MatrixHelper();
     /**
      * ArrayList of BetweenParticipantFactor to store all the
      * BetweenParticipantFactor objects and convert them to Factor
@@ -200,6 +194,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetBetweenInteractionContrast()
     {
+        ContrastGetBetweenInteractionContrastServerResource resource
+        = new ContrastGetBetweenInteractionContrastServerResource();
         NamedMatrix namedMatrix = resource.getBetweenInteractionContrast(
                 betweenParticipantList, betweenParticipantTestFactorList);
         System.out.println("Rows "+namedMatrix.getRows());
@@ -214,6 +210,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetWithinInteractionContrast()
     {
+        ContrastGetWithinInteractionContrastServerResource resource =
+                new ContrastGetWithinInteractionContrastServerResource();
         NamedMatrix namedMatrix = resource.getWithinInteractionContrast(
                 repeatedMeasuresNodeList, repeatedMeasuresNodeTestFactorList);
         System.out.println("Rows "+namedMatrix.getRows());
@@ -224,9 +222,11 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * This is the test case to verify getMainEffectContrast method
      * in ContrastServerResource class.
      */
-    public void testGetMainEffectContrastBetweenParticipantFactors()
+    public void testGetBetweenMainEffectContrastBetweenParticipantFactors()
     {
-        NamedMatrix namedMatrix = resource.getMainEffectContrast(
+        ContrastGetBetweenMainEffectContrastServerResource resource =
+                new ContrastGetBetweenMainEffectContrastServerResource();
+        NamedMatrix namedMatrix = resource.getBetweenMainEffectContrast(
                 betweenParticipantList, participant );
         System.out.println("Rows "+namedMatrix.getRows());
         System.out.println("Columns "+namedMatrix.getColumns());
@@ -237,9 +237,11 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * @param repeatedMeasuresNodeFullFactorList
      * @param repeatedMeaeasuresNodeTestFactor
      */
-    public void testGetMainEffectContrastRepeatedMeasuresNode()
+    public void testGetWithinMainEffectContrastRepeatedMeasuresNode()
     {
-        NamedMatrix namedMatrix = resource.getMainEffectConstract(
+        ContrastGetWithinMainEffectContrastServerResource resource
+        = new ContrastGetWithinMainEffectContrastServerResource();
+        NamedMatrix namedMatrix = resource.getWithinMainEffectConstract(
                 repeatedMeasuresNodeList, node);
         System.out.println("Rows "+namedMatrix.getRows());
         System.out.println("Columns "+namedMatrix.getRows());
@@ -251,6 +253,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetBetweenGrandMeanContrast()
     {
+        ContrastGetBetweenGrandMeanContrastServerResource resource =
+                new ContrastGetBetweenGrandMeanContrastServerResource();
         NamedMatrix namedMatrix = resource.getBetweenGrandMeanContrast(
                 betweenParticipantList);
         System.out.println("Rows "+namedMatrix.getRows());
@@ -264,6 +268,8 @@ public class ContrastServerResourcesTestCases extends TestCase{
      */
     public void testGetWithinGrandMeanContrast()
     {
+        ContrastGetWithinGrandMeanContrastServerResource resource =
+                new ContrastGetWithinGrandMeanContrastServerResource();
         NamedMatrix namedMatrix = resource.getWithinGrandMeanContrast(
                 repeatedMeasuresNodeList);
         System.out.println("Rows "+namedMatrix.getRows());
