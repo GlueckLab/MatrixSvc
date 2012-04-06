@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -57,7 +58,7 @@ extends ServerResource implements MatrixElementwiseMultiplicationResource{
      * @return namedMatrix Returns the result of element wise multiplication as
      *         a named matrix
      */
-    @Override
+    @Post
     public NamedMatrix elementWiseMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper

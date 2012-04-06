@@ -23,6 +23,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -54,10 +55,10 @@ extends ServerResource implements ContrastGetOrthogonalPolynomialCoefficientsRes
      *            the max degree
      * @return Named Matrix
      */
-    @Override
+    @Post
     public NamedMatrix getOrthogonalPolynomialCoefficients(final double[] x,
             final int maxDegree) {
-        if (x == null) {
+        if (x.length < 1) {
             display.displayError("", MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);

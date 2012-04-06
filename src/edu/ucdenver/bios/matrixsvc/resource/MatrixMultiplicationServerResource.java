@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
@@ -55,7 +56,7 @@ implements MatrixMultiplicationResource{
      * @return namedMatrix Returns the result of multiplication
      * as a NamedMatrix
      */
-    @Override
+    @Post
     public NamedMatrix multiply(final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);

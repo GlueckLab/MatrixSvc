@@ -24,6 +24,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -59,7 +60,7 @@ ServerResource implements ContrastGetBetweenGrandMeanContrastResource{
      *            Participant Factors.
      * @return Named Matrix
      */
-    @Override
+    @Post
     public NamedMatrix getBetweenGrandMeanContrast(
             final ArrayList<BetweenParticipantFactor> fullFactorList) {
         if (fullFactorList == null) {

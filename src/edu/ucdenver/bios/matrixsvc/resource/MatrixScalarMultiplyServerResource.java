@@ -22,6 +22,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
@@ -52,7 +53,7 @@ extends ServerResource implements MatrixScalarMultiplyResource{
      * @return namedMatrix Returns the result of scalar multiply as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix scalarMultiply(final double scalar,
             final NamedMatrix matrix) {
         double multiplier = scalar;

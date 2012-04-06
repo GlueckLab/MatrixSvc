@@ -23,6 +23,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.SingularValueDecompositionImpl;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
@@ -53,7 +54,7 @@ implements MatrixRankResource{
      *            has to be found out.
      * @return rank Returns rank of the input matrix as a Integer value.
      */
-    @Override
+    @Post
     public Integer rank(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.RANK_NOTPOSSIBLE,

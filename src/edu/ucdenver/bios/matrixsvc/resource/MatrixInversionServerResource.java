@@ -23,6 +23,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.LUDecompositionImpl;
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
@@ -53,7 +54,7 @@ implements MatrixInversionResource{
      * @return namedMatrix Returns the result of invert operation as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix invert(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE,

@@ -23,6 +23,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
@@ -51,6 +53,7 @@ public interface ContrastGetBetweenMainEffectContrastResource {
      * @return NamedMatrix Returns a main effect contrast matrix based on the
      *         testFator object. The contrast matrix is of type NamedMatrix
      */
+    @Post
     NamedMatrix getBetweenMainEffectContrast(
             ArrayList<BetweenParticipantFactor> fullFactorialList,
             BetweenParticipantFactor testFactor);

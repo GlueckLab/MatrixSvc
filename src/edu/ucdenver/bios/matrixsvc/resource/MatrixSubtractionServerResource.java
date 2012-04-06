@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -49,7 +50,6 @@ implements MatrixSubtractionResource{
      * Instance of matrix Helper class.
      */
     private MatrixHelper matrixHelper = new MatrixHelper();
-    @Override
     /**
      * Implementation of differences of Martices
      * 
@@ -59,6 +59,7 @@ implements MatrixSubtractionResource{
      * @return namedMatrix Returns a result of the
      * substraction as Named Matrix
      */
+    @Post
     public NamedMatrix subtract(final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);

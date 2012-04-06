@@ -21,6 +21,8 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
@@ -37,5 +39,6 @@ public interface MatrixVechResource {
      *            vech operation has to be performed.
      * @return NamedMatrix
      */
+    @Post
     NamedMatrix vech(NamedMatrix matrix);
 }

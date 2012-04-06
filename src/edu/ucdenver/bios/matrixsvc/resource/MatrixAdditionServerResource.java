@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -59,7 +60,7 @@ implements MatrixAdditionResource{
      * @return namedMatrix Returns the result of addition of matrices as a
      *         NamedMatrix
      */
-    @Override
+    @Post
     public NamedMatrix add(final ArrayList<NamedMatrix> matrixList) {
         final List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);

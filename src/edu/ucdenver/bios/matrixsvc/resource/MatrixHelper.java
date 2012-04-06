@@ -133,6 +133,10 @@ public class MatrixHelper {
      */
     public ArrayList<Factor> betweenParticipantFactorsListToFactorList(
             final ArrayList<BetweenParticipantFactor> betweenParticipantFactorList) {
+        if (betweenParticipantFactorList.isEmpty() || betweenParticipantFactorList.size() < 2) 
+        {
+            logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+        }
         ArrayList<Factor> factorArrayList = new ArrayList<Factor>();
         for (BetweenParticipantFactor betweenParticipantFactor : betweenParticipantFactorList) {
             Factor factor = betweenParticipantFactorToFactor(betweenParticipantFactor);
@@ -155,6 +159,10 @@ public class MatrixHelper {
      */
     public ArrayList<Factor> repeatedMeasuresNodesListToFactorList(
             final ArrayList<RepeatedMeasuresNode> repeatedMeasuresNodesList) {
+        if (repeatedMeasuresNodesList.isEmpty() || repeatedMeasuresNodesList.size() < 2) 
+        {
+            logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+        }
         ArrayList<Factor> factorArrayList = new ArrayList<Factor>();
         for (RepeatedMeasuresNode node : repeatedMeasuresNodesList) {
             factorArrayList.add(repeatedMeasuresNodeToFactor(node));
@@ -175,6 +183,10 @@ public class MatrixHelper {
      */
     public Factor betweenParticipantFactorToFactor(
             final BetweenParticipantFactor betweenParticipantFactor) {
+        if (betweenParticipantFactor == null) 
+        {
+            logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+        }
         List<Category> categoryList = betweenParticipantFactor
                 .getCategoryList();
         int size = categoryList.size();
@@ -198,6 +210,10 @@ public class MatrixHelper {
      *         RepeatedMeasuresNode object to a Factor object.
      */
     public Factor repeatedMeasuresNodeToFactor(final RepeatedMeasuresNode node) {
+        if (node == null) 
+        {
+            logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
+        }
         List<Spacing> spacingList = node.getSpacingList();
         int size = spacingList.size();
         double[] values = new double[size];

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -52,7 +53,7 @@ extends ServerResource implements MatrixKroneckerMultiplyResource{
      * @return namedMatrix Returns the result of kronrcker multiply as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix kroneckerMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper

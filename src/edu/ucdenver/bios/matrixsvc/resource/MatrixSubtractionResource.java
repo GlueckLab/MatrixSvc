@@ -24,6 +24,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
@@ -40,5 +42,6 @@ public interface MatrixSubtractionResource {
      *            subtract operation has to be performed.
      * @return NamedMatrix
      */
+    @Post
     NamedMatrix subtract(ArrayList<NamedMatrix> matrixList);
 }

@@ -22,6 +22,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -54,7 +55,7 @@ extends ServerResource implements MatrixIsPositiveDefiniteResource{
      * @return isPositiveDefinite Returns true if the input matrix is positive
      *         definite else false.
      */
-    @Override
+    @Post
     public Boolean isPositiveDefinite(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE,

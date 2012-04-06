@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -73,11 +74,11 @@ public class ContrastServerResource extends ServerResource implements
      *         and subset of factors to be tested must be specified to ensure a
      *         contrast matrix of appropriate dimension.
      */
-    @Override
+    @Post
     public NamedMatrix getBetweenInteractionContrast(
             final ArrayList<BetweenParticipantFactor> fullFactorList,
             final ArrayList<BetweenParticipantFactor> testFactorList) {
-        if (fullFactorList == null || testFactorList == null) {
+        if (fullFactorList.isEmpty() || testFactorList.isEmpty()) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
@@ -118,7 +119,7 @@ public class ContrastServerResource extends ServerResource implements
     public NamedMatrix getWithinInteractionContrast(
             final ArrayList<RepeatedMeasuresNode> fullFactorList,
             final ArrayList<RepeatedMeasuresNode> testFactorList) {
-        if (fullFactorList == null || testFactorList == null) {
+        if (fullFactorList.isEmpty() || testFactorList.isEmpty()) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
@@ -158,7 +159,7 @@ public class ContrastServerResource extends ServerResource implements
     public NamedMatrix getBetweenMainEffectContrast(
             final ArrayList<BetweenParticipantFactor> fullFactorList,
             final BetweenParticipantFactor testFactor) {
-        if (fullFactorList == null || testFactor == null) {
+        if (fullFactorList.isEmpty()|| testFactor == null) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
@@ -199,7 +200,7 @@ public class ContrastServerResource extends ServerResource implements
     public NamedMatrix getWithinMainEffectConstract(
             final ArrayList<RepeatedMeasuresNode> fullFactorList,
             final RepeatedMeasuresNode testFactor) {
-        if (fullFactorList == null || testFactor == null) {
+        if (fullFactorList.isEmpty()|| testFactor == null) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
@@ -232,7 +233,7 @@ public class ContrastServerResource extends ServerResource implements
     @Override
     public NamedMatrix getBetweenGrandMeanContrast(
             final ArrayList<BetweenParticipantFactor> fullFactorList) {
-        if (fullFactorList == null) {
+        if (fullFactorList.isEmpty()) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
@@ -261,7 +262,7 @@ public class ContrastServerResource extends ServerResource implements
     @Override
     public NamedMatrix getWithinGrandMeanContrast(
             final ArrayList<RepeatedMeasuresNode> fullFactorList) {
-        if (fullFactorList == null) {
+        if (fullFactorList.isEmpty()) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);

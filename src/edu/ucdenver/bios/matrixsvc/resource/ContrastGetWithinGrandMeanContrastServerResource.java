@@ -24,6 +24,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -58,10 +59,10 @@ extends ServerResource implements ContrastGetWithinGrandMeanContrastResource{
      *            the full factor list
      * @return Named Matrix
      */
-    @Override
+    @Post
     public NamedMatrix getWithinGrandMeanContrast(
             final ArrayList<RepeatedMeasuresNode> fullFactorList) {
-        if (fullFactorList == null) {
+        if (fullFactorList.isEmpty()) {
             display.displayError("", MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);

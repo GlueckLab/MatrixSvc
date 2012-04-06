@@ -23,6 +23,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 
@@ -44,6 +46,7 @@ public interface ContrastGetWithinGrandMeanContrastResource {
      * @return NamedMatrix Return a polynomial contrast to test the grand mean
      *         for the specified list of which is of type NamedMatrix.
      */
+    @Post
     NamedMatrix getWithinGrandMeanContrast(
             ArrayList<RepeatedMeasuresNode> fullFactorList);
 }

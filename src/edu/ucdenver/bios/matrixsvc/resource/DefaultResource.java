@@ -1,9 +1,5 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import org.restlet.data.MediaType;
-import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
-import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 

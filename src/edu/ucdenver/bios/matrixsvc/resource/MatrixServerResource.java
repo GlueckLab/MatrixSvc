@@ -34,6 +34,7 @@ import org.apache.commons.math.linear.SingularValueDecompositionImpl;
 import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -69,7 +70,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of addition of matrices as a
      *         NamedMatrix
      */
-    @Override
+    @Post
     public NamedMatrix add(final ArrayList<NamedMatrix> matrixList) {
         final List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);
@@ -99,7 +100,7 @@ public class MatrixServerResource extends ServerResource implements
         return matrix;
     }
 
-    @Override
+    @Post
     /**
      * Implementation of differences of Martices
      * 
@@ -145,7 +146,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of multiplication
      * as a NamedMatrix
      */
-    @Override
+    @Post
     public NamedMatrix multiply(final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);
@@ -176,7 +177,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of element wise multiplication as
      *         a named matrix
      */
-    @Override
+    @Post
     public NamedMatrix elementWiseMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
@@ -214,7 +215,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of horizontal direct multiply
      * as a Named Matrix
      */
-    @Override
+    @Post
     public NamedMatrix horizontalDirectMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
@@ -251,7 +252,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of scalar multiply as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix scalarMultiply(final double scalar,
             final NamedMatrix matrix) {
         double multiplier = scalar;
@@ -271,7 +272,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of kronrcker multiply as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix kroneckerMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
@@ -295,7 +296,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrixList Returns the result of cholesky decomposition
      * as a ArrayList of NamedMatrix.
      */
-    @Override
+    @Post
     public ArrayList<NamedMatrix> choleskyDecompose(final NamedMatrix matrix) {
         if (matrix == null) {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
@@ -337,7 +338,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result of invert operation as a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix invert(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE,
@@ -369,7 +370,7 @@ public class MatrixServerResource extends ServerResource implements
      *            has to be found out.
      * @return rank Returns rank of the input matrix as a Integer value.
      */
-    @Override
+    @Post
     public Integer rank(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.RANK_NOTPOSSIBLE,
@@ -391,7 +392,7 @@ public class MatrixServerResource extends ServerResource implements
      *            calculated.
      * @return trace Returns trace of the input matrix as a double value.
      */
-    @Override
+    @Post
     public Double trace(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.TRACE_NOTPOSSIBLE,
@@ -418,7 +419,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return isPositiveDefinite Returns true if the input matrix is positive
      *         definite else false.
      */
-    @Override
+    @Post
     public Boolean isPositiveDefinite(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE,
@@ -447,7 +448,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result as a column matrix which is a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix vec(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.VEC_MATRIX_NOTPOSSIBLE,
@@ -472,7 +473,7 @@ public class MatrixServerResource extends ServerResource implements
      * @return namedMatrix Returns the result as a column matrix which is a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix vech(final NamedMatrix matrix) {
         if (matrix == null) {
             displayError(MatrixConstants.VECH_MATRIX_NOTPOSSIBLE,
@@ -506,7 +507,7 @@ public class MatrixServerResource extends ServerResource implements
         logger.info(msg);
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, msg);
     }
-    @Override
+    @Post
     public String getValue() {
         // TODO Auto-generated method stub
         return "abc";

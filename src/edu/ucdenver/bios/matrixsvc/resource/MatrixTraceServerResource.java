@@ -22,6 +22,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
@@ -50,7 +51,7 @@ extends ServerResource implements MatrixTraceResource{
      *            calculated.
      * @return trace Returns trace of the input matrix as a double value.
      */
-    @Override
+    @Post
     public Double trace(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.TRACE_NOTPOSSIBLE,

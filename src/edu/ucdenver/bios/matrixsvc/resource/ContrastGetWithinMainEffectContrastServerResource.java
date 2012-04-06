@@ -24,6 +24,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -64,11 +65,11 @@ ServerResource implements ContrastGetWithinMainEffectContrastResource{
      *         and subset of factors to be tested must be specified to ensure a
      *         contrast matrix of appropriate dimension.
      */
-    @Override
+    @Post
     public NamedMatrix getWithinMainEffectConstract(
             final ArrayList<RepeatedMeasuresNode> fullFactorList,
             final RepeatedMeasuresNode testFactor) {
-        if (fullFactorList == null || testFactor == null) {
+        if (fullFactorList.isEmpty() || testFactor == null) {
             display.displayError("", MatrixConstants.NO_INPUT_SPECIFIED);
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);

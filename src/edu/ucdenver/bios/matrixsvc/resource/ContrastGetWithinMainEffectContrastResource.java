@@ -23,6 +23,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 
@@ -50,6 +52,7 @@ public interface ContrastGetWithinMainEffectContrastResource {
      * @return NamedMatrix Returns a main effect contrast matrix based on the
      *         testFator object. The contrast matrix is of type NamedMatrix
      */
+    @Post
     NamedMatrix getWithinMainEffectConstract(
             ArrayList<RepeatedMeasuresNode> fullFactorList,
             RepeatedMeasuresNode testFactor);

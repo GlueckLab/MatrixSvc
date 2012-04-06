@@ -22,6 +22,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -55,7 +56,7 @@ implements MatrixVecResource{
      * @return namedMatrix Returns the result as a column matrix which is a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix vec(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.VEC_MATRIX_NOTPOSSIBLE,

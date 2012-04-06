@@ -23,6 +23,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
@@ -48,6 +49,7 @@ public class DisplayLoggerError {
      *            the posmsg is the second string in the error message to be
      *            displayed.
      */
+    @Post
     public final void displayError(final String preMsg, final String posMsg) {
         String msg = null;
         msg = preMsg.concat(posMsg);

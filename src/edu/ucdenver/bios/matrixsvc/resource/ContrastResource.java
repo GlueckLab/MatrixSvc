@@ -23,6 +23,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
@@ -32,7 +34,6 @@ import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
  * The Interface ContrastResource.
  * 
  * @author Vijay Akula
- * @version 2.0.0 03\23\2012
  */
 public interface ContrastResource {
 
@@ -56,6 +57,7 @@ public interface ContrastResource {
      * @return NamedMatrix Returns a interaction contrast matrix based on the
      *         testFator object. The contrast matrix is of type NamedMatrix.
      */
+    @Post
     NamedMatrix getBetweenInteractionContrast(
             ArrayList<BetweenParticipantFactor> fullFactorList,
             ArrayList<BetweenParticipantFactor> testFactorList);

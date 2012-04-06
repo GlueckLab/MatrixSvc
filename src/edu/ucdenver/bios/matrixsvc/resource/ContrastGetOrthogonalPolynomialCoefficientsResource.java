@@ -21,6 +21,8 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
+import org.restlet.resource.Post;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
@@ -40,5 +42,6 @@ public interface ContrastGetOrthogonalPolynomialCoefficientsResource {
      * @return NamedMatrix Returns computed orthogonal polynomial contrasts for
      *         the specified data values which is a NamedMatrix.
      */
+    @Post
     NamedMatrix getOrthogonalPolynomialCoefficients(double[] x, int maxDegree);
 }

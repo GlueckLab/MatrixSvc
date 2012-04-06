@@ -22,6 +22,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -55,7 +56,7 @@ implements MatrixVechResource{
      * @return namedMatrix Returns the result as a column matrix which is a
      *         NamedMatrix.
      */
-    @Override
+    @Post
     public NamedMatrix vech(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError(MatrixConstants.VECH_MATRIX_NOTPOSSIBLE,

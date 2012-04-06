@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import edu.cudenver.bios.matrix.MatrixUtils;
@@ -56,7 +57,7 @@ extends ServerResource implements MatrixHorizontalDirectMultiplyResource{
      * @return namedMatrix Returns the result of horizontal direct multiply
      * as a Named Matrix
      */
-    @Override
+    @Post
     public NamedMatrix horizontalDirectMultiply(
             final ArrayList<NamedMatrix> matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper

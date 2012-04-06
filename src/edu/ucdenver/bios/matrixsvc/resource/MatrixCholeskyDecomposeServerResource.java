@@ -29,6 +29,7 @@ import org.apache.commons.math.linear.NotPositiveDefiniteMatrixException;
 import org.apache.commons.math.linear.NotSymmetricMatrixException;
 import org.apache.commons.math.linear.RealMatrix;
 import org.restlet.data.Status;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -60,7 +61,7 @@ implements MatrixCholeskyDecomposeResource{
      * @return namedMatrixList Returns the result of cholesky decomposition
      * as a ArrayList of NamedMatrix.
      */
-    @Override
+    @Post
     public ArrayList<NamedMatrix> choleskyDecompose(final NamedMatrix matrix) {
         if (matrix == null) {
             display.displayError("",MatrixConstants.NO_INPUT_SPECIFIED);
