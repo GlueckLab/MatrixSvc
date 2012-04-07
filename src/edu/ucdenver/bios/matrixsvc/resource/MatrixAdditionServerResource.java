@@ -21,7 +21,6 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
@@ -34,6 +33,7 @@ import org.restlet.resource.ServerResource;
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
 import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 /**
  * 
@@ -61,7 +61,7 @@ implements MatrixAdditionResource{
      *         NamedMatrix
      */
     @Post
-    public NamedMatrix add(final ArrayList<NamedMatrix> matrixList) {
+    public NamedMatrix add(final NamedMatrixList matrixList) {
         final List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);
         RealMatrix matrixSum = null;

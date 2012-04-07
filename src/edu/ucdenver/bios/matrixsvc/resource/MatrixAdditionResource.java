@@ -24,11 +24,10 @@ package edu.ucdenver.bios.matrixsvc.resource;
 /**
  * @author VIJAY AKULA
  */
-import java.util.ArrayList;
-
 import org.restlet.resource.Post;
 
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 public interface MatrixAdditionResource {
     /**
@@ -40,5 +39,5 @@ public interface MatrixAdditionResource {
      * @return NamedMatrix
      */
     @Post
-    NamedMatrix add(ArrayList<NamedMatrix> matrixList);
+    NamedMatrix add(NamedMatrixList matrixList);
 }
