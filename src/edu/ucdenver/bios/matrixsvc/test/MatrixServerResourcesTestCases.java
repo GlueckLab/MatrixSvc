@@ -50,6 +50,7 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVecServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVechServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 // to-do: Auto-generated Javadoc
 /**
@@ -68,11 +69,11 @@ public class MatrixServerResourcesTestCases extends TestCase {
     /**
      * ArrayList of NamedMatrix to store same dimension matrix.
      */
-    private ArrayList<NamedMatrix> sameDimensionNamedMatrixList;
+    private NamedMatrixList sameDimensionNamedMatrixList;
     /**
      * ArrayList of NamedMatrix to store different dimension matrices.
      */
-    private ArrayList<NamedMatrix> differentDimensionNamedMatrixList;
+    private NamedMatrixList differentDimensionNamedMatrixList;
     /**
      * Instance of a Named Matrix.
      */
@@ -89,21 +90,21 @@ public class MatrixServerResourcesTestCases extends TestCase {
     public final void setUp() {
         final int rows = 2;
         final int columns = 3;
-        sameDimensionNamedMatrixList = new ArrayList<NamedMatrix>();
-        namedMatrix1.setData(generateData(rows, columns));
+        sameDimensionNamedMatrixList = new NamedMatrixList();
+        namedMatrix1.setDataFromArray(generateData(rows, columns));
         sameDimensionNamedMatrixList.add(namedMatrix1);
         NamedMatrix namedMatrix2 = new NamedMatrix();
-        namedMatrix2.setData(generateData(rows, columns));
+        namedMatrix2.setDataFromArray(generateData(rows, columns));
         sameDimensionNamedMatrixList.add(namedMatrix2);
-        differentDimensionNamedMatrixList = new ArrayList<NamedMatrix>();
+        differentDimensionNamedMatrixList = new NamedMatrixList();
         NamedMatrix namedMatrix3 = new NamedMatrix();
         final int rows3 = 2;
         final int columns3 = 3;
-        namedMatrix3.setData(generateData(rows3, columns3));
+        namedMatrix3.setDataFromArray(generateData(rows3, columns3));
         differentDimensionNamedMatrixList.add(namedMatrix3);
         final int rows4 = 3;
         final int columns4 = 3;
-        namedMatrix4.setData(generateData(rows4, columns4));
+        namedMatrix4.setDataFromArray(generateData(rows4, columns4));
         differentDimensionNamedMatrixList.add(namedMatrix4);
         
         try
@@ -372,7 +373,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 new MatrixCholeskyDecomposeServerResource();
         NamedMatrix singularMatrix = new NamedMatrix();
         final double[][] data = {{4, 2, -2 }, {2, 10, 2 }, {-2, 2, 5 } };
-        singularMatrix.setData(data);
+        singularMatrix.setDataFromArray(data);
         ArrayList<NamedMatrix> resultArrayList = resource
                 .choleskyDecompose(singularMatrix);
         final double[][] dataL = {{2, 0, 0 }, {1, 3, 0 },
@@ -417,7 +418,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 new MatrixInversionServerResource();
         NamedMatrix squareMatrix = new NamedMatrix();
         double[][] data = {{2, 1 }, {3, 2 } };
-        squareMatrix.setData(data);
+        squareMatrix.setDataFromArray(data);
         NamedMatrix inverse = resource.invert(squareMatrix);
         double[][] resultData = inverse.getData().getData();
         final double[][] inverseData = {{2, -1 }, {-3, 2 } };
@@ -464,7 +465,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix rankMatrix = new NamedMatrix();
         final double[][] data = {{2, -1, 3 }, {2, -1, 3 }, {0, 2, -1 },
                 {1, 1, 4 } };
-        rankMatrix.setData(data);
+        rankMatrix.setDataFromArray(data);
         int rank = resource.rank(rankMatrix);
         final int matrixRank = 3;
         assertEquals(matrixRank, rank);
@@ -524,7 +525,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 new MatrixIsPositiveDefiniteServerResource();
         NamedMatrix positiveDefiniteMatrix = new NamedMatrix();
         final double[][] data = {{2, -1, 0 }, {-1, 2, -1 }, {0, -1, 2 } };
-        positiveDefiniteMatrix.setData(data);
+        positiveDefiniteMatrix.setDataFromArray(data);
         boolean isPositiveDefinite = resource
                 .isPositiveDefinite(positiveDefiniteMatrix);
 
@@ -584,7 +585,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         MatrixVechServerResource resource = new MatrixVechServerResource();
         NamedMatrix symmetricMatrix = new NamedMatrix();
         final double[][] data = {{1, 2, 3 }, {2, 4, 6 }, {3, 6, 5 } };
-        symmetricMatrix.setData(data);
+        symmetricMatrix.setDataFromArray(data);
 
         NamedMatrix vechMatric = resource.vech(symmetricMatrix);
         final double[][] expectedData = {{1 }, {2 }, {3 }, {4 }, {6 }, {5 } };
@@ -616,7 +617,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
     {
             NamedMatrix squareMatrix = new NamedMatrix();
             double[][] data = {{2, 1 }, {3, 2 } };
-            squareMatrix.setData(data);
+            squareMatrix.setDataFromArray(data);
             squareMatrix.setColumns(2);
             squareMatrix.setRows(2);
             squareMatrix.setName("ABC");
