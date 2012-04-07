@@ -134,7 +134,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
             category3.setCategory("Category3");
             category3.setId(3);
             
-            List<Category> categoryList = new ArrayList<Category>();
+            ArrayList<Category> categoryList = new ArrayList<Category>();
             categoryList.add(category1);
             categoryList.add(category2);
             categoryList.add(category3);
@@ -174,9 +174,9 @@ public class ContrastServerResourcesTestCases extends TestCase{
      * the x is size of the spacingList.
      * @return spacingList Returns a List of Integers
      */
-    public List<Spacing> generateSpacingList(int x)
+    public ArrayList<Spacing> generateSpacingList(int x)
     {
-        List<Spacing> spacingList =
+        ArrayList<Spacing> spacingList =
                 new ArrayList<Spacing>();
         for(int i = 0; i < x; i++)
         {
