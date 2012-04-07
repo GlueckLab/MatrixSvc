@@ -44,6 +44,7 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixIsPositiveDefiniteServerResour
 import edu.ucdenver.bios.matrixsvc.resource.MatrixKroneckerMultiplyServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixMultiplicationServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixSubtractionServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVecServerResource;
@@ -100,7 +101,7 @@ public class MatrixApplication extends Application
         router.attach("/kroneckermultiply", MatrixKroneckerMultiplyServerResource.class);
         
         //MatrixSclarMultiplyResource
-        router.attach("/scalarmultiply", MatrixScalarMultiplyResource.class);
+        router.attach("/scalarmultiply", MatrixScalarMultiplyServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
         router.attach("/horizontaldirectmultiply", MatrixHorizontalDirectMultiplyServerResource.class);
