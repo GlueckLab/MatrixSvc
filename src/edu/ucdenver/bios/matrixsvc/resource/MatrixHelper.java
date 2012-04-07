@@ -23,7 +23,6 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
@@ -63,7 +62,7 @@ public class MatrixHelper {
      *         matrixlist are converted to RealMatrix and add to realMatrixList.
      *         This relaMatrixList is returned.
      */
-    public List<RealMatrix> toRealMatrixList(
+    public ArrayList<RealMatrix> toRealMatrixList(
             final ArrayList<NamedMatrix> matrixList) {
         if (matrixList.isEmpty() || matrixList.size() < 2) {
             logger.info(MatrixConstants.MATRIX_LIST_ERROR);
@@ -71,7 +70,7 @@ public class MatrixHelper {
                     MatrixConstants.MATRIX_LIST_ERROR);
         }
 
-        List<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
+        ArrayList<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
         for (NamedMatrix namedMatrix : matrixList) {
             realMatrixList.add(toRealMatrix(namedMatrix));
         }
@@ -94,7 +93,7 @@ public class MatrixHelper {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        double[][] d = matrix.getDataFromBlob();
+        double[][] d = matrix.getDataAsArray();
         return new Array2DRowRealMatrix(d);
     }
 
@@ -112,7 +111,7 @@ public class MatrixHelper {
      */
     public NamedMatrix toNamedMatrix(final RealMatrix matrix, final String name) {
         NamedMatrix namedMatrix = new NamedMatrix();
-        namedMatrix.setData(matrix.getData());
+        namedMatrix.setDataFromArray(matrix.getData());
         namedMatrix.setName(name);
         namedMatrix.setColumns(matrix.getColumnDimension());
         namedMatrix.setRows(matrix.getRowDimension());
@@ -187,8 +186,8 @@ public class MatrixHelper {
         {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        List<Category> categoryList = betweenParticipantFactor
-                .getCategoryList();
+        ArrayList<Category> categoryList = 
+            betweenParticipantFactor.getCategoryList();
         int size = categoryList.size();
         double[] values = new double[size];
         for (int i = 0; i < size; i++) {
@@ -214,7 +213,7 @@ public class MatrixHelper {
         {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        List<Spacing> spacingList = node.getSpacingList();
+        ArrayList<Spacing> spacingList = node.getSpacingList();
         int size = spacingList.size();
         double[] values = new double[size];
         int index = 0;
