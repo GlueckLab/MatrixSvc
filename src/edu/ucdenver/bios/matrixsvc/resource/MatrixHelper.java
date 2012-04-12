@@ -23,6 +23,7 @@
 package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
@@ -186,7 +187,7 @@ public class MatrixHelper {
         {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        ArrayList<Category> categoryList = 
+        List<Category> categoryList = 
             betweenParticipantFactor.getCategoryList();
         int size = categoryList.size();
         double[] values = new double[size];

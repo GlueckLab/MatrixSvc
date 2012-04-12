@@ -21,7 +21,6 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.linear.RealMatrix;
@@ -31,6 +30,7 @@ import org.restlet.resource.ServerResource;
 import edu.cudenver.bios.matrix.MatrixUtils;
 import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 /**
  * 
@@ -59,7 +59,7 @@ extends ServerResource implements MatrixHorizontalDirectMultiplyResource{
      */
     @Post
     public NamedMatrix horizontalDirectMultiply(
-            final ArrayList<NamedMatrix> matrixList) {
+            final NamedMatrixList matrixList) {
         List<RealMatrix> realMatrixList = matrixHelper
                 .toRealMatrixList(matrixList);
         RealMatrix productMatrix = null;

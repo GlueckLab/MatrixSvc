@@ -21,11 +21,10 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Post;
 
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
+import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 /**
  * 
@@ -43,5 +42,5 @@ public interface MatrixHorizontalDirectMultiplyResource {
      * @return NamedMatrix
      */
     @Post
-    NamedMatrix horizontalDirectMultiply(ArrayList<NamedMatrix> matrixList);
+    NamedMatrix horizontalDirectMultiply(NamedMatrixList matrixList);
 }

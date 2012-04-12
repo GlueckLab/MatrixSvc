@@ -26,6 +26,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
  */
 import org.restlet.resource.Post;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
