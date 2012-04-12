@@ -46,6 +46,7 @@
 	    <include name="restlet/2.0.10/lib/org.restlet.ext.jackson.jar" />
 	    <include name="json/2.9/lib/json-20090211.jar" />
 	    <include name="jackson/1.9.4/lib/jackson-all-1.9.4.jar" />
+
 		<include name="junit/4.7/lib/junit-4.7.jar" />
 		<include name="log4j/1.2.15/lib/log4j-1.2.15.jar" />
 		<include name= "gson/2.1/lib/gson-2.1.jar"/>
@@ -158,10 +159,10 @@
               <pathelement location="${wardir}/WEB-INF/classes"/>
             </classpath>
             <formatter type="plain" />
-  		  <test name="edu.cudenver.bios.matrixsvc.test.MatrixParserTestCase" 
+  		  <test name="edu.ucdenver.bios.matrixsvc.test.ContrastServerResourcesTestCases" 
   		  	   haltonfailure="no"
   		  	  todir="${test.data.dir}"/>
-  		  <test name="edu.cudenver.bios.matrixsvc.test.ResourceTestCase" 
+  		  <test name="edu.ucdenver.bios.matrixsvc.test.MatrixServerResourcesTestCases" 
               haltonfailure="no"
               todir="${test.data.dir}"/>
         </junit>
