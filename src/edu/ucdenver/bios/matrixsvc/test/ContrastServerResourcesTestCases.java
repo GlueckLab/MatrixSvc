@@ -87,23 +87,22 @@ public class ContrastServerResourcesTestCases extends TestCase{
     public final void setUp()
     {
         betweenParticipantList = generateBetweenParticipantFactorList(3);
-        System.out.println(betweenParticipantList.toString());
+        
         participant = betweenParticipantList.get(0);
-        System.out.println(participant.toString());
+        
         betweenParticipantTestFactorList = generateBetweenParticipantFactorList(2);
-        System.out.println(betweenParticipantTestFactorList.toString());
+        
         repeatedMeasuresNodeList = generateRepeatedMeasureNodeList(3);
-        System.out.println(repeatedMeasuresNodeList.toString());
+        
         node = repeatedMeasuresNodeList.get(0);
-        System.out.println(node.toString());
+        
         repeatedMeasuresNodeTestFactorList = generateRepeatedMeasureNodeList(2);
-        System.out.println(repeatedMeasuresNodeTestFactorList.toString());
+        
         
         
         try
         {
-            clientResource = new ClientResource("http://localhost:8080/power/power"); 
-            //clientResource = new ClientResource("http://sph-bi-sakhadeo:8080/power/power"); 
+            clientResource = new ClientResource("http://localhost:8080/power/power");
             matrixResource = clientResource.wrap(MatrixResource.class);
         }
         catch (Exception e)
@@ -197,8 +196,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
         = new ContrastGetBetweenInteractionContrastServerResource();
         NamedMatrix namedMatrix = resource.getBetweenInteractionContrast(
                 betweenParticipantList, betweenParticipantTestFactorList);
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getColumns());
         assertEquals(27, namedMatrix.getColumns());     
     }
     /**
@@ -211,8 +208,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 new ContrastGetWithinInteractionContrastServerResource();
         NamedMatrix namedMatrix = resource.getWithinInteractionContrast(
                 repeatedMeasuresNodeList, repeatedMeasuresNodeTestFactorList);
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getRows());
         assertEquals(27, namedMatrix.getColumns());
     }
     /**
@@ -225,8 +220,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 new ContrastGetBetweenMainEffectContrastServerResource();
         NamedMatrix namedMatrix = resource.getBetweenMainEffectContrast(
                 betweenParticipantList, participant );
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getColumns());
         assertEquals(27, namedMatrix.getColumns());
     }
     /**
@@ -240,8 +233,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
         = new ContrastGetWithinMainEffectContrastServerResource();
         NamedMatrix namedMatrix = resource.getWithinMainEffectConstract(
                 repeatedMeasuresNodeList, node);
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getRows());
         assertEquals(27, namedMatrix.getColumns());
     }
     /**
@@ -254,8 +245,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 new ContrastGetBetweenGrandMeanContrastServerResource();
         NamedMatrix namedMatrix = resource.getBetweenGrandMeanContrast(
                 betweenParticipantList);
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getColumns());
         assertEquals(27, namedMatrix.getColumns());
         
     }
@@ -269,8 +258,6 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 new ContrastGetWithinGrandMeanContrastServerResource();
         NamedMatrix namedMatrix = resource.getWithinGrandMeanContrast(
                 repeatedMeasuresNodeList);
-        System.out.println("Rows "+namedMatrix.getRows());
-        System.out.println("Columns "+namedMatrix.getRows());
         assertEquals(27, namedMatrix.getColumns());
     }
     
