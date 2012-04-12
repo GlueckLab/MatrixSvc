@@ -86,37 +86,37 @@ public class MatrixApplication extends Application
         router.attachDefault(DefaultResource.class);
                 
         //MatrixAdditionResource
-        router.attach("/add", MatrixAdditionServerResource.class);
+        router.attach("/addition", MatrixAdditionServerResource.class);
         
         //MatrixSubstractionResource
-        router.attach("/subtract", MatrixSubtractionServerResource.class);
+        router.attach("/subtraction", MatrixSubtractionServerResource.class);
         
         //MatrixMultiplicationResource
-        router.attach("/multiply", MatrixMultiplicationServerResource.class);
+        router.attach("/mult", MatrixMultiplicationServerResource.class);
         
         //MatrixElementwiseMultiplicationResource
-        router.attach("/elementwisemultiply", MatrixElementwiseMultiplicationServerResource.class);
+        router.attach("/mult/elementWise", MatrixElementwiseMultiplicationServerResource.class);
         
         //MatrixKronckerMultiplyResource
-        router.attach("/kroneckermultiply", MatrixKroneckerMultiplyServerResource.class);
+        router.attach("/mult/kronecker", MatrixKroneckerMultiplyServerResource.class);
         
         //MatrixSclarMultiplyResource
-        router.attach("/scalarmultiply", MatrixScalarMultiplyServerResource.class);
+        router.attach("/mult/scalar", MatrixScalarMultiplyResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
-        router.attach("/horizontaldirectmultiply", MatrixHorizontalDirectMultiplyServerResource.class);
+        router.attach("/mult/horizontalDir", MatrixHorizontalDirectMultiplyServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
-        router.attach("/choleskydecompose", MatrixCholeskyDecomposeServerResource.class);
+        router.attach("/decomposition/cholesky", MatrixCholeskyDecomposeServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
-        router.attach("/invert", MatrixInversionServerResource.class);
+        router.attach("/inverse", MatrixInversionServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
         router.attach("/trace", MatrixTraceServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
-        router.attach("/positivedefinite", MatrixIsPositiveDefiniteServerResource.class);
+        router.attach("/positiveDefinite", MatrixIsPositiveDefiniteServerResource.class);
         
         //MatrixHorizontalDirectMultiplyResource
         router.attach("/vec", MatrixVecServerResource.class);
