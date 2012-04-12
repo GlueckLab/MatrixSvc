@@ -24,7 +24,6 @@ package edu.ucdenver.bios.matrixsvc.test;
  * @author VIJAY AKULA
  */
 import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -200,9 +199,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
                 betweenParticipantList, betweenParticipantTestFactorList);
         System.out.println("Rows "+namedMatrix.getRows());
         System.out.println("Columns "+namedMatrix.getColumns());
-        assertEquals(27, namedMatrix.getColumns());
-        
-        
+        assertEquals(27, namedMatrix.getColumns());     
     }
     /**
      * This is the test case to verify getWithinInteractionContrast method

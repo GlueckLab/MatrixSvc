@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.restlet.resource.ClientResource;
 
-import com.google.gson.Gson;
-
 import edu.ucdenver.bios.matrixsvc.resource.MatrixAdditionServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixCholeskyDecomposeServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixElementwiseMultiplicationServerResource;
@@ -40,15 +38,14 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixInversionServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixIsPositiveDefiniteServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixKroneckerMultiplyServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixMultiplicationServerResource;
+import edu.ucdenver.bios.matrixsvc.resource.MatrixRankResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixRankServerResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyServerResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixSubtractionServerResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVecServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVechServerResource;
+import edu.ucdenver.bios.webservice.common.domain.Blob2DArray;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
@@ -61,7 +58,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 public class MatrixServerResourcesTestCases extends TestCase {
    
     ClientResource clientResource = null; 
-    MatrixResource matrixResource = null;
+    MatrixRankResource matrixRankResource = null;
 /*    *//**
      * Instance of MatrixServerResource Class.
      *//*
@@ -91,35 +88,33 @@ public class MatrixServerResourcesTestCases extends TestCase {
         final int rows = 2;
         final int columns = 3;
         sameDimensionNamedMatrixList = new NamedMatrixList();
-        namedMatrix1.setDataFromArray(generateData(rows, columns));
+        namedMatrix1.setData(generateData(rows, columns));
         sameDimensionNamedMatrixList.add(namedMatrix1);
         NamedMatrix namedMatrix2 = new NamedMatrix();
-        namedMatrix2.setDataFromArray(generateData(rows, columns));
+        namedMatrix2.setData(generateData(rows, columns));
         sameDimensionNamedMatrixList.add(namedMatrix2);
         differentDimensionNamedMatrixList = new NamedMatrixList();
         NamedMatrix namedMatrix3 = new NamedMatrix();
         final int rows3 = 2;
         final int columns3 = 3;
-        namedMatrix3.setDataFromArray(generateData(rows3, columns3));
+        namedMatrix3.setData(generateData(rows3, columns3));
         differentDimensionNamedMatrixList.add(namedMatrix3);
         final int rows4 = 3;
         final int columns4 = 3;
-        namedMatrix4.setDataFromArray(generateData(rows4, columns4));
+        namedMatrix4.setData(generateData(rows4, columns4));
         differentDimensionNamedMatrixList.add(namedMatrix4);
         
         try
         {
-            clientResource = new ClientResource("http://localhost:8080/matrix/matrix"); 
-            matrixResource = clientResource.wrap(MatrixResource.class);
-            System.out.println(matrixResource.toString());
+            clientResource = new ClientResource("http://localhost:8080/matrix/rank"); 
+            matrixRankResource = clientResource.wrap(MatrixRankResource.class);
+            System.out.println(matrixRankResource.toString());
         }
         catch (Exception e)
         {
             System.err.println("Failed to connect to server: " + e.getMessage());
             fail();
-        }
-        
-        
+        }        
     }
 
     /**
@@ -131,7 +126,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
      *            - number of columns in a matrix to be generated.
      * @return double[][]
      */
-    private double[][] generateData(final int rows, final int columns) {
+    private Blob2DArray generateData(final int rows, final int columns) {
+        Blob2DArray blob = new Blob2DArray();
         double[][] data = new double[rows][columns];
         int value = 1;
         for (int i = 0; i < rows; i++) {
@@ -140,7 +136,8 @@ public class MatrixServerResourcesTestCases extends TestCase {
                 value = value + 1;
             }
         }
-        return data;
+        blob.setData(data);
+        return blob;
     }
 
     /**
@@ -374,6 +371,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix singularMatrix = new NamedMatrix();
         final double[][] data = {{4, 2, -2 }, {2, 10, 2 }, {-2, 2, 5 } };
         singularMatrix.setDataFromArray(data);
+
         ArrayList<NamedMatrix> resultArrayList = resource
                 .choleskyDecompose(singularMatrix);
         final double[][] dataL = {{2, 0, 0 }, {1, 3, 0 },
@@ -586,7 +584,6 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix symmetricMatrix = new NamedMatrix();
         final double[][] data = {{1, 2, 3 }, {2, 4, 6 }, {3, 6, 5 } };
         symmetricMatrix.setDataFromArray(data);
-
         NamedMatrix vechMatric = resource.vech(symmetricMatrix);
         final double[][] expectedData = {{1 }, {2 }, {3 }, {4 }, {6 }, {5 } };
         assertArrayEquals(expectedData, vechMatric.getData().getData());
@@ -602,10 +599,6 @@ public class MatrixServerResourcesTestCases extends TestCase {
         NamedMatrix vech = null;
         try {
             vech = resource.vech(namedMatrix4);
-            Gson gson = new Gson();
-            String json = gson.toJson(vech);
-            System.out.println(json);
-
         } catch (Exception e) {
             assertTrue("Throws Exception at " + "vech function in"
                     + " Matrix Server Resources Class", vech == null);
@@ -622,7 +615,7 @@ public class MatrixServerResourcesTestCases extends TestCase {
             squareMatrix.setRows(2);
             squareMatrix.setName("ABC");
             System.out.println(squareMatrix.toString());
-            int rank = matrixResource.rank(squareMatrix);
+            int rank = matrixRankResource.rank(squareMatrix);
             System.out.println("Rank  "+rank);
             /*final double[][] inverseData = {{2, -1 }, {-3, 2 } };
             double delta = 0.0000000000000011;
