@@ -1,6 +1,6 @@
 /*
  * Matrix Service for the GLIMMPSE Software System.  Processes
- * incoming HTTP requests for matrix operations like addition, substraction
+ * incoming HTTP requests for matrix operations like addition, subtraction
  * kronecker multiplication and so on
  * 
  * Copyright (C) 2010 Regents of the University of Colorado.
