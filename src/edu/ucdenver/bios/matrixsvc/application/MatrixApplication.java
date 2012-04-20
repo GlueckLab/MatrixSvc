@@ -44,7 +44,6 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixIsPositiveDefiniteServerResour
 import edu.ucdenver.bios.matrixsvc.resource.MatrixKroneckerMultiplyServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixMultiplicationServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyResource;
-import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixSubtractionServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixVecServerResource;
