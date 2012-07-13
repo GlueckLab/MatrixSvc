@@ -49,7 +49,6 @@ public class MatrixCholeskyDecompositionTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testCholeskyDecompositionOperation()
     {
        

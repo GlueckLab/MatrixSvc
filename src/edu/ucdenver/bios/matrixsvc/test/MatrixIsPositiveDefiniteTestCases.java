@@ -45,7 +45,6 @@ public class MatrixIsPositiveDefiniteTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testIsPostiveDefiniteOperation()
     {
         FileReader reader = null;

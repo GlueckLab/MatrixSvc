@@ -45,7 +45,7 @@ public class MatrixHorizontalDirectProductTestCases extends TestCase
        column = 2;
     }
     
-    @Test
+
     public void testValidHorizontalDirectProduct()
     {
         FileReader reader = null;

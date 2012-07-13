@@ -47,7 +47,6 @@ public class MatrixScalarMultiplyTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testValidScalarMultiply()
     {
         FileReader reader = null;

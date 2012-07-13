@@ -48,7 +48,6 @@ public class MatrixKroneckerProductTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testValidKroneckerProduct()
     {
         resultMatrixList.clear();

@@ -46,7 +46,6 @@ public class MatrixInverseTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testMatrixInverseOperation()
     {
        

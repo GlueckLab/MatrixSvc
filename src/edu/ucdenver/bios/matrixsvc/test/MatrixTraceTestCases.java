@@ -46,7 +46,7 @@ public class MatrixTraceTestCases extends TestCase{
     {
     }
     
-    @Test
+ 
     public void testMatrixTraceOperation()
     {
        

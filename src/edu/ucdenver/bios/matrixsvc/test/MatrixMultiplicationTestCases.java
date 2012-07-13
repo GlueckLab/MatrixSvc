@@ -49,7 +49,7 @@ public class MatrixMultiplicationTestCases
        column = 2;
     }
     
-    @Test
+    
     public void testValidMultiplication()
     {
         FileReader reader = null;

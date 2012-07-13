@@ -44,7 +44,6 @@ public class MatrixVechOperationTestCases extends TestCase{
 
     }
     
-    @Test
     public void testVechOperation()
     {
        

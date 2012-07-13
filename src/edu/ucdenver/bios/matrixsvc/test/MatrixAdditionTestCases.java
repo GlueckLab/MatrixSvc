@@ -44,8 +44,7 @@ public class MatrixAdditionTestCases extends TestCase
        rows = 2; 
        column = 2;
     }
-    
-    @Test
+
     public void testValidAddition()
     {
         FileReader reader = null;

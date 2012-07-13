@@ -45,7 +45,6 @@ public class MatrixElementwiseMultiplicationTestCases extends TestCase
        column = 2;
     }
     
-    @Test
     public void testValidElementwiseMultiplication()
     {
         FileReader reader = null;
