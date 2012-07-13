@@ -21,7 +21,11 @@ import org.xml.sax.InputSource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixElementwiseMultiplicationServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * TestCase for Elementwise Multiplication operation.
+ * @author VIJAY AKULA
+ *
+ */
 public class MatrixElementwiseMultiplicationTestCases extends TestCase
 {
     NamedMatrixList sameDimensionMatrixList = new NamedMatrixList();

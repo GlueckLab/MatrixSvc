@@ -21,7 +21,11 @@ import org.xml.sax.InputSource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixScalarMultiplyServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * TestCase for Matrix Scalar Multiply operations.
+ * @author VIJAY AKULA
+ *
+ */
 public class MatrixScalarMultiplyTestCases extends TestCase
 {
     NamedMatrixList sameDimensionMatrixList = new NamedMatrixList();

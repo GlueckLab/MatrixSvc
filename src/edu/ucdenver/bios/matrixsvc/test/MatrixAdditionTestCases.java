@@ -21,7 +21,11 @@ import org.xml.sax.InputSource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixAdditionServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * TestCase for Matrix Addition operation.
+ * @author VIJAY AKULA
+ *
+ */
 public class MatrixAdditionTestCases extends TestCase
 {   
     NamedMatrixList sameDimensionMatrixList = new NamedMatrixList();

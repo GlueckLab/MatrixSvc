@@ -17,7 +17,11 @@ import static org.junit.Assert.assertArrayEquals;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixMultiplicationServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * TestCase for Matrix Multiplication operation.
+ * @author VIJAY AKULA
+ *
+ */
 public class MatrixMultiplicationTestCases 
 {
 

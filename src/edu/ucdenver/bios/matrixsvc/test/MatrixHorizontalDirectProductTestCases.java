@@ -21,7 +21,11 @@ import org.xml.sax.InputSource;
 import edu.ucdenver.bios.matrixsvc.resource.MatrixHorizontalDirectMultiplyServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * TestCase for Matrix Horizontal Direct Product.
+ * @author VIJAY AKULA
+ *
+ */
 public class MatrixHorizontalDirectProductTestCases extends TestCase
 {
     NamedMatrixList sameDimensionMatrixList = new NamedMatrixList();

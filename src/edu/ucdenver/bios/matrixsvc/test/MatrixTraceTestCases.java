@@ -23,7 +23,11 @@ import edu.ucdenver.bios.matrixsvc.resource.MatrixTraceServerResource;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 import junit.framework.TestCase;
-
+/**
+ * TestCase for Matrix Trace Operation.
+ * @author VIJAY AKULA.
+ *
+ */
 public class MatrixTraceTestCases extends TestCase{
     
     NamedMatrixList matrixList = new NamedMatrixList();

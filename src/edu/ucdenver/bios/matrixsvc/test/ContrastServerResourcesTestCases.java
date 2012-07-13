@@ -20,9 +20,7 @@
  */
 
 package edu.ucdenver.bios.matrixsvc.test;
-/**
- * @author VIJAY AKULA
- */
+
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -41,7 +39,10 @@ import edu.ucdenver.bios.webservice.common.domain.Category;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 import edu.ucdenver.bios.webservice.common.domain.Spacing;
-
+/**
+ * TestCases for Contrast Server Resource operations.
+ * @author VIJAY AKULA
+ */
 public class ContrastServerResourcesTestCases extends TestCase{
     /**
      * ArrayList of BetweenParticipantFactor to store all the
