@@ -1,0 +1,74 @@
+<?xml version= "1.0"?>
+<matrixData>
+<matrix 
+m1r0c0   = 	'1' 
+m1r0c1   =	'2' 
+m1r1c0   = 	'3'
+m1r1c1   = 	'4'
+m2r0c0   =	'1'
+m2r0c1   =	'2'
+m2r1c0   =	'3'
+m2r1c1   =	'4'
+m3r0c0   =	'1'
+m3r0c1	 =	'4'
+m3r1c0   =	'9'
+m3r1c1   =	'16'
+/>
+<matrix
+m1r0c0  =	'2'
+m1r0c1  =	'4'
+m1r1c0  =	'6'
+m1r1c1  =	'8'
+m2r0c0  =       '2'
+m2r0c1  =	'4'
+m2r1c0  =	'6'
+m2r1c1  =	'8'
+m3r0c0  =	'4'
+m3r0c1  =	'16'
+m3r1c0  =	'36'
+m3r1c1 	=	'64'
+/>
+<matrix
+m1r0c0  =	'2'
+m1r0c1  =	'4'
+m1r1c0  =	'6'
+m1r1c1  =	'8'
+m2r0c0  =	'1'
+m2r0c1  =	'2'
+m2r1c0  =	'3'
+m2r1c1  =	'4'
+m3r0c0  =	'2'
+m3r0c1  =	'8'
+m3r1c0  =	'18'
+m3r1c1  =	'32'
+/>
+<matrix
+m1r0c0   = 	'3' 
+m1r0c1   = 	'9' 
+m1r1c0   = 	'4' 
+m1r1c1   = 	'6' 
+m2r0c0   = 	'3' 
+m2r0c1   = 	'6' 
+m2r1c0   = 	'2' 
+m2r1c1 	 = 	'9' 
+m3r0c0	 = 	'9' 
+m3r0c1   = 	'54' 
+m3r1c0	 = 	'8' 
+m3r1c1	 = 	'54'
+/>
+<matrix
+m1r0c0  =	'2' 
+m1r0c1  =	'3' 
+m1r1c0  =	'4' 
+m1r1c1  =	'2' 
+m2r0c0  =	'6' 
+m2r0c1  =	'3' 
+m2r1c0  =	'2' 
+m2r1c1  =	'1' 
+m3r0c0  =	'12' 
+m3r0c1  =	'9' 
+m3r1c0  =	'8' 
+m3r1c1  =	'2'
+/>
+
+</matrixData>

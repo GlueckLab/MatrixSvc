@@ -1,0 +1,39 @@
+<?xml version= "1.0"?>
+<matrixData>
+<matrix 
+m1r0c0   = 	'2' 
+m1r0c1   =	'1' 
+m1r1c0   = 	'1'
+m1r1c1   = 	'4'
+isPositiveDefinite = 'true'
+/>
+<matrix
+m1r0c0  =	'3'
+m1r0c1  =	'6'
+m1r1c0  =	'6'
+m1r1c1  =	'4'
+isPositiveDefinite = 'false'
+/>
+<matrix
+m1r0c0  =	'9'
+m1r0c1  =	'3'
+m1r1c0  =	'3'
+m1r1c1  =	'2'
+isPositiveDefinite = 'true'
+/>
+<matrix
+m1r0c0   = 	'3' 
+m1r0c1   = 	'2' 
+m1r1c0   = 	'2' 
+m1r1c1   = 	'2' 
+isPositiveDefinite = 'true'
+/>
+<matrix
+m1r0c0  =	'3' 
+m1r0c1  =	'-5' 
+m1r1c0  =	'-5' 
+m1r1c1  =	'4' 
+isPositiveDefinite = 'false'
+/>
+
+</matrixData>
