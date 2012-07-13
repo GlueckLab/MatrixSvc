@@ -29,6 +29,7 @@ import org.restlet.resource.Get;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
+ * Teh Interface MatrixResource.
  * @author Vijay Akula
  * 
  */

@@ -37,7 +37,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 
 /**
- * 
+ * The Implemetation of ContrastGetWithinGrandMeanContrastResource.
  * @author VIJAY AKULA
  *
  */

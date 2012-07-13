@@ -30,7 +30,7 @@ import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
- * 
+ * The Implemlementation of MatrixInversionResource.
  * @author VIJAY AKULA
  *
  */

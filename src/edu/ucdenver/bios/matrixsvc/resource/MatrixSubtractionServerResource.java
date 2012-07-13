@@ -36,7 +36,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
 
 /**
- * 
+ * The Implementation of MatrixSubstractionResource.
  * @author VIJAY AKULA
  *
  */

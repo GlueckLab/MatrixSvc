@@ -37,7 +37,7 @@ import edu.ucdenver.bios.webservice.common.domain.BetweenParticipantFactor;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
- * 
+ * The Implementation for ContrastGetBetweenMainEffectResource.
  * @author VIJAY AKULA
  *
  */

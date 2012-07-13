@@ -28,7 +28,7 @@ import org.restlet.resource.Post;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 /**
- * 
+ * The Interface MatrixCholeskyDecomposeResource.
  * @author VIJAY AKULA
  *
  */

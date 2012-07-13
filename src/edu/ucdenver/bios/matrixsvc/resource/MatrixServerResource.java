@@ -45,7 +45,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 
 // to-do: Auto-generated Javadoc
 /**
- * Resource for handling requests for element-wise multiplication calculations.
+ * Resource for handling requests for matrix calculations.
  * 
  * @author Vijay Akula
  * 

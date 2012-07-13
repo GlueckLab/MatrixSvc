@@ -29,7 +29,7 @@ import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.RepeatedMeasuresNode;
 
 /**
- * 
+ * The Interface ContrastGetWithinInteractionContrastResource
  * @author VIJAY AKULA
  *
  */

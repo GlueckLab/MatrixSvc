@@ -29,7 +29,7 @@ import org.restlet.resource.ResourceException;
 import edu.ucdenver.bios.matrixsvc.application.MatrixLogger;
 
 /**
- * 
+ * Logger class to disay errors.
  * @author VIJAY AKULA
  *
  */

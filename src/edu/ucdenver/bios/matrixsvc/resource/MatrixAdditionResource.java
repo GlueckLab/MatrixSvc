@@ -21,16 +21,18 @@
  * Boston, MA 02110-1301, USA.
  */
 package edu.ucdenver.bios.matrixsvc.resource;
-/**
- * @author VIJAY AKULA
- */
+
 import org.restlet.resource.Post;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrix;
 import edu.ucdenver.bios.webservice.common.domain.NamedMatrixList;
-
+/**
+ * The Interface MatrixAdditionResource.
+ * @author VIJAY AKULA
+ *
+ */
 public interface MatrixAdditionResource {
     /**
      *Return the sum of the matrices specified in the input list.
