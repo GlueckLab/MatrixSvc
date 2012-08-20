@@ -173,11 +173,9 @@
             </classpath>
             <formatter type="plain" />
   		  <test name="edu.ucdenver.bios.matrixsvc.test.ContrastServerResourcesTestCases" 
-  		  	   haltonfailure="no"
-  		  	  todir="${test.data.dir}"/>
+  		  	   haltonfailure="no" outfile="tmp/ContrastServerResourcesTestCases" />
   		  <test name="edu.ucdenver.bios.matrixsvc.test.MatrixServerResourcesTestCases" 
-              haltonfailure="no"
-              todir="${test.data.dir}"/>
+              haltonfailure="no" outfile="tmp/MatrixServerResourcesTestCases" />
         </junit>
     </target>
 	
