@@ -94,7 +94,7 @@ public class MatrixHelper {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
                     MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        double[][] d = matrix.getDataAsArray();
+        double[][] d = matrix.getData().getData();
         return new Array2DRowRealMatrix(d);
     }
 
@@ -214,14 +214,21 @@ public class MatrixHelper {
         {
             logger.info(MatrixConstants.NO_INPUT_SPECIFIED);
         }
-        ArrayList<Spacing> spacingList = node.getSpacingList();
-        int size = spacingList.size();
+        List<Spacing> spacingList = node.getSpacingList();
+        int size = node.getNumberOfMeasurements();
         double[] values = new double[size];
-        int index = 0;
-        for (Spacing spacing : spacingList) {
-            values[index] = spacing.getValue();
-            index++;
+        if (spacingList != null) {
+            int index = 0;
+            for (Spacing spacing : spacingList) {
+                values[index] = spacing.getValue();
+                index++;
+            }
+        } else {
+            for(int i = 0; i < size; i++) {
+                values[i] = i;
+            }
         }
+
         Factor factor = new Factor(node.getDimension(), values);
         return factor;
     }
