@@ -119,7 +119,7 @@ public class MatrixAdditionTestCases extends TestCase
                 result = resource.add(sameDimensionMatrixList);
                 
                 resultMatrixList.add(result);
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 if(verbose)
                 {
                     outputResults(TITLE, OUTPUT_FILE, "");    
@@ -151,7 +151,7 @@ public class MatrixAdditionTestCases extends TestCase
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes.item(i);

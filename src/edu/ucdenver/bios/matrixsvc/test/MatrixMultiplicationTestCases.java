@@ -120,7 +120,7 @@ public class MatrixMultiplicationTestCases
                 result = resource.multiply(sameDimensionMatrixList);
                 
                 resultMatrixList.add(result);
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 if(verbose)
                 {
                     outputResultsSameDimensions(TITLE, OUTPUT_FILE, "");    
@@ -152,7 +152,7 @@ public class MatrixMultiplicationTestCases
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes.item(i);
@@ -335,7 +335,7 @@ public class MatrixMultiplicationTestCases
                 result = resource.multiply(sameDimensionMatrixList);
                 
                 resultMatrixList.add(result);
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 
                 if(verbose)
                 {
@@ -366,7 +366,7 @@ public class MatrixMultiplicationTestCases
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes1.item(i);

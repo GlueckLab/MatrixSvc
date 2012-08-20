@@ -151,7 +151,7 @@ public class MatrixVechOperationTestCases extends TestCase{
                 result = resource.vech(namedMatrix);
                         
                 resultMatrixList.add(result);
-                double[][] resultData = result.getDataAsArray();
+                double[][] resultData = result.getData().getData();
                 
                 assertEquals(data[0][0], resultData[0][0], 0.00000000001);
                 assertEquals(data[1][0], resultData[1][0], 0.00000000001);
@@ -191,7 +191,7 @@ public class MatrixVechOperationTestCases extends TestCase{
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix1 = nodes.item(i);

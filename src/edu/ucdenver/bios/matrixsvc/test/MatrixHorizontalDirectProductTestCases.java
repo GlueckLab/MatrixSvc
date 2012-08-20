@@ -128,7 +128,7 @@ public class MatrixHorizontalDirectProductTestCases extends TestCase
                 result = resource.horizontalDirectMultiply(sameDimensionMatrixList);
                 
                 resultMatrixList.add(result);
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 if(verbose)
                 {
                     outputResults(TITLE, OUTPUT_FILE, "");    
@@ -160,7 +160,7 @@ public class MatrixHorizontalDirectProductTestCases extends TestCase
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes.item(i);

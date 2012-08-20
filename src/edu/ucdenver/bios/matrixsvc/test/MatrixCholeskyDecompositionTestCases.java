@@ -167,7 +167,7 @@ public class MatrixCholeskyDecompositionTestCases extends TestCase
                 
                 resultNamedMatrixList.add(resultList);
                 
-                double[][] resultData = resultList.get(0).getDataAsArray();
+                double[][] resultData = resultList.get(0).getData().getData();
                 
                 assertEquals(data[0][0], resultData[0][0], 0.00000000001);
                 assertEquals(data[0][1], resultData[0][1], 0.00000000001);
@@ -211,7 +211,7 @@ public class MatrixCholeskyDecompositionTestCases extends TestCase
             
             NamedMatrix namedMatrix = result.get(0);
             
-            double data[][] = namedMatrix.getDataAsArray(); 
+            double data[][] = namedMatrix.getData().getData(); 
             
             
             Node matrix1 = nodes.item(i);

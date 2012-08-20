@@ -113,7 +113,7 @@ public class MatrixScalarMultiplyTestCases extends TestCase
                 resultMatrixList.add(result);
                 
                 
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 if(verbose)
                 {
                     outputResults(TITLE, OUTPUT_FILE, "");    
@@ -145,7 +145,7 @@ public class MatrixScalarMultiplyTestCases extends TestCase
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes.item(i);

@@ -204,7 +204,7 @@ public class MatrixKroneckerProductTestCases extends TestCase
                 result = resource.kroneckerMultiply(matrixList);
                 
                 resultMatrixList.add(result);
-                assertArrayEquals(data, result.getDataAsArray());
+                assertArrayEquals(data, result.getData().getData());
                 
                 if(verbose)
                 {
@@ -236,7 +236,7 @@ public class MatrixKroneckerProductTestCases extends TestCase
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix = nodes1.item(i);

@@ -163,7 +163,7 @@ public class MatrixInverseTestCases extends TestCase
                
                 
                 resultMatrixList.add(result);
-                double[][] resultData = result.getDataAsArray();
+                double[][] resultData = result.getData().getData();
                 
                 assertEquals(data[0][0], resultData[0][0], 0.00000000001);
                 assertEquals(data[0][1], resultData[0][1], 0.00000000001);
@@ -205,7 +205,7 @@ public class MatrixInverseTestCases extends TestCase
             
             NamedMatrix result = resultMatrixList.get(i);
             
-            double data[][] = result.getDataAsArray(); 
+            double data[][] = result.getData().getData(); 
             
             
             Node matrix1 = nodes.item(i);
