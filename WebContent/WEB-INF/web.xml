@@ -10,7 +10,7 @@
     
    	<!-- Application version - auto populated during build -->
     <context-param>
-        <param-name>edu.ucdenver.bios.powersvc.application.version</param-name>
+        <param-name>edu.ucdenver.bios.matrixsvc.application.version</param-name>
         <param-value>UNKNOWN</param-value>
     </context-param>
     

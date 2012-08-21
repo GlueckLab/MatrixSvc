@@ -159,7 +159,5 @@ public final class MatrixConstants {
      * myMatrix, MatrixConstants.EIGEN_TOLERANCE)
      */
     public static final Double EIGEN_TOLERANCE_DEFAULT = 1.0E-15;
-    
-    public static final String VERSION = "2.0.0";
 
 }

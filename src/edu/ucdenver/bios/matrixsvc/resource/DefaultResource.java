@@ -3,8 +3,6 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import edu.ucdenver.bios.matrixsvc.application.MatrixConstants;
-
 /**
  * Default request resource.  Called from the URI /matrix
  * Simply returns a self-identifying message for the server
@@ -20,6 +18,9 @@ public class DefaultResource extends ServerResource
     @Get
     public String represent()
     {
-        return "Matrix REST Service, version "+MatrixConstants.VERSION;
+        String version = 
+                getApplication().getContext().getParameters().getFirstValue(
+                        "edu.ucdenver.bios.matrixsvc.application.version");
+        return ("Matrix Service, version " + version);
     }
 }
