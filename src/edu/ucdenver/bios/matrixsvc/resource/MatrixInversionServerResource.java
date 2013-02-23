@@ -21,8 +21,8 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import org.apache.commons.math.linear.LUDecompositionImpl;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
@@ -63,9 +63,9 @@ implements MatrixInversionResource{
         RealMatrix inverseMatrix = null;
         RealMatrix inputMatrix = matrixHelper.toRealMatrix(matrix);
         if (inputMatrix.isSquare()) {
-            if (inputMatrix.getDeterminant() != 0) {
-                inverseMatrix = new LUDecompositionImpl(inputMatrix)
-                        .getSolver().getInverse();
+            LUDecomposition luDecomp = new LUDecomposition(inputMatrix);
+            if (luDecomp.getDeterminant() != 0) {
+                inverseMatrix = luDecomp.getSolver().getInverse();
             }
         } else {
             display.displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE,

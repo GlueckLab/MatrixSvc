@@ -23,7 +23,7 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.List;
 
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
@@ -56,11 +56,11 @@ extends ServerResource implements MatrixKroneckerMultiplyResource{
     @Post
     public NamedMatrix kroneckerMultiply(
             final NamedMatrixList matrixList) {
-        List<RealMatrix> realMatrixList = matrixHelper
-                .toRealMatrixList(matrixList);
+        List<RealMatrix> realMatrixList = 
+                matrixHelper.toRealMatrixList(matrixList);
 
-        RealMatrix productMatrix = MatrixUtils
-                .getKroneckerProduct(realMatrixList);
+        RealMatrix productMatrix = 
+                MatrixUtils.getKroneckerProduct(realMatrixList);
 
         NamedMatrix matrix = matrixHelper.toNamedMatrix(productMatrix,
                 MatrixConstants.MULTIPLICATION_MATRIX_RETURN_NAME);

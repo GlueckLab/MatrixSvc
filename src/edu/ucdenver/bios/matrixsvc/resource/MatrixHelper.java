@@ -25,8 +25,8 @@ package edu.ucdenver.bios.matrixsvc.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;

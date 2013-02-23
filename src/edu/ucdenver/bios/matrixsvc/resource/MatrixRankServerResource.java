@@ -21,8 +21,8 @@
  */
 package edu.ucdenver.bios.matrixsvc.resource;
 
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.linear.SingularValueDecompositionImpl;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
@@ -62,8 +62,8 @@ implements MatrixRankResource{
         }
         RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
         Integer rank = null;
-        SingularValueDecompositionImpl impl =
-                new SingularValueDecompositionImpl(realMatrix);
+        SingularValueDecomposition impl =
+                new SingularValueDecomposition(realMatrix);
         rank = impl.getRank();
         return rank;
     }

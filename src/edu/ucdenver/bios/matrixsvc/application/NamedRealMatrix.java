@@ -21,8 +21,10 @@
  */
 package edu.ucdenver.bios.matrixsvc.application;
 
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
+
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -52,8 +54,7 @@ public class NamedRealMatrix extends Array2DRowRealMatrix {
      * @param matrix the matrix
      */
     public NamedRealMatrix(RealMatrix matrix){
-        super();
-        this.data = matrix.getData();
+        super(matrix.getData());
     }
     
     /**

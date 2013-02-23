@@ -125,13 +125,13 @@ public class ContrastServerResourcesTestCases extends TestCase{
         {
             Category category1 = new Category();
             category1.setCategory("Category1");
-            category1.setId(1);
+            category1.setIdx(1);
             Category category2 = new Category();
             category2.setCategory("Category2");
-            category2.setId(2);
+            category2.setIdx(2);
             Category category3 = new Category();
             category3.setCategory("Category3");
-            category3.setId(3);
+            category3.setIdx(3);
             
             ArrayList<Category> categoryList = new ArrayList<Category>();
             categoryList.add(category1);
@@ -158,7 +158,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
         for(int i = 0; i < x; i++)
         {
             RepeatedMeasuresNode node = new RepeatedMeasuresNode();
-            node.setId(i);
+            node.setIdx(i);
             node.setNumberOfMeasurements(i+1);
             node.setDimension("Node"+(i+1));
             node.setSpacingList(generateSpacingList(i+1));
@@ -180,7 +180,7 @@ public class ContrastServerResourcesTestCases extends TestCase{
         for(int i = 0; i < x; i++)
         {
             Spacing spacing = new Spacing();
-            spacing.setId(i+1);
+            spacing.setIdx(i+1);
             spacing.setValue((int) Math.pow(i, 2));
             spacingList.add(spacing);
         }

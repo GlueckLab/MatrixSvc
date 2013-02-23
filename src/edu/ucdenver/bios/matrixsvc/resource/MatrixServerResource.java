@@ -25,13 +25,13 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import org.apache.commons.math.linear.LUDecompositionImpl;
-import org.apache.commons.math.linear.NonSquareMatrixException;
-import org.apache.commons.math.linear.NotPositiveDefiniteMatrixException;
-import org.apache.commons.math.linear.NotSymmetricMatrixException;
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.linear.SingularValueDecompositionImpl;
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException;
+import org.apache.commons.math3.linear.NonSquareMatrixException;
+import org.apache.commons.math3.linear.NonSymmetricMatrixException;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.log4j.Logger;
 import org.restlet.data.Status;
 import org.restlet.resource.Post;
@@ -308,7 +308,7 @@ public class MatrixServerResource extends ServerResource implements
         ArrayList<NamedMatrix> namedMatrixList = new ArrayList<NamedMatrix>();
         ArrayList<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
         try {
-            CholeskyDecompositionImpl chdImp = new CholeskyDecompositionImpl(
+            CholeskyDecomposition chdImp = new CholeskyDecomposition(
                     realMatrix);
             realMatrixList.add(chdImp.getL());
             realMatrixList.add(chdImp.getLT());
@@ -319,10 +319,10 @@ public class MatrixServerResource extends ServerResource implements
         } catch (NonSquareMatrixException notSquare) {
             displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.IS_NOT_SQUARE);
-        } catch (NotSymmetricMatrixException notSymmetric) {
+        } catch (NonSymmetricMatrixException notSymmetric) {
             displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.IS_NOT_SYMMETRIC);
-        } catch (NotPositiveDefiniteMatrixException notPositiveDefinite) {
+        } catch (NonPositiveDefiniteMatrixException notPositiveDefinite) {
             displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE);
         }
@@ -347,9 +347,9 @@ public class MatrixServerResource extends ServerResource implements
         RealMatrix inverseMatrix = null;
         RealMatrix inputMatrix = matrixHelper.toRealMatrix(matrix);
         if (inputMatrix.isSquare()) {
-            if (inputMatrix.getDeterminant() != 0) {
-                inverseMatrix = new LUDecompositionImpl(inputMatrix)
-                        .getSolver().getInverse();
+            LUDecomposition luDecomp = new LUDecomposition(inputMatrix);
+            if (luDecomp.getDeterminant() != 0) {
+                inverseMatrix = luDecomp.getSolver().getInverse();
             }
         } else {
             displayError(MatrixConstants.MATRIX_INVERSION_NOTPOSSIBLE,
@@ -378,8 +378,8 @@ public class MatrixServerResource extends ServerResource implements
         }
         RealMatrix realMatrix = matrixHelper.toRealMatrix(matrix);
         Integer rank = null;
-        SingularValueDecompositionImpl impl =
-                new SingularValueDecompositionImpl(realMatrix);
+        SingularValueDecomposition impl =
+                new SingularValueDecomposition(realMatrix);
         rank = impl.getRank();
         return rank;
     }

@@ -23,11 +23,11 @@ package edu.ucdenver.bios.matrixsvc.resource;
 
 import java.util.ArrayList;
 
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
-import org.apache.commons.math.linear.NonSquareMatrixException;
-import org.apache.commons.math.linear.NotPositiveDefiniteMatrixException;
-import org.apache.commons.math.linear.NotSymmetricMatrixException;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
+import org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException;
+import org.apache.commons.math3.linear.NonSquareMatrixException;
+import org.apache.commons.math3.linear.NonSymmetricMatrixException;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.restlet.data.Status;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
@@ -73,7 +73,7 @@ implements MatrixCholeskyDecomposeResource{
         ArrayList<NamedMatrix> namedMatrixList = new ArrayList<NamedMatrix>();
         ArrayList<RealMatrix> realMatrixList = new ArrayList<RealMatrix>();
         try {
-            CholeskyDecompositionImpl chdImp = new CholeskyDecompositionImpl(
+            CholeskyDecomposition chdImp = new CholeskyDecomposition(
                     realMatrix);
             realMatrixList.add(chdImp.getL());
             realMatrixList.add(chdImp.getLT());
@@ -84,10 +84,10 @@ implements MatrixCholeskyDecomposeResource{
         } catch (NonSquareMatrixException notSquare) {
             display.displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.IS_NOT_SQUARE);
-        } catch (NotSymmetricMatrixException notSymmetric) {
+        } catch (NonSymmetricMatrixException notSymmetric) {
             display.displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.IS_NOT_SYMMETRIC);
-        } catch (NotPositiveDefiniteMatrixException notPositiveDefinite) {
+        } catch (NonPositiveDefiniteMatrixException notPositiveDefinite) {
             display.displayError(MatrixConstants.CHOLESKY_DECOMPOSITION_NOTPOSSIBLE,
                     MatrixConstants.POSITIVE_DEFINITE_NOTPOSSIBLE);
         }
